@@ -4,14 +4,14 @@ Plugin Name: WP External Links
 Plugin URI: http://www.freelancephp.net/wp-external-links-plugin
 Description: Open external links in a new window/tab, add "external" / "nofollow" to rel-attribute, set icon, XHTML strict, SEO friendly...
 Author: Victor Villaverde Laan
-Version: 1.50
+Version: 1.51
 Author URI: http://www.freelancephp.net
 License: Dual licensed under the MIT and GPL licenses
 */
 
 // constants
 if (!defined('WP_EXTERNAL_LINKS_FILE')) { define('WP_EXTERNAL_LINKS_FILE', __FILE__); }
-if (!defined('WP_EXTERNAL_LINKS_VERSION')) { define('WP_EXTERNAL_LINKS_VERSION', '1.50'); }
+if (!defined('WP_EXTERNAL_LINKS_VERSION')) { define('WP_EXTERNAL_LINKS_VERSION', '1.51'); }
 if (!defined('WP_EXTERNAL_LINKS_KEY')) { define('WP_EXTERNAL_LINKS_KEY', 'wp_external_links'); }
 if (!defined('WP_EXTERNAL_LINKS_DOMAIN')) { define('WP_EXTERNAL_LINKS_DOMAIN', 'wp-external-links'); }
 if (!defined('WP_EXTERNAL_LINKS_OPTIONS_NAME')) { define('WP_EXTERNAL_LINKS_OPTIONS_NAME', 'WP_External_Links_options'); }

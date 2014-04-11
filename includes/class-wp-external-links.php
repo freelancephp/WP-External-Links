@@ -202,12 +202,6 @@ var wpExtLinks = { baseUrl: '<?php echo get_bloginfo( 'wpurl' ) ?>', target: '<?
 	 * @return boolean
 	 */
 	private function is_external( $href, $rel ) {
-		// check if this links should be ignored
-		for ( $x = 0, $count = count($this->ignored); $x < $count; $x++ ) {
-			if ( strrpos( $href, $this->ignored[ $x ] ) !== FALSE )
-				return FALSE;
-		}
-
 		return ( isset( $href ) AND ( strpos( $rel, 'external' ) !== FALSE
 												OR  ( strpos( $href, strtolower( get_bloginfo( 'wpurl' ) ) ) === FALSE )
 														AND ( substr( $href, 0, 7 ) == 'http://'
@@ -215,6 +209,21 @@ var wpExtLinks = { baseUrl: '<?php echo get_bloginfo( 'wpurl' ) ?>', target: '<?
 																OR substr( $href, 0, 6 ) == 'ftp://'
 																OR substr( $href, 0, 2 ) == '//' ) ) );
 	}
+
+    /**
+     * Is an ignored link
+     * @param string $href
+     * @return boolean
+     */
+    private function is_ignored( $href ) {
+		// check if this links should be ignored
+		for ( $x = 0, $count = count($this->ignored); $x < $count; $x++ ) {
+			if ( strrpos( $href, $this->ignored[ $x ] ) !== FALSE )
+				return TRUE;
+		}
+
+        return FALSE;
+    }
 
 	/**
 	 * Filter content
@@ -337,8 +346,12 @@ var wpExtLinks = { baseUrl: '<?php echo get_bloginfo( 'wpurl' ) ?>', target: '<?
 		$href = trim( $href );
 
 		// check if it is an external link and not excluded
-		if ( ! $this->is_external( $href, $rel ) )
+		if ( ! $this->is_external( $href, $rel ))
 			return $matches[ 0 ];
+
+        if ( $this->is_ignored( $href ) ) {
+    		return apply_filters('wpel_external_link', $matches[ 0 ], $matches[ 0 ], $matches[ 2 ], $attrs, true);
+        }
 
 		// set rel="external" (when not already set)
 		if ( $this->get_opt( 'external' ) )
@@ -388,7 +401,7 @@ var wpExtLinks = { baseUrl: '<?php echo get_bloginfo( 'wpurl' ) ?>', target: '<?
 		$link .= '>'. $matches[ 2 ] .'</a>';
 
 		// filter
-		$link = apply_filters('wpel_external_link', $link, $matches[ 0 ], $matches[ 2 ], $attrs);
+		$link = apply_filters('wpel_external_link', $link, $matches[ 0 ], $matches[ 2 ], $attrs, false);
 
 		return $link;
 	}
@@ -454,19 +467,6 @@ var wpExtLinks = { baseUrl: '<?php echo get_bloginfo( 'wpurl' ) ?>', target: '<?
 		// set document
 		$doc = phpQuery::newDocument( $content );
 
-		/*
-		$regexp_xml = '/<\?xml(.*?)\?>/is';
-		$regexp_xhtml = '/<!DOCTYPE(.*?)xhtml(.*?)>/is';
-
-		if ( preg_match( $regexp_xml, $content ) > 0 ) {
-			$doc = phpQuery::newDocumentXML( $content, get_bloginfo( 'charset' ) );
-		} elseif ( preg_match( $regexp_xhtml, $content ) > 0 ) {
-			$doc = phpQuery::newDocumentXHTML( $content, get_bloginfo( 'charset' ) );
-		} else {
-			$doc = phpQuery::newDocumentHTML( $content, get_bloginfo( 'charset' ) );
-		}
-		*/
-
 		$excl_sel = $this->get_opt( 'filter_excl_sel' );
 
 		// set excludes
@@ -524,7 +524,7 @@ var wpExtLinks = { baseUrl: '<?php echo get_bloginfo( 'wpurl' ) ?>', target: '<?
 		$rel = strtolower( $a->attr( 'rel' ) . '' );
 
 		// check if it is an external link and not excluded
-		if ( ! $this->is_external( $href, $rel ) )
+		if ( ! $this->is_external( $href, $rel ) || $this->is_ignored( $href ) )
 			return $a;
 
 		// add "external" to rel-attribute
