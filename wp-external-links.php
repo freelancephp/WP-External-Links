@@ -30,7 +30,7 @@ if (isset($wp_version)
 
 	// create instance
 	$WP_External_Links = new WP_External_Links();
-    
+
 } else {
 
 	// set error message

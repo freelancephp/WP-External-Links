@@ -29,6 +29,9 @@ After activating the plugin all options are already set to make your external li
 This plugin has the same [requirements](http://wordpress.org/about/requirements/) as WordPress.
 If you are experiencing any problems, just take a look at the [FAQ](http://wordpress.org/extend/plugins/wp-external-links/faq/) or report it in the [support section](http://wordpress.org/support/plugin/wp-external-links). You can also send me a mail with [this contactform](http://www.freelancephp.net/contact/).
 
+= Github =
+I published the code on [Github](https://github.com/freelancephp/WP-External-Links) so anybody can commit code changes.
+
 = Like this plugin? =
 Please [rate this plugin](http://wordpress.org/support/view/plugin-reviews/wp-external-links-plugin) or [post a comment](http://www.freelancephp.net/wp-external-links-plugin/) on my blog.
 

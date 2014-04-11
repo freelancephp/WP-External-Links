@@ -319,11 +319,6 @@ var wpExtLinks = { baseUrl: '<?php echo get_bloginfo( 'wpurl' ) ?>', target: '<?
         return $arr;
     }
 
-    public function test() {
-        $test = $this->parse_attrs('<a class="no-ext-icon ext-link" href="http://www.google.de/?q=<%= encodeURIComponent(song.artist.name) %" rel="external nofollow" title="Externer Link: " target="">%20<%= encodeURIComponent(song.title) %>" title="auf google.de suchen"><%= song.title %></a>');
-        logger($test);
-    }
-
 	/**
 	 * Make a clean <a> code (callback for regexp)
 	 * @param array $matches Result of a preg call in filter_content()
@@ -384,13 +379,11 @@ var wpExtLinks = { baseUrl: '<?php echo get_bloginfo( 'wpurl' ) ?>', target: '<?
 		}
 
 		// create element code
-		$link = '<a ';
+		$link = '<a';
 
-		foreach ( $attrs AS $key => $value )
-			$link .= $key .'="'. $value .'" ';
-
-		// remove last space
-		$link = substr( $link, 0, -1 );
+		foreach ( $attrs AS $key => $value ) {
+			$link .= ' '. $key .'="'. $value .'"';
+        }
 
 		$link .= '>'. $matches[ 2 ] .'</a>';
 
