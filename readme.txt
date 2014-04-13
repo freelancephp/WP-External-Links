@@ -91,6 +91,10 @@ Now all external links will be processed and wrapped around a `<b>`-tag. And lin
 
 == Changelog ==
 
+=  =
+* Fixed use_js option bug
+
+
 = 1.51 =
 * Fixed also check url's starting with //
 * Fixed wpel_external_link also applied on ignored links

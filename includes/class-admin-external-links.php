@@ -17,7 +17,6 @@ final class Admin_External_Links {
 		),
 		'main' => array(
 			'target' => '_none',
-			'use_js' => 1,
 			'filter_page' => 1,
 			'filter_posts' => 1,
 			'filter_comments' => 1,
@@ -28,6 +27,7 @@ final class Admin_External_Links {
 			'external' => 1,
 			'nofollow' => 1,
 			'title' => '%title%',
+			'use_js' => 1,
 			'load_in_footer' => 1,
 		),
 		'style' => array(
@@ -507,13 +507,13 @@ final class Admin_External_Links {
 			$new_options = $this->save_options;
 
 			$new_options[ 'main' ][ 'target' ] = $old_options[ 'target' ];
-			$new_options[ 'main' ][ 'use_js' ] = $old_options[ 'use_js' ];
 			$new_options[ 'main' ][ 'filter_page' ] = $old_options[ 'filter_whole_page' ];
 			$new_options[ 'main' ][ 'filter_posts' ] = $old_options[ 'filter_posts' ];
 			$new_options[ 'main' ][ 'filter_comments' ] = $old_options[ 'filter_comments' ];
 			$new_options[ 'main' ][ 'filter_widgets' ] = $old_options[ 'filter_widgets' ];
 			$new_options[ 'seo' ][ 'external' ] = $old_options[ 'external' ];
 			$new_options[ 'seo' ][ 'nofollow' ] = $old_options[ 'nofollow' ];
+			$new_options[ 'seo' ][ 'use_js' ] = $old_options[ 'use_js' ];
 			$new_options[ 'style' ][ 'class_name' ] = $old_options[ 'class_name' ];
 			$new_options[ 'style' ][ 'icon' ] = $old_options[ 'icon' ];
 			$new_options[ 'style' ][ 'no_icon_class' ] = $old_options[ 'no_icon_class' ];
@@ -543,7 +543,6 @@ final class Admin_External_Links {
 			$style = get_option( 'wp_external_links-style' );
 
 			if ( isset( $general[ 'target' ] ) ) $new_options[ 'main' ][ 'target' ] = $general[ 'target' ];
-			$new_options[ 'main' ][ 'use_js' ] = ( isset( $general[ 'use_js' ] ) ) ? $general[ 'use_js' ] : 0;
 			$new_options[ 'main' ][ 'filter_page' ] = ( isset( $general[ 'filter_page' ] ) ) ? $general[ 'filter_page' ] : 0;
 			$new_options[ 'main' ][ 'filter_posts' ] = ( isset( $general[ 'filter_posts' ] ) ) ? $general[ 'filter_posts' ] : 0;
 			$new_options[ 'main' ][ 'filter_comments' ] = ( isset( $general[ 'filter_comments' ] ) ) ? $general[ 'filter_comments' ] : 0;
@@ -552,6 +551,7 @@ final class Admin_External_Links {
 
 			$new_options[ 'seo' ][ 'external' ] = ( isset( $general[ 'external' ] ) ) ? $general[ 'external' ] : 0;
 			$new_options[ 'seo' ][ 'nofollow' ] = ( isset( $general[ 'nofollow' ] ) ) ? $general[ 'nofollow' ] : 0;
+			$new_options[ 'seo' ][ 'use_js' ] = ( isset( $general[ 'use_js' ] ) ) ? $general[ 'use_js' ] : 0;
 			if ( isset( $general[ 'title' ] ) ) $new_options[ 'seo' ][ 'title' ] = $general[ 'title' ];
 
 			if ( isset( $general[ 'class_name' ] ) ) $new_options[ 'style' ][ 'class_name' ] = $general[ 'class_name' ];
