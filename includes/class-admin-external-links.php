@@ -120,6 +120,7 @@ final class Admin_External_Links {
             echo <<< style
 <style type="text/css">
 /* WP External Links */
+.postbox-container { margin-left:1%; }
 .tooltip-help { text-decoration: none; }
 .tipsy { padding: 5px; }
 .tipsy-inner { padding: 5px 8px 4px 8px; color: white; max-width: 200px; text-align: center; text-shadow: 0 -1px 0 #333;
