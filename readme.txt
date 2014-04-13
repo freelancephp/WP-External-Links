@@ -49,7 +49,13 @@ Please [rate this plugin](http://wordpress.org/support/view/plugin-reviews/wp-ex
 
 You could add `rel="external"` to those internal links that should be treated as external. The plugin settings will also be applied to those links.
 
+= Links to my own domain are treated as external links. Why? =
 
+Links pointing to your WordPress site are internal links. All other links will be treated as external links.
+
+= I want links to my own domain not being treated as external links. =
+
+Add your domain to the option "Ingore links (URL) containing...".
 
 [Do you have a question? Please ask me](http://www.freelancephp.net/contact/)
 
