@@ -62,7 +62,7 @@ class WP_Option_Forms_01 {
 		}
 
 		// script
-		wp_enqueue_script( 'option-forms', plugins_url( 'js/wp-option-forms.js', WP_EXTERNAL_LINKS_FILE ), array( 'jquery' ), '1.0' );
+//		wp_enqueue_script( 'option-forms', plugins_url( 'js/wp-option-forms.js', WP_EXTERNAL_LINKS_FILE ), array( 'jquery' ), '1.0' );
 	}
 
 	/**

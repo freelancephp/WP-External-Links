@@ -21,7 +21,7 @@ final class Admin_External_Links {
 			'filter_posts' => 1,
 			'filter_comments' => 1,
 			'filter_widgets' => 1,
-			'ignore' => 'http://twitter.com/share',
+			'ignore' => '//twitter.com/share',
 		),
 		'seo' => array(
 			'external' => 1,
@@ -150,11 +150,10 @@ final class Admin_External_Links {
 							->add_meta_box( $this->__( 'Other Plugins' ), array( $this, 'call_box_other_plugins' ), 2 );
 
 		// stylesheets
-		wp_enqueue_style( 'wp-external-links', plugins_url( 'css/wp-external-links.css', WP_EXTERNAL_LINKS_FILE ), FALSE, WP_EXTERNAL_LINKS_VERSION );
 		wp_enqueue_style( 'admin-wp-external-links', plugins_url( 'css/admin-wp-external-links.css', WP_EXTERNAL_LINKS_FILE ), FALSE, WP_EXTERNAL_LINKS_VERSION );
 
 		// scripts
-		wp_enqueue_script( 'admin-wp-external-links', plugins_url( '/js/admin-wp-external-links.js', WP_EXTERNAL_LINKS_FILE ), array( 'postbox', 'option-forms' ), WP_EXTERNAL_LINKS_VERSION );
+		wp_enqueue_script( 'admin-wp-external-links', plugins_url( '/js/admin-wp-external-links.js', WP_EXTERNAL_LINKS_FILE ), array( 'postbox' ), WP_EXTERNAL_LINKS_VERSION );
 	}
 
 	/**

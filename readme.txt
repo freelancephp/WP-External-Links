@@ -49,7 +49,6 @@ Please [rate this plugin](http://wordpress.org/support/view/plugin-reviews/wp-ex
 
 You could add `rel="external"` to those internal links that should be treated as external. The plugin settings will also be applied to those links.
 
-= I want internal links to be treated as external links. How? =
 
 
 [Do you have a question? Please ask me](http://www.freelancephp.net/contact/)
@@ -93,7 +92,8 @@ Now all external links will be processed and wrapped around a `<b>`-tag. And lin
 
 =  =
 * Fixed use_js option bug
-
+* Fixed bug loading non-existing stylesheet
+* Minified javascripts
 
 = 1.51 =
 * Fixed also check url's starting with //
