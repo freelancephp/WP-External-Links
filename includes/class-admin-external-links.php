@@ -114,6 +114,27 @@ final class Admin_External_Links {
 	}
 
 	/**
+	 * Add to head of Admin page
+	 */
+	public function admin_head() {
+            echo <<< style
+<style type="text/css">
+/* WP External Links */
+.tooltip-help { text-decoration: none; }
+.tipsy { padding: 5px; }
+.tipsy-inner { padding: 5px 8px 4px 8px; color: white; max-width: 200px; text-align: center; text-shadow: 0 -1px 0 #333;
+	border-top:1px solid #808080; border-botom:1px solid #6d6d6d; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px;
+	background-color:#777; background-image:-ms-linear-gradient(bottom,#6d6d6d,#808080); background-image:-moz-linear-gradient(bottom,#6d6d6d,#808080); background-image:-o-linear-gradient(bottom,#6d6d6d,#808080); background-image:-webkit-gradient(linear,left bottom,left top,from(#6d6d6d),to(#808080)); background-image:-webkit-linear-gradient(bottom,#6d6d6d,#808080); background-image:linear-gradient(bottom,#6d6d6d,#808080);
+}
+.tipsy-north { background-position: top center; }
+.tipsy-south { background-position: bottom center; }
+.tipsy-east { background-position: right center; }
+.tipsy-west { background-position: center bottom; }
+<style>
+style;
+	}
+
+	/**
 	 * Translate text in current domain
 	 * @param string $text
 	 * @return string
@@ -135,6 +156,8 @@ final class Admin_External_Links {
 	 * Load meta box action
 	 */
 	public function call_load_meta_box( $meta_box ) {
+        add_action( 'admin_head', array($this, 'admin_head') );
+
 		// add filters
 		$meta_box->add_title_filter( array( $this, 'call_page_title' ) )
 							->add_contextual_help_filter( array( $this, 'call_contextual_help' ) );
@@ -148,9 +171,6 @@ final class Admin_External_Links {
 							->add_meta_box( $this->__( 'Admin Settings' ), array( $this, 'call_box_admin_settings' ), 1 )
 							//->add_meta_box( $this->__( 'About this Plugin' ), array( $this, 'call_box_about' ), 2 )
 							->add_meta_box( $this->__( 'Other Plugins' ), array( $this, 'call_box_other_plugins' ), 2 );
-
-		// stylesheets
-		wp_enqueue_style( 'admin-wp-external-links', plugins_url( 'css/admin-wp-external-links.css', WP_EXTERNAL_LINKS_FILE ), FALSE, WP_EXTERNAL_LINKS_VERSION );
 
 		// scripts
 		wp_enqueue_script( 'admin-wp-external-links', plugins_url( '/js/admin-wp-external-links.js', WP_EXTERNAL_LINKS_FILE ), array( 'postbox' ), WP_EXTERNAL_LINKS_VERSION );
