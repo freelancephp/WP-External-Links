@@ -61,7 +61,7 @@ final class WP_External_Links {
 
 			// set js file
 			if ( $this->get_opt( 'use_js' ) )
-				wp_enqueue_script( 'wp-external-links', plugins_url( 'js/wp-external-links.js', WP_EXTERNAL_LINKS_FILE ), array( 'jquery' ), WP_EXTERNAL_LINKS_VERSION, (bool) $this->get_opt( 'load_in_footer' ) );
+				wp_enqueue_script( 'wp-external-links', plugins_url( 'js/wp-external-links.js', WP_EXTERNAL_LINKS_FILE ), array(), WP_EXTERNAL_LINKS_VERSION, (bool) $this->get_opt( 'load_in_footer' ) );
 
 			// filters
 			if ( $this->get_opt( 'filter_page' ) ) {
