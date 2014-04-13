@@ -1,5 +1,7 @@
 /* WP External Links Plugin - Admin */
+/*global jQuery, window*/
 jQuery(function ($) {
+    'use strict';
 
     /* Tipsy Plugin */
     (function () {
@@ -19,14 +21,14 @@ jQuery(function ($) {
                         $.data(this, 'active.tipsy', tip);
                     }
 
-                    if ($(this).attr('title') || typeof($(this).attr('original-title')) != 'string') {
+                    if ($(this).attr('title') || typeof $(this).attr('original-title') !== 'string') {
                         $(this).attr('original-title', $(this).attr('title') || '').removeAttr('title');
                     }
 
                     var title;
-                    if (typeof opts.title == 'string') {
-                        title = $(this).attr(opts.title == 'title' ? 'original-title' : opts.title);
-                    } else if (typeof opts.title == 'function') {
+                    if (typeof opts.title === 'string') {
+                        title = $(this).attr(opts.title === 'title' ? 'original-title' : opts.title);
+                    } else if (typeof opts.title === 'function') {
                         title = opts.title.call(this);
                     }
 
@@ -115,7 +117,7 @@ jQuery(function ($) {
                 $i.attr('disabled', true)
                     .attr('checked', true);
             } else {
-                $i.attr('disabled', false)
+                $i.attr('disabled', false);
             }
         })
         .change();
@@ -146,13 +148,13 @@ jQuery(function ($) {
         .change();
 
     // refresh page when updated menu position
-    $('#menu_position').parents('form.ajax-form').on('ajax_saved_options', function (result) {
+    $('#menu_position').parents('form.ajax-form').on('ajax_saved_options', function () {
         var s = $(this).val() || '';
         window.location.href = s + (s.indexOf('?') > -1 ? '&' : '?') + 'page=wp_external_links&settings-updated=true';
     });
 
     // set tooltips
-    $('.tooltip-help').css('margin', '0 5px').tipsy({ fade:true, live:true, gravity:'w', fallback: 'No help text.' });
+    $('.tooltip-help').css('margin', '0 5px').tipsy({ fade: true, live: true, gravity: 'w', fallback: 'No help text.' });
 
     // remove class to fix button background
     $('*[type="submit"]').removeClass('submit');
@@ -162,9 +164,9 @@ jQuery(function ($) {
         var $inside = $(this).parent().find('.inside');
 
         if ($inside.css('display') === 'block') {
-            $inside.css({ display:'none' });
+            $inside.css({ display: 'none' });
         } else {
-            $inside.css({ display:'block' });
+            $inside.css({ display: 'block' });
         }
     });
 
