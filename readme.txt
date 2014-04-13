@@ -45,6 +45,13 @@ Please [rate this plugin](http://wordpress.org/support/view/plugin-reviews/wp-ex
 
 == Frequently Asked Questions ==
 
+= I want internal links to be treated as external links. How? =
+
+You could add `rel="external"` to those internal links that should be treated as external. The plugin settings will also be applied to those links.
+
+= I want internal links to be treated as external links. How? =
+
+
 [Do you have a question? Please ask me](http://www.freelancephp.net/contact/)
 
 == Screenshots ==
