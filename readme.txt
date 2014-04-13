@@ -96,7 +96,7 @@ Now all external links will be processed and wrapped around a `<b>`-tag. And lin
 
 == Changelog ==
 
-=  =
+= 1.52  =
 * Fixed use_js option bug
 * Fixed bug loading non-existing stylesheet
 * Minified javascripts
