@@ -12,28 +12,22 @@ Open external links in a new window or tab, adding "nofollow", set link icon, st
 Configure settings for all external links on your site.
 
 = Features =
-* Open external links in new window or tab
+* Open in new window or tab
 * Add "nofollow"
-* Set link title
-* Set link icon
-* Set classes (for your own styling)
-* Set no-icon class
-* SEO friendly
+* Choose from 20 icons
+* Set other link options (like classes, title etc)
+* Make it SEO friendly
 
 = Easy to use =
 After activating the plugin all options are already set to make your external links SEO friendly. Optionally you can also set the target for opening in a new window or tab or styling options, like adding an icon.
 
-[See more documentation](http://wordpress.org/extend/plugins/wp-external-links/other_notes/).
-
-= Support =
-This plugin has the same [requirements](http://wordpress.org/about/requirements/) as WordPress.
-If you are experiencing any problems, just take a look at the [FAQ](http://wordpress.org/extend/plugins/wp-external-links/faq/) or report it in the [support section](http://wordpress.org/support/plugin/wp-external-links). You can also send me a mail with [this contactform](http://www.freelancephp.net/contact/).
-
-= Github =
-I published the code on [Github](https://github.com/freelancephp/WP-External-Links) so anybody can commit code changes.
+= Sources =
+* [Documentation](http://wordpress.org/extend/plugins/wp-external-links/other_notes/)
+* [FAQ](http://wordpress.org/extend/plugins/wp-external-links/faq/)
+* [Github](https://github.com/freelancephp/WP-External-Links)
 
 = Like this plugin? =
-Please [rate this plugin](http://wordpress.org/support/view/plugin-reviews/wp-external-links-plugin) or [post a comment](http://www.freelancephp.net/wp-external-links-plugin/) on my blog.
+[Send your review](http://wordpress.org/support/view/plugin-reviews/wp-external-links-plugin).
 
 
 == Installation ==
@@ -97,6 +91,7 @@ Now all external links will be processed and wrapped around a `<b>`-tag. And lin
 == Changelog ==
 
 = 1.52  =
+* Added filter hook wpel_internal_link
 * Fixed use_js option bug
 * Fixed bug loading non-existing stylesheet
 * Minified javascripts
