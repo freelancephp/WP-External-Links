@@ -202,12 +202,11 @@ var wpExtLinks = { baseUrl: '<?php echo get_bloginfo( 'wpurl' ) ?>', target: '<?
 	 * @return boolean
 	 */
 	private function is_external( $href, $rel ) {
-		return ( isset( $href ) AND ( strpos( $rel, 'external' ) !== FALSE
-												OR  ( strpos( $href, strtolower( get_bloginfo( 'wpurl' ) ) ) === FALSE )
-														AND ( substr( $href, 0, 7 ) == 'http://'
-																OR substr( $href, 0, 8 ) == 'https://'
-																OR substr( $href, 0, 6 ) == 'ftp://'
-																OR substr( $href, 0, 2 ) == '//' ) ) );
+		return ( isset( $href ) AND ( ( strpos( $href, strtolower( get_bloginfo( 'wpurl' ) ) ) === FALSE )
+                                            AND ( substr( $href, 0, 7 ) == 'http://'
+                                                    OR substr( $href, 0, 8 ) == 'https://'
+                                                    OR substr( $href, 0, 6 ) == 'ftp://'
+                                                    OR substr( $href, 0, 2 ) == '//' ) ) );
 	}
 
     /**
@@ -334,23 +333,34 @@ var wpExtLinks = { baseUrl: '<?php echo get_bloginfo( 'wpurl' ) ?>', target: '<?
 	 * @return string Clean <a> code
 	 */
 	public function call_parse_link( $matches ) {
+        $link = $matches[ 0 ];
+        $label = $matches[ 2 ];
+        $created_link = $link;
+
+        // parse attributes
 		$attrs = $matches[ 1 ];
 		$attrs = stripslashes( $attrs );
 		$attrs = $this->parse_attrs( $attrs );
 
 		$rel = ( isset( $attrs[ 'rel' ] ) ) ? strtolower( $attrs[ 'rel' ] ) : '';
 
-		// href
+		// href preperation
 		$href = $attrs[ 'href' ];
 		$href = strtolower( $href );
 		$href = trim( $href );
 
-		// check if it is an external link and not excluded
-		if ( ! $this->is_external( $href, $rel ))
-			return $matches[ 0 ];
+        // checks
+        $is_external = $this->is_external( $href, $rel );
+        $is_ignored = $this->is_ignored( $href );
 
-        if ( $this->is_ignored( $href ) ) {
-    		return apply_filters('wpel_external_link', $matches[ 0 ], $matches[ 0 ], $matches[ 2 ], $attrs, true);
+		// is an internal link?
+        // rel=external will be threaded as external link
+		if ( ! $is_external && strpos( $rel, 'external' ) === FALSE) {
+    		return apply_filters('wpel_internal_link', $created_link, $label, $attrs);
+        }
+
+        if ( $is_ignored ) {
+    		return apply_filters('wpel_external_link', $created_link, $link, $label, $attrs, TRUE);
         }
 
 		// set rel="external" (when not already set)
@@ -375,7 +385,7 @@ var wpExtLinks = { baseUrl: '<?php echo get_bloginfo( 'wpurl' ) ?>', target: '<?
 		if ( $this->get_opt( 'icon' ) > 0
 					AND ( ! $this->get_opt( 'no_icon_class' ) OR strpos( $attrs[ 'class' ], $this->get_opt( 'no_icon_class' ) ) === FALSE )
 					AND strpos( $attrs[ 'class' ], 'ext-icon-' ) === FALSE
-					AND !( $this->get_opt( 'image_no_icon' ) AND (bool) preg_match( '/<img([^>]*)>/is', $matches[ 2 ] )) ){
+					AND !( $this->get_opt( 'image_no_icon' ) AND (bool) preg_match( '/<img([^>]*)>/is', $label )) ){
 			$icon_class = 'ext-icon-'. $this->get_opt( 'icon', 'style' );
 			$this->add_attr_value( $attrs, 'class', $icon_class );
 		}
@@ -392,18 +402,18 @@ var wpExtLinks = { baseUrl: '<?php echo get_bloginfo( 'wpurl' ) ?>', target: '<?
 		}
 
 		// create element code
-		$link = '<a';
+		$created_link = '<a';
 
 		foreach ( $attrs AS $key => $value ) {
-			$link .= ' '. $key .'="'. $value .'"';
+			$created_link .= ' '. $key .'="'. $value .'"';
         }
 
-		$link .= '>'. $matches[ 2 ] .'</a>';
+		$created_link .= '>'. $label .'</a>';
 
 		// filter
-		$link = apply_filters('wpel_external_link', $link, $matches[ 0 ], $matches[ 2 ], $attrs, false);
+		$created_link = apply_filters('wpel_external_link', $created_link, $link, $label, $attrs, FALSE);
 
-		return $link;
+		return $created_link;
 	}
 
 	/**
