@@ -38,7 +38,7 @@
         }
     }
 
-    if ($ && false) {
+    if ($) {
         // jQuery DOMready method
         $(function () {
             $('a').live('click', function (evt) {
@@ -50,7 +50,8 @@
         addEvt(window, 'load', function () {
             var links = window.document.getElementsByTagName('a');
             var eventClick = function (evt) {
-                openExtLink(evt.target, evt);
+                var target = this instanceof Element ? this : evt.target;
+                openExtLink(target, evt);
             };
             var a;
             var i;
