@@ -2,8 +2,8 @@
 Contributors: freelancephp
 Tags: links, external, icon, target, _blank, _new, _none, rel, nofollow, new window, new tab, javascript, xhtml, seo
 Requires at least: 3.4.0
-Tested up to: 3.8.2
-Stable tag: 1.52
+Tested up to: 3.9.1
+Stable tag: 1.53
 
 Open external links in a new window or tab, adding "nofollow", set link icon, styling, SEO friendly options and more. Easy install and go.
 
@@ -20,6 +20,9 @@ Configure settings for all external links on your site.
 
 = Easy to use =
 After activating the plugin all options are already set to make your external links SEO friendly. Optionally you can also set the target for opening in a new window or tab or styling options, like adding an icon.
+
+= On the fly =
+The plugin will change the output of the (external) links on the fly. So when you deactivate the plugin, all contents will remain the same as it was before installing the plugin.
 
 = Sources =
 * [Documentation](http://wordpress.org/extend/plugins/wp-external-links/other_notes/)
@@ -45,11 +48,11 @@ You could add `rel="external"` to those internal links that should be treated as
 
 = Links to my own domain are treated as external links. Why? =
 
-Links pointing to your WordPress site are internal links. All other links will be treated as external links.
+Links pointing to your WordPress site (`wp_url`) are internal links. All other links will be treated as external links.
 
-= I want links to my own domain not being treated as external links. =
+= All links to my subdomains should be treated internal links. How? =
 
-Add your domain to the option "Ingore links (URL) containing...".
+Add your main domain to the option "Ingore links (URL) containing..." and they will not be treated as external.
 
 [Do you have a question? Please ask me](http://www.freelancephp.net/contact/)
 
@@ -62,14 +65,14 @@ Add your domain to the option "Ingore links (URL) containing...".
 
 After activating the plugin all options are already set to make your external links SEO friendly. Optionally you can also set the target for opening in a new window or tab or styling options, like adding an icon.
 
-= Action hook =
+= Action hook: wpel_ready =
 The plugin also has a hook when ready, f.e. to add extra filters:
 `function extra_filters($filter_callback, $object) {
 	add_filter('some_filter', $filter_callback);
 }
 add_action('wpel_ready', 'extra_filters');`
 
-= Filter hook =
+= Filter hook 1: wpel_external_link =
 The wpel_external_link filter gives you the possibility to manipulate output of the mailto created by the plugin, like:
 `function special_external_link($created_link, $original_link, $label, $attrs, $is_ignored_link) {
 	// skip links that contain the class "not-external"
@@ -79,9 +82,22 @@ The wpel_external_link filter gives you the possibility to manipulate output of 
 
 	return '<b>'. $created_link .'</b>';
 }
+
 add_filter('wpel_external_link', 'special_external_link', 10, 5);`
 
 Now all external links will be processed and wrapped around a `<b>`-tag. And links containing the class "not-external" will not be processed by the plugin at all (and stay the way they are).
+
+
+= Filter hook 2: wpel_internal_link =
+With the internal filter you can manipulate the output of the internal links on your site. F.e.:
+`
+function special_internal_link($link, $label, $attrs) {
+    return '<b>'. $link  .'</b>';
+}
+
+add_filter('wpel_internal_link', 'special_internal_link', 10, 3);`
+
+In this case all internal links will be made bold.
 
 = Credits =
 * [jQuery Tipsy Plugin](http://plugins.jquery.com/project/tipsy) made by [Jason Frame](http://onehackoranother.com/)
@@ -89,6 +105,10 @@ Now all external links will be processed and wrapped around a `<b>`-tag. And lin
 * [Icon](http://findicons.com/icon/164579/link_go?id=427009) made by [FatCow Web Hosting](http://www.fatcow.com/)
 
 == Changelog ==
+
+= 1.53 =
+* Fixed bug also opening ignored URL's on other tab/window when using javascript
+* Changed javascript open method (data-attribute)
 
 = 1.52  =
 * Added filter hook wpel_internal_link

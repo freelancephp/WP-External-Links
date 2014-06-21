@@ -1,5 +1,5 @@
 /* WP External Links Plugin */
-/*global jQuery, window, wpExtLinks*/
+/*global jQuery, window*/
 (function () {
     'use strict';
 
@@ -17,29 +17,22 @@
     }
 
     // open external link
-    function openExtLink(a, opts, e) {
-        var options = opts || wpExtLinks,
-            href = a.href ? a.href.toLowerCase() : '',
-            rel = a.rel ? a.rel.toLowerCase() : '',
-            n;
+    function openExtLink(a, evt) {
+        var target = a.getAttribute('data-wpel-target');
+        var href = a.getAttribute('href');
+        var win;
 
-        if (a.href && (options.excludeClass.length === 0 || a.className.indexOf(options.excludeClass))
-                    && (rel.indexOf('external') > -1
-                            || ((href.indexOf(options.baseUrl) === -1) &&
-                                    (href.substr(0, 7) === 'http://'
-                                        || href.substr(0, 8) === 'https://'
-                                        || href.substr(0, 6) === 'ftp://'
-                                        || href.substr(0, 2) === '//')))) {
+        if (href && target) {
             // open link in a new window
-            n = window.open(a.href, options.target);
-            n.focus();
+            win = window.open(href, target);
+            win.focus();
 
             // prevent default event action
-            if (e) {
-                if (e.preventDefault) {
-                    e.preventDefault();
-                } else {
-                    e.returnValue = false;
+            if (evt) {
+                if (evt.preventDefault) {
+                    evt.preventDefault();
+                } else if (typeof evt.returnValue !== 'undefined') {
+                    evt.returnValue = false;
                 }
             }
         }
@@ -48,19 +41,19 @@
     if ($ && false) {
         // jQuery DOMready method
         $(function () {
-            $('a').live('click', function (e) {
-                openExtLink(this, null, e);
+            $('a').live('click', function (evt) {
+                openExtLink(this, evt);
             });
         });
     } else {
         // use onload when jQuery not available
         addEvt(window, 'load', function () {
-            var links = window.document.getElementsByTagName('a'),
-                eventClick = function (e) {
-                    openExtLink(e.target, null, e);
-                },
-                a,
-                i;
+            var links = window.document.getElementsByTagName('a');
+            var eventClick = function (evt) {
+                openExtLink(evt.target, evt);
+            };
+            var a;
+            var i;
 
             // check each <a> element
             for (i = 0; i < links.length; i += 1) {

@@ -63,6 +63,14 @@ final class WP_External_Links {
 			if ( $this->get_opt( 'use_js' ) )
 				wp_enqueue_script( 'wp-external-links', plugins_url( 'js/wp-external-links.js', WP_EXTERNAL_LINKS_FILE ), array(), WP_EXTERNAL_LINKS_VERSION, (bool) $this->get_opt( 'load_in_footer' ) );
 
+            // set ignored
+            $ignored = $this->get_opt( 'ignore' );
+            $ignored = trim( $ignored );
+            $ignored = explode( "\n", $ignored );
+            $ignored = array_map( 'trim', $ignored );
+            $ignored = array_map( 'strtolower', $ignored );
+            $this->ignored = $ignored;
+
 			// filters
 			if ( $this->get_opt( 'filter_page' ) ) {
 				// filter body
@@ -129,14 +137,6 @@ final class WP_External_Links {
 	 * wp_head callback
 	 */
 	public function call_wp_head() {
-		// set ignored
-		$ignored = $this->get_opt( 'ignore' );
-		$ignored = trim( $ignored );
-		$ignored = explode( "\n", $ignored );
-		$ignored = array_map( 'trim', $ignored );
-		$ignored = array_map( 'strtolower', $ignored );
-		$this->ignored = $ignored;
-
         $icon = $this->get_opt('icon');
 
         if ($icon) {
@@ -148,19 +148,6 @@ final class WP_External_Links {
 </style>
 <?php
         }
-
-		if ( $this->get_opt( 'use_js' ) AND $this->get_opt( 'target' ) != '_none' ):
-			// set exclude class
-			$excludeClass = ( $this->get_opt( 'no_icon_same_window' ) AND $this->get_opt( 'no_icon_class' ) )
-							? $this->get_opt( 'no_icon_class' )
-							: '';
-?>
-<script type="text/javascript">/* <![CDATA[ */
-/* WP External Links Plugin */
-var wpExtLinks = { baseUrl: '<?php echo get_bloginfo( 'wpurl' ) ?>', target: '<?php echo $this->get_opt( 'target' ) ?>', excludeClass: '<?php echo $excludeClass ?>' };
-/* ]]> */</script>
-<?php
-		endif;
 	}
 
 	/**
@@ -352,14 +339,17 @@ var wpExtLinks = { baseUrl: '<?php echo get_bloginfo( 'wpurl' ) ?>', target: '<?
         // checks
         $is_external = $this->is_external( $href, $rel );
         $is_ignored = $this->is_ignored( $href );
+        $has_rel_external =  (strpos( $rel, 'external' ) !== FALSE);
 
 		// is an internal link?
         // rel=external will be threaded as external link
-		if ( ! $is_external && strpos( $rel, 'external' ) === FALSE) {
+		if ( ! $is_external && ! $has_rel_external) {
     		return apply_filters('wpel_internal_link', $created_link, $label, $attrs);
         }
 
-        if ( $is_ignored ) {
+        // is an ignored link?
+        // rel=external will be threaded as external link
+        if ( $is_ignored && ! $has_rel_external ) {
     		return apply_filters('wpel_external_link', $created_link, $link, $label, $attrs, TRUE);
         }
 
@@ -390,16 +380,25 @@ var wpExtLinks = { baseUrl: '<?php echo get_bloginfo( 'wpurl' ) ?>', target: '<?
 			$this->add_attr_value( $attrs, 'class', $icon_class );
 		}
 
-		// set target
-		if ( ! $this->get_opt( 'use_js' ) AND ( ! $this->get_opt( 'no_icon_same_window' )
-					OR ! $this->get_opt( 'no_icon_class' )
-					OR strpos( $attrs[ 'class' ], $this->get_opt( 'no_icon_class' ) ) === FALSE ) ) {
-			if ( $this->get_opt( 'target' ) == '_none' ) {
-				unset( $attrs[ 'target' ] );
-			} else {
-				$attrs[ 'target' ] =  $this->get_opt( 'target' );
-			}
-		}
+        // set target
+        $no_icon_class = $this->get_opt( 'no_icon_class' );
+        $target = $this->get_opt( 'target' );
+
+        // remove target
+        unset($attrs[ 'target' ]);
+
+        if ($this->get_opt( 'no_icon_same_window' )
+					AND $no_icon_class AND strpos( $attrs[ 'class' ], $no_icon_class ) !== FALSE) {
+            // open in same window
+        } elseif ($target && $target !== '_none') {
+            if ($this->get_opt( 'use_js' )) {
+                // add data-attr for javascript
+                $attrs['data-wpel-target'] = $target;
+            } else {
+                // set target value
+                $attrs[ 'target' ] =  $this->get_opt( 'target' );
+            }
+        }
 
 		// create element code
 		$created_link = '<a';
