@@ -1,6 +1,6 @@
-/* WP External Links Plugin */
+/* WP External Links */
 /*global jQuery, window*/
-(function () {
+(function (undefined) {
     'use strict';
 
     var $ = jQuery === undefined ? null : jQuery;
@@ -29,9 +29,9 @@
 
             // prevent default event action
             if (evt) {
-                if (evt.preventDefault) {
+                if (evt.preventDefault !== undefined) {
                     evt.preventDefault();
-                } else if (typeof evt.returnValue !== 'undefined') {
+                } else if (evt.returnValue !== undefined) {
                     evt.returnValue = false;
                 }
             }
