@@ -41,7 +41,7 @@
     if ($) {
         // jQuery DOMready method
         $(function () {
-            $('a').live('click', function (evt) {
+            $('body').on('click', 'a', function (evt) {
                 openExtLink(this, evt);
             });
         });
