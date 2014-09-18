@@ -2,8 +2,8 @@
 Contributors: freelancephp
 Tags: links, external, icon, target, _blank, _new, _none, rel, nofollow, new window, new tab, javascript, xhtml, seo
 Requires at least: 3.4.0
-Tested up to: 3.9.1
-Stable tag: 1.54
+Tested up to: 4.0.0
+Stable tag: 1.55
 
 Open external links in a new window or tab, adding "nofollow", set link icon, styling, SEO friendly options and more. Easy install and go.
 
@@ -105,6 +105,11 @@ In this case all internal links will be made bold.
 * [Icon](http://findicons.com/icon/164579/link_go?id=427009) made by [FatCow Web Hosting](http://www.fatcow.com/)
 
 == Changelog ==
+
+= 1.55 =
+* Fixed bug JS error: Uncaught TypeError: undefined is not a function
+* Fixed bug PHP error for links without href attribute ("undefined index href")
+* Replaced deprecated jQuery .live() to .on()  (contribution by Alonbilu)
 
 = 1.54 =
 * Fixed bug opening links containing html tags (like <b>)
