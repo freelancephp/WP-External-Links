@@ -332,9 +332,13 @@ final class WP_External_Links {
 		$rel = ( isset( $attrs[ 'rel' ] ) ) ? strtolower( $attrs[ 'rel' ] ) : '';
 
 		// href preperation
-		$href = $attrs[ 'href' ];
-		$href = strtolower( $href );
-		$href = trim( $href );
+        if (isset( $attrs[ 'href' ])) {
+            $href = $attrs[ 'href' ];
+            $href = strtolower( $href );
+            $href = trim( $href );
+        } else {
+            $href = '';
+        }
 
         // checks
         $is_external = $this->is_external( $href, $rel );
@@ -396,7 +400,7 @@ final class WP_External_Links {
                 $attrs['data-wpel-target'] = $target;
             } else {
                 // set target value
-                $attrs[ 'target' ] =  $this->get_opt( 'target' );
+                $attrs[ 'target' ] =  $target;
             }
         }
 
