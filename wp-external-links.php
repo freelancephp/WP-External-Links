@@ -31,6 +31,11 @@ if (isset($wp_version)
 	// create instance
 	$WP_External_Links = new WP_External_Links();
 
+    // init test
+    if (class_exists('Test_WP_External_Links')) {
+        $Test_WP_External_Links = new Test_WP_External_Links;
+    }
+
 } else {
 
 	// set error message
