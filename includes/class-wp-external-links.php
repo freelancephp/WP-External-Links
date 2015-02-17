@@ -361,9 +361,20 @@ final class WP_External_Links {
 		if ( $this->get_opt( 'external' ) )
 			$this->add_attr_value( $attrs, 'rel', 'external' );
 
-		// set rel="nofollow" when doesn't have "follow" (or already "nofollow")
-		if ( $this->get_opt( 'nofollow' ) AND strpos( $rel, 'follow' ) === FALSE )
-			$this->add_attr_value( $attrs, 'rel', 'nofollow' );
+		// set rel="nofollow" 
+		if ( $this->get_opt( 'nofollow' ) ) {
+            $has_follow = (strpos( $rel, 'follow' ) !== FALSE);
+
+            // when doesn't have "follow" (or already "nofollow")
+            if (! $has_follow || $this->get_opt( 'overwrite_follow' )) {
+                if ($has_follow) {
+                    // remove "follow"
+                    //$attrs[ 'rel' ] = ;
+                }
+
+    			$this->add_attr_value( $attrs, 'rel', 'nofollow' );
+            }
+        }
 
 		// set title
 		$title_format = $this->get_opt( 'title' );
