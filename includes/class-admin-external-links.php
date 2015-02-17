@@ -26,6 +26,7 @@ final class Admin_External_Links {
 		'seo' => array(
 			'external' => 1,
 			'nofollow' => 1,
+			'overwrite_follow' => 0,
 			'title' => '%title%',
 			'use_js' => 1,
 			'load_in_footer' => 1,
@@ -174,7 +175,7 @@ style;
 							->add_meta_box( $this->__( 'Other Plugins' ), array( $this, 'call_box_other_plugins' ), 2 );
 
 		// scripts
-		wp_enqueue_script( 'admin-wp-external-links', plugins_url( '/js/admin-wp-external-links.js', WP_EXTERNAL_LINKS_FILE ), array( 'jquery', 'postbox' ), WP_EXTERNAL_LINKS_VERSION );
+		wp_enqueue_script( 'admin-wp-external-links', plugins_url( '/js/admin-wp-external-links.js', WP_EXTERNAL_LINKS_FILE ), array( 'jquery', 'postbox' ), WP_EXTERNAL_LINKS_VERSION, true );
 	}
 
 	/**
@@ -241,11 +242,11 @@ style;
 				<td>
 					<label><?php echo $this->form->checkbox( 'filter_page', 1 ); ?>
 					<span><?php $this->_e( 'All contents' ) ?></span> <span class="description"><?php $this->_e('(the whole <code>&lt;body&gt;</code>)') ?></span></label>
-					<br/>&nbsp;&nbsp;<label><?php echo $this->form->checkbox( 'filter_posts', 1 ); ?>
+					<br/>&nbsp;&nbsp;&nbsp;<label><?php echo $this->form->checkbox( 'filter_posts', 1 ); ?>
 							<span><?php $this->_e( 'Post contents' ) ?></span></label>
-					<br/>&nbsp;&nbsp;<label><?php echo $this->form->checkbox( 'filter_comments', 1 ); ?>
+					<br/>&nbsp;&nbsp;&nbsp;<label><?php echo $this->form->checkbox( 'filter_comments', 1 ); ?>
 							<span><?php $this->_e( 'Comments' ) ?></span></label>
-					<br/>&nbsp;&nbsp;<label><?php echo $this->form->checkbox( 'filter_widgets', 1 ); ?>
+					<br/>&nbsp;&nbsp;&nbsp;<label><?php echo $this->form->checkbox( 'filter_widgets', 1 ); ?>
 							<span><?php
 								if ( self::check_widget_content_filter() ):
 									$this->_e( 'All widgets' );
@@ -284,9 +285,13 @@ style;
 				<th style="width:250px;"><?php $this->_e( 'Add to <code>rel</code>-attribute' ) ?>
 						<?php echo $this->tooltip_help( 'Set values for the "rel"-atribute of external links.' ) ?></th>
 				<td><label><?php echo $this->form->checkbox( 'nofollow', 1 ); ?>
-						<span><?php $this->_e( 'Add <code>"nofollow"</code>' ) ?></span></label>
+						<span><?php $this->_e( 'Add <code>"nofollow"</code> to external links' ) ?></span></label>
 						<?php echo $this->tooltip_help( 'Add "nofollow" to the "rel"-attribute of external links (unless link already has "follow").' ) ?>
-					<br/>
+					<br/>&nbsp;&nbsp;&nbsp;<label><?php echo $this->form->checkbox( 'overwrite_follow', 1 ); ?>
+						<span><?php $this->_e( 'Also apply to external links containing <code>"follow"</code>' ) ?></span></label>
+						<?php echo $this->tooltip_help( 'Also change external links with "follow" to "nofollow".' ) ?>
+
+                    <br/><br/>
 					<label><?php echo $this->form->checkbox( 'external', 1 ); ?>
 						<span><?php $this->_e( 'Add <code>"external"</code>' ) ?></span></label>
 						<?php echo $this->tooltip_help( 'Add "external" to the "rel"-attribute of external links.' ) ?>
@@ -306,7 +311,7 @@ style;
 					<label><?php echo $this->form->checkbox( 'use_js', 1, array( 'class' => 'field_use_js' ) ); ?>
 					<span><?php $this->_e( 'Use JavaScript for opening links' ) ?></span> <span class="description"><?php $this->_e( '(valid xhtml strict)' ) ?></span>
                     <br/>
-					&nbsp;&nbsp;<label><?php echo $this->form->checkbox( 'load_in_footer', 1, array( 'class' => 'load_in_footer' ) ); ?>
+					&nbsp;&nbsp;&nbsp;<label><?php echo $this->form->checkbox( 'load_in_footer', 1, array( 'class' => 'load_in_footer' ) ); ?>
 					<span><?php $this->_e( 'Load JS file in footer' ) ?></span>
 				</td>
 			</tr>
