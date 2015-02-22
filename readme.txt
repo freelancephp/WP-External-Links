@@ -2,8 +2,8 @@
 Contributors: freelancephp
 Tags: links, external, icon, target, _blank, _new, _none, rel, nofollow, new window, new tab, javascript, xhtml, seo
 Requires at least: 3.4.0
-Tested up to: 4.1.0
-Stable tag: 1.56
+Tested up to: 4.1.1
+Stable tag: 1.60
 
 Open external links in a new window or tab, adding "nofollow", set link icon, styling, SEO friendly options and more. Easy install and go.
 
@@ -42,17 +42,98 @@ The plugin will change the output of the (external) links on the fly. So when yo
 
 == Frequently Asked Questions ==
 
-= I want internal links to be treated as external links. How? =
+= How to treat internal links as external links? =
 
 You could add `rel="external"` to those internal links that should be treated as external. The plugin settings will also be applied to those links.
 
-= Links to my own domain are treated as external links. Why? =
+= Why are links to my own domain treated as external links? =
 
-Links pointing to your WordPress site (`wp_url`) are internal links. All other links will be treated as external links.
+Only links pointing to your WordPress site (`wp_url`) are internal links. All other links will be treated as external links.
 
-= All links to my subdomains should be treated internal links. How? =
+= How to treat links to subdomains as internal links? =
 
 Add your main domain to the option "Ingore links (URL) containing..." and they will not be treated as external.
+
+= How to create a redirect for external links? =
+
+By using the `wpel_external_link` filter. Add this code to functions.php of your theme:
+
+`function redirect_external_link($created_link, $original_link, $label, $attrs = array()) {
+    $href = $attrs['href'];
+
+    // create redirect url
+    $href_new = get_bloginfo('wpurl') . '/redirect.php?url=' . urlencode($attrs['href']);
+
+    return str_replace($href, $href_new, $created_link);
+}
+
+add_filter('wpel_external_link', 'redirect_external_link', 10, 4);`
+
+= Set a font icon for external links, like [Font Awesome Icons](http://fortawesome.github.io/Font-Awesome/)? =
+
+Use the `wpel_external_link` filter and add this code to functions.php of your theme:
+
+`function set_font_icon_on_external_link($created_link, $original_link, $label, $attrs = array()) {
+    $label_with_font = $label . ' <i class="fa fa-external-link"></i>';
+    return str_replace($label, $label_with_font, $created_link);
+}
+
+add_filter('wpel_external_link', 'set_font_icon_on_external_link', 10, 4);`
+
+The CSS of Font Awesome Icons alse needs to be loaded. To do so also add this code:
+
+`function add_font_awesome_style() {
+    wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css');
+}
+
+add_action('wp_enqueue_scripts', 'add_font_awesome_style');`
+
+= How to open external links in popup browser window with a certain size? =
+
+By adding this JavaScript code to your site:
+
+`jQuery(function ($) {
+
+    $('a[rel*="external"]').click(function (e) {
+        // open link in popup window
+        window.open($(this).attr('href'), '_blank', 'width=800, height=600');
+
+        // stop default and other behaviour
+        e.preventDefault();
+        e.stopImmediatePropagation();
+    });
+
+});`
+
+See more information on the [window.open() method](http://www.w3schools.com/jsref/met_win_open.asp).
+
+= How to add an confirm (or alert) when opening external links? =
+
+Add this JavaScript code to your site:
+
+`jQuery(function ($) {
+
+    $('a[rel*="external"]').click(function (e) {
+        if (!confirm('Are you sure you want to open this link?')) {
+            // cancelled
+            e.preventDefault();
+            e.stopImmediatePropagation();
+        }
+    });
+
+});`
+
+= How to make all internal links "follow"? =
+
+By using the `wp_internal_link` filter. Add this code to functions.php of your theme:
+
+`function set_follow_to_internal_link($link, $label, $attrs) {
+    return str_replace('nofollow', 'follow', $link);
+}
+
+add_filter('wpel_internal_link', 'set_follow_to_internal_link', 10, 3);
+`
+
 
 [Do you have a question? Please ask me](http://www.freelancephp.net/contact/)
 
@@ -70,10 +151,11 @@ The plugin also has a hook when ready, f.e. to add extra filters:
 `function extra_filters($filter_callback, $object) {
 	add_filter('some_filter', $filter_callback);
 }
+
 add_action('wpel_ready', 'extra_filters');`
 
 = Filter hook 1: wpel_external_link =
-The wpel_external_link filter gives you the possibility to manipulate output of the mailto created by the plugin, like:
+The wpel_external_link filter gives you the possibility to manipulate output of all external links, like:
 `function special_external_link($created_link, $original_link, $label, $attrs, $is_ignored_link) {
 	// skip links that contain the class "not-external"
 	if (isset($attrs['class']) && strpos($attrs['class'], 'not-external') !== false) {
@@ -87,9 +169,10 @@ add_filter('wpel_external_link', 'special_external_link', 10, 5);`
 
 Now all external links will be processed and wrapped around a `<b>`-tag. And links containing the class "not-external" will not be processed by the plugin at all (and stay the way they are).
 
+See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more possibilities of using this filter.
 
 = Filter hook 2: wpel_internal_link =
-With the internal filter you can manipulate the output of the internal links on your site. F.e.:
+With the internal filter you can manipulate the output of all internal links on your site. F.e.:
 `
 function special_internal_link($link, $label, $attrs) {
     return '<b>'. $link  .'</b>';
@@ -99,12 +182,19 @@ add_filter('wpel_internal_link', 'special_internal_link', 10, 3);`
 
 In this case all internal links will be made bold.
 
+See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more possibilities of using this filter.
+
+
 = Credits =
 * [jQuery Tipsy Plugin](http://plugins.jquery.com/project/tipsy) made by [Jason Frame](http://onehackoranother.com/)
 * [phpQuery](http://code.google.com/p/phpquery/) made by [Tobiasz Cudnik](http://tobiasz123.wordpress.com)
 * [Icon](http://findicons.com/icon/164579/link_go?id=427009) made by [FatCow Web Hosting](http://www.fatcow.com/)
 
 == Changelog ==
+
+= 1.60 =
+* Added option to replace "follow" values of external links with "nofollow"
+* Updated FAQ with custom solutions
 
 = 1.56 =
 * Fixed bug jQuery as dependency for js scripts
