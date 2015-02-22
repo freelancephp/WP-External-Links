@@ -174,7 +174,7 @@ style;
 							//->add_meta_box( $this->__( 'About this Plugin' ), array( $this, 'call_box_about' ), 2 )
 							->add_meta_box( $this->__( 'Other Plugins' ), array( $this, 'call_box_other_plugins' ), 2 );
 
-		// scripts
+        // scripts
 		wp_enqueue_script( 'admin-wp-external-links', plugins_url( '/js/admin-wp-external-links.js', WP_EXTERNAL_LINKS_FILE ), array( 'jquery', 'postbox' ), WP_EXTERNAL_LINKS_VERSION, true );
 	}
 

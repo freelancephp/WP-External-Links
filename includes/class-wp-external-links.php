@@ -185,10 +185,9 @@ final class WP_External_Links {
 	/**
 	 * Check if link is external
 	 * @param string $href
-	 * @param string $rel
 	 * @return boolean
 	 */
-	private function is_external( $href, $rel ) {
+	private function is_external( $href ) {
 		return ( isset( $href ) AND ( ( strpos( $href, strtolower( get_bloginfo( 'wpurl' ) ) ) === FALSE )
                                             AND ( substr( $href, 0, 7 ) == 'http://'
                                                     OR substr( $href, 0, 8 ) == 'https://'
@@ -341,7 +340,7 @@ final class WP_External_Links {
         }
 
         // checks
-        $is_external = $this->is_external( $href, $rel );
+        $is_external = $this->is_external( $href );
         $is_ignored = $this->is_ignored( $href );
         $has_rel_external =  (strpos( $rel, 'external' ) !== FALSE);
 
