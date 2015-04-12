@@ -595,7 +595,7 @@ final class WP_External_Links {
 		if ( empty( $old_value ) )
 			$old_value = '';
 
-		$split = split( ' ', strtolower( $old_value ) );
+		$split = preg_split( ' ', strtolower( $old_value ) );
 
 		if ( in_array( $value, $split ) ) {
 			$value = $old_value;
