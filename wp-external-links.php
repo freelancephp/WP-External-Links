@@ -4,14 +4,14 @@ Plugin Name: WP External Links
 Plugin URI: http://www.freelancephp.net/wp-external-links-plugin
 Description: Open external links in a new window/tab, add "external" / "nofollow" to rel-attribute, set icon, XHTML strict, SEO friendly...
 Author: Victor Villaverde Laan
-Version: 1.60
+Version: 1.61
 Author URI: http://www.freelancephp.net
 License: Dual licensed under the MIT and GPL licenses
 */
 
 // constants
 if (!defined('WP_EXTERNAL_LINKS_FILE')) { define('WP_EXTERNAL_LINKS_FILE', __FILE__); }
-if (!defined('WP_EXTERNAL_LINKS_VERSION')) { define('WP_EXTERNAL_LINKS_VERSION', '1.60'); }
+if (!defined('WP_EXTERNAL_LINKS_VERSION')) { define('WP_EXTERNAL_LINKS_VERSION', '1.61'); }
 if (!defined('WP_EXTERNAL_LINKS_KEY')) { define('WP_EXTERNAL_LINKS_KEY', 'wp_external_links'); }
 if (!defined('WP_EXTERNAL_LINKS_DOMAIN')) { define('WP_EXTERNAL_LINKS_DOMAIN', 'wp-external-links'); }
 if (!defined('WP_EXTERNAL_LINKS_OPTIONS_NAME')) { define('WP_EXTERNAL_LINKS_OPTIONS_NAME', 'WP_External_Links_options'); }
@@ -23,7 +23,7 @@ if (!isset($wp_version)) {
 }
 
 // check plugin compatibility
-if (version_compare($wp_version, '3.4', '>=') && version_compare(phpversion(), '5.2.4', '>=')) {
+if (version_compare($wp_version, '3.6', '>=') && version_compare(phpversion(), '5.2.4', '>=')) {
 
 	// include classes
 	require_once('includes/wp-plugin-dev-classes/class-wp-meta-box-page.php');
