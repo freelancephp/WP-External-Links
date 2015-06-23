@@ -29,9 +29,23 @@ final class WP_External_Links {
 		// set admin object
 		$this->admin = new Admin_External_Links();
 
-		// add actions
+        // add actions
 		add_action( 'wp', array( $this, 'call_wp' ) );
 	}
+
+    /**
+     * Get domain name
+     * @return string
+     */
+    private function get_domain() {
+        if ( empty($this->_domain_name) ) {
+            $url = get_bloginfo('wpurl');
+            preg_match("/[a-z0-9\-]{1,63}\.[a-z\.]{2,6}$/", parse_url($url, PHP_URL_HOST), $domain_tld);
+            $this->_domain_name = count($domain_tld) > 0 ? $domain_tld[0] : $_SERVER['SERVER_NAME'];
+        }
+
+        return $this->_domain_name;
+    }
 
 	/**
 	 * Quick helper method for getting saved option values
@@ -188,11 +202,24 @@ final class WP_External_Links {
 	 * @return boolean
 	 */
 	private function is_external( $href ) {
-		return ( isset( $href ) AND ( ( strpos( $href, strtolower( get_bloginfo( 'wpurl' ) ) ) === FALSE )
-                                            AND ( substr( $href, 0, 7 ) == 'http://'
-                                                    OR substr( $href, 0, 8 ) == 'https://'
-                                                    OR substr( $href, 0, 6 ) == 'ftp://'
-                                                    OR substr( $href, 0, 2 ) == '//' ) ) );
+        $wpurl = strtolower( get_bloginfo( 'wpurl' ) );
+
+        // relative url's are internal
+        // so just check absolute url's starting with these protocols
+        if ( substr( $href, 0, 7 ) !== 'http://'
+                && substr( $href, 0, 8 ) !== 'https://'
+                && substr( $href, 0, 6 ) !== 'ftp://'
+                && substr( $href, 0, 2 ) !== '//' ) {
+            return false;
+        }
+
+        if ( $this->get_opt( 'ignore_subdomains' ) ) {
+            $is_external = ( strpos( $href, $this->get_domain() ) === FALSE );
+        } else {
+            $is_external = ( strpos( $href, $wpurl ) === FALSE );
+        }
+
+        return $is_external;
 	}
 
     /**

@@ -22,6 +22,7 @@ final class Admin_External_Links {
 			'filter_comments' => 1,
 			'filter_widgets' => 1,
 			'ignore' => '//twitter.com/share',
+			'ignore_subdomains' => 0,
 		),
 		'seo' => array(
 			'external' => 1,
@@ -263,6 +264,14 @@ style;
 					<?php echo $this->tooltip_help( 'This plugin will completely ignore links that contain one of the given texts in the URL. Use enter to seperate each text. This check is not case sensitive.' ) ?></th>
 				<td><label><?php echo $this->form->textarea( 'ignore' ); ?>
 						<span class="description"><?php _e( 'Be as specific as you want, f.e.: <code>twitter.com</code> or <code>https://twitter.com</code>. Seperate each by an enter.' ) ?></span></label>
+				</td>
+			</tr>
+			<tr>
+				<th style="width:250px;"><?php $this->_e( 'Ignore subdomains' ) ?>
+						<?php echo $this->tooltip_help( 'Ignore links to all subdomains. These links will be threaded as internal links.' ) ?></th>
+				<td>
+					<label><?php echo $this->form->checkbox( 'ignore_subdomains', 1 ); ?>
+					<span><?php $this->_e( 'Ignore links to all subdomains' ) ?></span> <span class="description"><?php $this->_e('Links to subdomains will be threaded as internal links.') ?></span></label>
 				</td>
 			</tr>
 			</table>
