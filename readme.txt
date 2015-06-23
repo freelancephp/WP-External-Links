@@ -2,8 +2,8 @@
 Contributors: freelancephp
 Tags: links, external, icon, target, _blank, _new, _none, rel, nofollow, new window, new tab, javascript, xhtml, seo
 Requires at least: 3.6.0
-Tested up to: 4.1.1
-Stable tag: 1.62
+Tested up to: 4.2.2
+Stable tag: 1.70
 
 Open external links in a new window or tab, adding "nofollow", set link icon, styling, SEO friendly options and more. Easy install and go.
 
@@ -17,6 +17,7 @@ Configure settings for all external links on your site.
 * Choose from 20 icons
 * Set other link options (like classes, title etc)
 * Make it SEO friendly
+* Compatible with WPMU (Multisite)
 
 = Easy to use =
 After activating the plugin all options are already set to make your external links SEO friendly. Optionally you can also set the target for opening in a new window or tab or styling options, like adding an icon.
@@ -191,6 +192,9 @@ See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more possibi
 * [Icon](http://findicons.com/icon/164579/link_go?id=427009) made by [FatCow Web Hosting](http://www.fatcow.com/)
 
 == Changelog ==
+
+= 1.70 =
+* Added option to ignore all subdomains
 
 = 1.62 =
 * Fixed php error when using phpQuery option
