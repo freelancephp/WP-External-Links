@@ -175,7 +175,7 @@ final class WP_External_Links {
 			$content = preg_replace_callback( '/<script([^>]*)>(.*?)<\/script[^>]*>/is', array( $this, 'call_fix_js' ), $content );
 		}
 
-		if ( $this->get_opt( 'filter_page' ) && $this->get_opt( 'filter_excl_sel' ) ) {
+		if ( $this->get_opt( 'filter_page' ) && $this->get_opt( 'ignore_selectors' ) ) {
             $content = $this->set_ignored_by_selectors( $content );
         }
 
@@ -248,11 +248,11 @@ final class WP_External_Links {
             //phpQuery::$debug = true;
             $doc = phpQuery::newDocument( $content );
 
-            $excl_sel = $this->get_opt( 'filter_excl_sel' );
+            $ignore_selectors = $this->get_opt( 'ignore_selectors' );
 
             // set ignored by selectors
-            if ( ! empty( $excl_sel ) ) {
-                $excludes = $doc->find( $excl_sel );
+            if ( ! empty( $ignore_selectors ) ) {
+                $excludes = $doc->find( $ignore_selectors );
 
                 // links containing selector
                 $excludes->filter( 'a' )->attr( 'data-wpel-ignored', 'true' );
@@ -262,7 +262,7 @@ final class WP_External_Links {
             }
 
             $doc = (string) $doc;
-        } catch (Exception $ex) {
+        } catch (Exception $e) {
             $doc = '';
         }
 
