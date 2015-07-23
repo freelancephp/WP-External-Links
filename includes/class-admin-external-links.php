@@ -529,7 +529,7 @@ style;
         // changed options in v1.80
     	$extra = get_option( 'wp_external_links-extra' );
         
-        if (!isset($extra['phpquery']) && !$extra['phpquery']) {
+        if (isset($extra['phpquery']) && $extra['phpquery']) {
         	$main = get_option('wp_external_links-main');
             $main['ignore_selectors'] = $extra['filter_excl_sel'];
             
