@@ -535,42 +535,6 @@ style;
 		update_option( 'wp_external_links-meta', $meta );
         $this->save_options['meta'] = $meta;
 
-		// check for upgrading saved options to v1.00
-		$old_options = get_option( 'WP_External_Links_options' );
-
-		if ( ! empty( $old_options ) ) {
-			$new_options = $this->save_options;
-
-			$new_options[ 'main' ][ 'target' ] = $old_options[ 'target' ];
-			$new_options[ 'main' ][ 'filter_page' ] = $old_options[ 'filter_whole_page' ];
-			$new_options[ 'main' ][ 'filter_posts' ] = $old_options[ 'filter_posts' ];
-			$new_options[ 'main' ][ 'filter_comments' ] = $old_options[ 'filter_comments' ];
-			$new_options[ 'main' ][ 'filter_widgets' ] = $old_options[ 'filter_widgets' ];
-			$new_options[ 'seo' ][ 'external' ] = $old_options[ 'external' ];
-			$new_options[ 'seo' ][ 'nofollow' ] = $old_options[ 'nofollow' ];
-			$new_options[ 'seo' ][ 'use_js' ] = $old_options[ 'use_js' ];
-			$new_options[ 'style' ][ 'class_name' ] = $old_options[ 'class_name' ];
-			$new_options[ 'style' ][ 'icon' ] = $old_options[ 'icon' ];
-			$new_options[ 'style' ][ 'no_icon_class' ] = $old_options[ 'no_icon_class' ];
-			$new_options[ 'style' ][ 'no_icon_same_window' ] = $old_options[ 'no_icon_same_window' ];
-
-			// save new format option values
-			update_option( 'wp_external_links-main', $new_options[ 'main' ] );
-			update_option( 'wp_external_links-seo', $new_options[ 'seo' ] );
-			update_option( 'wp_external_links-style', $new_options[ 'style' ] );
-
-			// delete old format option values
-			delete_option( 'WP_External_Links_options' );
-		}
-
-		// upgrade to v1.20
-//		$upgrade_main = get_option( 'wp_external_links-main' );
-//
-//		if ( ! isset( $upgrade_main[ 'ignore' ] ) ) {
-//			$upgrade_main[ 'ignore' ] = $this->save_options[ 'main' ][ 'ignore' ];
-//			update_option( 'wp_external_links-main', $upgrade_main );
-//		}
-
 		// upgrade to v1.30
 		if ( WP_EXTERNAL_LINKS_VERSION == '1.30' ) {
 			$new_options = $this->save_options;
