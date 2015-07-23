@@ -193,6 +193,9 @@ See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more possibi
 
 == Changelog ==
 
+= =
+* Added filter hook wpel_external_link_attrs to change attributes before creating the link
+
 = 1.70 =
 * Added option to ignore all subdomains
 

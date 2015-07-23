@@ -436,6 +436,9 @@ final class WP_External_Links {
             }
         }
 
+        // filter hook for changing attributes
+		$attrs = apply_filters('wpel_external_link_attrs', $attrs, $original_attrs, $label);
+
 		// create element code
 		$created_link = '<a';
 
