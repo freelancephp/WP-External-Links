@@ -503,24 +503,34 @@ final class WP_External_Links {
             require_once( 'phpQuery.php' );
         }
 
-		// set document
-		//phpQuery::$debug = true;
-		$doc = phpQuery::newDocument( $content );
+        try {
+            // set document
+            //phpQuery::$debug = true;
+            $doc = phpQuery::newDocument( $content );
 
-		$excl_sel = $this->get_opt( 'filter_excl_sel' );
+            $excl_sel = $this->get_opt( 'filter_excl_sel' );
 
-		// set excludes
-		if ( ! empty( $excl_sel ) ) {
-			$excludes = $doc->find( $excl_sel );
+            // set excludes
+            if ( ! empty( $excl_sel ) ) {
+                $excludes = $doc->find( $excl_sel );
 
-            // links containing selector
-			$excludes->filter( 'a' )->attr( 'data-wpel-ignored', 'true' );
+                // links containing selector
+                $excludes->filter( 'a' )->attr( 'data-wpel-ignored', 'true' );
 
-            // links as descendant of element containing selector
-			$excludes->find( 'a' )->attr( 'data-wpel-ignored', 'true' );
-		}
+                // links as descendant of element containing selector
+                $excludes->find( 'a' )->attr( 'data-wpel-ignored', 'true' );
+            }
 
-		return (string) $doc;
+            $doc = (string) $doc;
+        } catch (Exception $ex) {
+            $doc = '';
+        }
+
+        if (empty($doc)) {
+            return $content;
+        }
+
+		return $doc;
 	}
 
 } // End WP_External_Links Class
