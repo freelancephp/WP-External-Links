@@ -343,7 +343,6 @@ final class WP_External_Links {
 	public function call_parse_link( $matches ) {
         $link = $matches[ 0 ];
         $label = $matches[ 2 ];
-        $created_link = $link;
 
         // parse attributes
 		$original_attrs = $matches[ 1 ];
@@ -362,20 +361,22 @@ final class WP_External_Links {
             $href = '';
         }
 
-        // checks
-        $is_external = $this->is_external( $href );
-        $is_ignored = $this->is_ignored_by_url( $href );
-        $has_rel_external =  (strpos( $rel, 'external' ) !== FALSE);
-
 		// is an internal link?
         // rel=external will be threaded as external link
+        $is_external = $this->is_external( $href );
+        $has_rel_external =  (strpos( $rel, 'external' ) !== FALSE);
+
 		if ( ! $is_external && ! $has_rel_external) {
     		return apply_filters('wpel_internal_link', $link, $label, $attrs);
         }
 
         // is an ignored link?
+        $is_ignored = $this->is_ignored_by_url( $href ) || isset($attrs['data-wpel-ignored']);
+
         if ( $is_ignored ) {
-    		return apply_filters('wpel_ignored_external_links', $link, $label, $attrs);
+			$this->add_attr_value( $attrs, 'data-wpel-ignored', 'true' );
+            $created_link = $this->create_link($attrs, $label);
+    		return apply_filters('wpel_ignored_external_links', $created_link, $label, $attrs);
         }
 
 		// set rel="external" (when not already set)
@@ -440,6 +441,15 @@ final class WP_External_Links {
 		$attrs = apply_filters('wpel_external_link_attrs', $attrs, $original_attrs, $label);
 
 		// create element code
+        $created_link = $this->create_link($attrs, $label);
+
+		// filter
+		$created_link = apply_filters('wpel_external_link', $created_link, $link, $label, $attrs, FALSE /* only used for backwards compatibility */);
+
+		return $created_link;
+	}
+
+    private function create_link($attrs, $label) {
 		$created_link = '<a';
 
 		foreach ( $attrs AS $key => $value ) {
@@ -447,12 +457,8 @@ final class WP_External_Links {
         }
 
 		$created_link .= '>'. $label .'</a>';
-
-		// filter
-		$created_link = apply_filters('wpel_external_link', $created_link, $link, $label, $attrs, FALSE /* only used for backwards compatibility */);
-
-		return $created_link;
-	}
+        return $created_link;
+    }
 
 	/**
 	 * Add value to attribute
