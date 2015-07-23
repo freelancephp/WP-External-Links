@@ -409,15 +409,7 @@ style;
 						<?php echo $this->tooltip_help( 'By replacing </a> with <\/a> in JavaScript code these tags will not be processed by the plugin.' ) ?>
 				</td>
 			</tr>
-			<tr>
-				<th style="width:250px;"><?php $this->_e( 'Use phpQuery library' ) ?>
-						<?php echo $this->tooltip_help( 'Using phpQuery library for manipulating links. This option is experimental.' ) ?></th>
-				<td><label><?php echo $this->form->checkbox( 'phpquery', 1 ); ?>
-						<span><?php $this->_e( 'Use phpQuery for parsing document.' ) ?></span>
-						<span class="description">(Test it first!)</span></label>
-				</td>
-			</tr>
-			<tr class="filter_excl_sel" <?php echo ( $this->form->value( 'phpquery' ) ) ? '' : 'style="display:none;"'; ?>>
+			<tr class="filter_excl_sel">
 				<th><?php $this->_e( 'Do NOT apply settings on...' ) ?>
 					<?php echo $this->tooltip_help( 'The external links of these selection will be excluded for the settings of this plugin. Define the selection by using CSS selectors.' ) ?></th>
 				<td><label><?php echo $this->form->textarea( 'filter_excl_sel' ); ?>
@@ -529,7 +521,7 @@ style;
 		$meta = get_option( 'wp_external_links-meta' );
 		if ( $meta[ 'version' ] == WP_EXTERNAL_LINKS_VERSION )
 			return;
-
+        
 		// set new version
 		$meta[ 'version' ] = WP_EXTERNAL_LINKS_VERSION;
 		update_option( 'wp_external_links-meta', $meta );

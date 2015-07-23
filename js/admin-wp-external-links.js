@@ -150,17 +150,6 @@ jQuery(function ($) {
         })
         .change();
 
-    // option filter_excl_sel
-    $('input#phpquery')
-        .change(function () {
-            if ($(this).attr('checked')) {
-                $('.filter_excl_sel').fadeIn();
-            } else {
-                $('.filter_excl_sel').fadeOut();
-            }
-        })
-        .change();
-
     // refresh page when updated menu position
     $('#menu_position').parents('form.ajax-form').on('ajax_saved_options', function () {
         var s = $(this).val() || '';
