@@ -417,7 +417,7 @@ final class WP_External_Links {
         if ( $is_ignored ) {
 			self::add_attr_value( $attrs, 'data-wpel-ignored', 'true' );
             $created_link = self::create_link($label, $attrs);
-    		return apply_filters('wpel_ignored_external_links', $created_link, $label, $attrs);
+    		return apply_filters('wpel_ignored_external_link', $created_link, $label, $attrs);
         }
 
 		// set rel="external" (when not already set)

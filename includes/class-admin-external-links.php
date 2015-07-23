@@ -273,6 +273,11 @@ style;
 						<span class="description"><?php _e( 'Seperate each by an enter. No wildcards nescessary, f.e. <code>wordpress.org</code> will be threaded as <code>*wordpress.org*</code>' ) ?></span></label>
 				</td>
 			</tr>
+            <?php
+                // only supported for users who were using phpquery
+                $extra = get_option( 'wp_external_links-extra' );
+                if (isset($extra['phpquery']) && $extra['phpquery']):
+            ?>
 			<tr>
 				<th><?php $this->_e( 'Ignore links by selectors...' ) ?>
 					<?php echo $this->tooltip_help( 'The external links of these selection will be excluded for the settings of this plugin. Define the selection by using CSS selectors.' ) ?></th>
@@ -280,6 +285,7 @@ style;
 						<span class="description"><?php _e( 'Define selection by using CSS selectors, f.e.: <code>.excl-ext-link, .entry-title, #comments-title</code> (look <a href="http://code.google.com/p/phpquery/wiki/Selectors" target="_blank">here</a> for available selectors).' ) ?></span></label>
 				</td>
 			</tr>
+            <?php endif; ?>
 			</table>
 		</fieldset>
 
