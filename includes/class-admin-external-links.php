@@ -267,11 +267,11 @@ style;
 				</td>
 			</tr>
 			<tr>
-				<th style="width:250px;"><?php $this->_e( 'Ignore subdomains' ) ?>
-						<?php echo $this->tooltip_help( 'Ignore all links to the site\'s domain and subdomains. These links will be threaded as internal links.' ) ?></th>
+				<th style="width:250px;"><?php $this->_e( 'Make subdomains internal' ) ?>
+						<?php echo $this->tooltip_help( 'Threat all links to the site\'s domain and subdomains as internal links.' ) ?></th>
 				<td>
 					<label><?php echo $this->form->checkbox( 'ignore_subdomains', 1 ); ?>
-					<span><?php $this->_e( 'Ignore all links to the site\'s domain and subdomains' ) ?></span> <span class="description"><?php $this->_e('These links will be threaded as internal links.') ?></span></label>
+					<span><?php $this->_e( 'Threat all links to the site\'s domain and subdomains as internal links' ) ?></span></label>
 				</td>
 			</tr>
 			</table>
