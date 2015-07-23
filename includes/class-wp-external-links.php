@@ -375,7 +375,7 @@ final class WP_External_Links {
 
         if ( $is_ignored ) {
 			$this->add_attr_value( $attrs, 'data-wpel-ignored', 'true' );
-            $created_link = $this->create_link($attrs, $label);
+            $created_link = self::create_link($label, $attrs);
     		return apply_filters('wpel_ignored_external_links', $created_link, $label, $attrs);
         }
 
@@ -441,7 +441,7 @@ final class WP_External_Links {
 		$attrs = apply_filters('wpel_external_link_attrs', $attrs, $original_attrs, $label);
 
 		// create element code
-        $created_link = $this->create_link($attrs, $label);
+        $created_link = self::create_link($label, $attrs);
 
 		// filter
 		$created_link = apply_filters('wpel_external_link', $created_link, $link, $label, $attrs, FALSE /* only used for backwards compatibility */);
@@ -449,7 +449,13 @@ final class WP_External_Links {
 		return $created_link;
 	}
 
-    private function create_link($attrs, $label) {
+    /**
+     * Create a HTML link <a>
+     * @param string $label
+     * @param array $attrs
+     * @return string
+     */
+    public static function create_link($label, $attrs) {
 		$created_link = '<a';
 
 		foreach ( $attrs AS $key => $value ) {
@@ -465,7 +471,7 @@ final class WP_External_Links {
 	 * @param array  &$attrs
 	 * @param string $attr_name
 	 * @param string $value
-	 * @param string $default  Optional, default NULL which means tje attribute will be removed when (new) value is empty
+	 * @param string $default  Optional, default NULL which means the attribute will be removed when (new) value is empty
 	 * @return New value
 	 */
 	public function add_attr_value( &$attrs, $attr_name, $value, $default = NULL ) {
