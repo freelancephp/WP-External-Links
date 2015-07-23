@@ -2,8 +2,8 @@
 Contributors: freelancephp
 Tags: links, external, icon, target, _blank, _new, _none, rel, nofollow, new window, new tab, javascript, xhtml, seo
 Requires at least: 3.6.0
-Tested up to: 4.2.2
-Stable tag: 1.70
+Tested up to: 4.2.3
+Stable tag: 1.80
 
 Open external links in a new window or tab, adding "nofollow", set link icon, styling, SEO friendly options and more. Easy install and go.
 
@@ -49,7 +49,8 @@ You could add `rel="external"` to those internal links that should be treated as
 
 = Why are links to my own domain treated as external links? =
 
-Only links pointing to your WordPress site (`wp_url`) are internal links. All other links will be treated as external links.
+Only links pointing to your WordPress site (`wp_url`) are by default threaded as internal links.
+There is an option to mark all links to your domain (and subdomains) as internal links.
 
 = How to treat links to subdomains as internal links? =
 
@@ -156,34 +157,57 @@ The plugin also has a hook when ready, f.e. to add extra filters:
 add_action('wpel_ready', 'extra_filters');`
 
 = Filter hook 1: wpel_external_link =
-The wpel_external_link filter gives you the possibility to manipulate output of all external links, like:
-`function special_external_link($created_link, $original_link, $label, $attrs, $is_ignored_link) {
+The `wpel_external_link` filter gives you the possibility to manipulate output of all external links, like:
+`add_filter('wpel_external_link', 'wpel_special_external_link', 10, 5);
+
+function wpel_special_external_link($created_link, $original_link, $label, $attrs, $is_ignored_link) {
 	// skip links that contain the class "not-external"
 	if (isset($attrs['class']) && strpos($attrs['class'], 'not-external') !== false) {
 		return $original_link;
 	}
 
 	return '<b>'. $created_link .'</b>';
-}
-
-add_filter('wpel_external_link', 'special_external_link', 10, 5);`
+}`
 
 Now all external links will be processed and wrapped around a `<b>`-tag. And links containing the class "not-external" will not be processed by the plugin at all (and stay the way they are).
 
-See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more possibilities of using this filter.
+= Filter hook 2: wpel_external_link_attrs =
 
-= Filter hook 2: wpel_internal_link =
-With the internal filter you can manipulate the output of all internal links on your site. F.e.:
-`
+The `wpel_external_link_attrs` filter can be used to manipulate attributes of external links.
+`add_filter('wpel_external_link_attrs', 'wpel_custom_title', 10, 3);
+
+function wpel_custom_title($attrs, $original_attrs, $label) {
+    if (empty($attrs['title']) && isset($attrs['href'])) {
+        $attrs['title'] = $attrs['href'];
+    }
+
+    return $attrs;
+}`
+
+In this example when an external links has an empty title, the title will contain the url.
+
+= Filter hook 3: wpel_ignored_external_link =
+With the `wpel_ignored_external_link` filter you can manipulate the output of the ignored external links.
+`add_filter('wpel_ignored_external_link', 'wpel_custom_ignored_link', 10, 3);
+
+function wpel_custom_ignored_link($link, $label, $attrs) {
+    return '<del>'. $link  .'</del>';
+}`
+
+In this case all ignored links will be marked as deleted (strikethrough).
+
+= Filter hook 4: wpel_internal_link =
+With the `wpel_internal_link` filter you can manipulate the output of all internal links on your site. F.e.:
+`add_filter('wpel_internal_link', 'special_internal_link', 10, 3);
+
 function special_internal_link($link, $label, $attrs) {
     return '<b>'. $link  .'</b>';
-}
-
-add_filter('wpel_internal_link', 'special_internal_link', 10, 3);`
+}`
 
 In this case all internal links will be made bold.
 
-See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more possibilities of using this filter.
+
+See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more possibilities of using these filters.
 
 
 = Credits =
@@ -196,6 +220,8 @@ See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more possibi
 = 1.80 =
 * Added filter hook wpel_external_link_attrs to change attributes before creating the link
 * Added filter hook wpel_ignored_external_links
+* Removed phpQuery option
+* Moved ignore selectors option
 
 = 1.70 =
 * Added option to ignore all subdomains
