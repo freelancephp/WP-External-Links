@@ -22,6 +22,7 @@ final class Admin_External_Links {
 			'filter_comments' => 1,
 			'filter_widgets' => 1,
 			'ignore' => '//twitter.com/share',
+			'ignore_selectors' => '',
 			'ignore_subdomains' => 0,
 		),
 		'seo' => array(
@@ -41,8 +42,6 @@ final class Admin_External_Links {
 		),
 		'extra' => array(
 			'fix_js' => 0,
-			'phpquery' => 0,
-			'filter_excl_sel' => '.excl-ext-link',
 		),
 		'screen' => array(
 			'menu_position' => NULL,
@@ -260,18 +259,25 @@ style;
 				</td>
 			</tr>
 			<tr>
-				<th><?php $this->_e( 'Ignore links (URL) containing...' ) ?>
-					<?php echo $this->tooltip_help( 'This plugin will completely ignore links that contain one of the given texts in the URL. Use enter to seperate each text. This check is not case sensitive.' ) ?></th>
-				<td><label><?php echo $this->form->textarea( 'ignore' ); ?>
-						<span class="description"><?php _e( 'Be as specific as you want, f.e.: <code>twitter.com</code> or <code>https://twitter.com</code>. Seperate each by an enter.' ) ?></span></label>
-				</td>
-			</tr>
-			<tr>
 				<th style="width:250px;"><?php $this->_e( 'Make subdomains internal' ) ?>
 						<?php echo $this->tooltip_help( 'Threat all links to the site\'s domain and subdomains as internal links.' ) ?></th>
 				<td>
 					<label><?php echo $this->form->checkbox( 'ignore_subdomains', 1 ); ?>
 					<span><?php $this->_e( 'Threat all links to the site\'s domain and subdomains as internal links' ) ?></span></label>
+				</td>
+			</tr>
+			<tr>
+				<th><?php $this->_e( 'Ignore links with URL\'s containing...' ) ?>
+					<?php echo $this->tooltip_help( 'This plugin will completely ignore links that contain one of the given texts in the URL. Use enter to seperate each text. This check is not case sensitive.' ) ?></th>
+				<td><label><?php echo $this->form->textarea( 'ignore' ); ?>
+						<span class="description"><?php _e( 'Seperate each by an enter. No wildcards nescessary, f.e. <code>wordpress.org</code> will be threaded as <code>*wordpress.org*</code>' ) ?></span></label>
+				</td>
+			</tr>
+			<tr>
+				<th><?php $this->_e( 'Ignore links by selectors...' ) ?>
+					<?php echo $this->tooltip_help( 'The external links of these selection will be excluded for the settings of this plugin. Define the selection by using CSS selectors.' ) ?></th>
+				<td><label><?php echo $this->form->textarea( 'ignore_selectors' ); ?>
+						<span class="description"><?php _e( 'Define selection by using CSS selectors, f.e.: <code>.excl-ext-link, .entry-title, #comments-title</code> (look <a href="http://code.google.com/p/phpquery/wiki/Selectors" target="_blank">here</a> for available selectors).' ) ?></span></label>
 				</td>
 			</tr>
 			</table>
@@ -409,13 +415,6 @@ style;
 						<?php echo $this->tooltip_help( 'By replacing </a> with <\/a> in JavaScript code these tags will not be processed by the plugin.' ) ?>
 				</td>
 			</tr>
-			<tr class="filter_excl_sel">
-				<th><?php $this->_e( 'Do NOT apply settings on...' ) ?>
-					<?php echo $this->tooltip_help( 'The external links of these selection will be excluded for the settings of this plugin. Define the selection by using CSS selectors.' ) ?></th>
-				<td><label><?php echo $this->form->textarea( 'filter_excl_sel' ); ?>
-						<span class="description"><?php _e( 'Define selection by using CSS selectors, f.e.: <code>.excl-ext-link, .entry-title, #comments-title</code> (look <a href="http://code.google.com/p/phpquery/wiki/Selectors" target="_blank">here</a> for available selectors).' ) ?></span></label>
-				</td>
-			</tr>
 			</table>
 		</fieldset>
 <?php
@@ -527,43 +526,16 @@ style;
 		update_option( 'wp_external_links-meta', $meta );
         $this->save_options['meta'] = $meta;
 
-		// upgrade to v1.30
-		if ( WP_EXTERNAL_LINKS_VERSION == '1.30' ) {
-			$new_options = $this->save_options;
-			$general = get_option( 'wp_external_links-general' );
-			$style = get_option( 'wp_external_links-style' );
-
-			if ( isset( $general[ 'target' ] ) ) $new_options[ 'main' ][ 'target' ] = $general[ 'target' ];
-			$new_options[ 'main' ][ 'filter_page' ] = ( isset( $general[ 'filter_page' ] ) ) ? $general[ 'filter_page' ] : 0;
-			$new_options[ 'main' ][ 'filter_posts' ] = ( isset( $general[ 'filter_posts' ] ) ) ? $general[ 'filter_posts' ] : 0;
-			$new_options[ 'main' ][ 'filter_comments' ] = ( isset( $general[ 'filter_comments' ] ) ) ? $general[ 'filter_comments' ] : 0;
-			$new_options[ 'main' ][ 'filter_widgets' ] = ( isset( $general[ 'filter_widgets' ] ) ) ? $general[ 'filter_widgets' ] : 0;
-			if ( isset( $general[ 'ignore' ] ) ) $new_options[ 'main' ][ 'ignore' ] = $general[ 'ignore' ];
-
-			$new_options[ 'seo' ][ 'external' ] = ( isset( $general[ 'external' ] ) ) ? $general[ 'external' ] : 0;
-			$new_options[ 'seo' ][ 'nofollow' ] = ( isset( $general[ 'nofollow' ] ) ) ? $general[ 'nofollow' ] : 0;
-			$new_options[ 'seo' ][ 'use_js' ] = ( isset( $general[ 'use_js' ] ) ) ? $general[ 'use_js' ] : 0;
-			if ( isset( $general[ 'title' ] ) ) $new_options[ 'seo' ][ 'title' ] = $general[ 'title' ];
-
-			if ( isset( $general[ 'class_name' ] ) ) $new_options[ 'style' ][ 'class_name' ] = $general[ 'class_name' ];
-
-			if ( isset( $style[ 'icon' ] ) ) $new_options[ 'style' ][ 'icon' ] = $style[ 'icon' ];
-			if ( isset( $style[ 'no_icon_class' ] ) ) $new_options[ 'style' ][ 'no_icon_class' ] = $style[ 'no_icon_class' ];
-			$new_options[ 'style' ][ 'no_icon_same_window' ] = ( isset( $style[ 'no_icon_same_window' ] ) ) ? $style[ 'no_icon_same_window' ] : 0;
-
-			$new_options[ 'extra' ][ 'fix_js' ] = ( isset( $general[ 'fix_js' ] ) ) ? $general[ 'fix_js' ] : 0;
-			$new_options[ 'extra' ][ 'phpquery' ] = ( isset( $general[ 'phpquery' ] ) ) ? $general[ 'phpquery' ] : 0;
-			if ( isset( $general[ 'filter_excl_sel' ] ) ) $new_options[ 'extra' ][ 'filter_excl_sel' ] = $general[ 'filter_excl_sel' ];
-
-			// save new format option values
-			update_option( 'wp_external_links-main', $new_options[ 'main' ] );
-			update_option( 'wp_external_links-seo', $new_options[ 'seo' ] );
-			update_option( 'wp_external_links-style', $new_options[ 'style' ] );
-			update_option( 'wp_external_links-extra', $new_options[ 'extra' ] );
-
-			// delete old format
-			delete_option( 'wp_external_links-general' );
-		}
+        // changed options in v1.80
+    	$extra = get_option( 'wp_external_links-extra' );
+        
+        if (!isset($extra['phpquery']) && !$extra['phpquery']) {
+        	$main = get_option('wp_external_links-main');
+            $main['ignore_selectors'] = $extra['filter_excl_sel'];
+            
+            update_option( 'wp_external_links-main', $main );
+            $this->save_options['main'] = $main;
+        }
 	}
 
 	/**
