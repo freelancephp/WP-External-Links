@@ -233,6 +233,47 @@ final class WP_External_Links {
     }
 
 	/**
+	 * Set ignored external links selections
+	 * @param string $content
+	 * @return string
+	 */
+	private function set_ignored_by_selectors( $content ) {
+        // Include phpQuery
+        if ( ! class_exists( 'phpQuery' ) ) {
+            require_once( 'phpQuery.php' );
+        }
+
+        try {
+            // set document
+            //phpQuery::$debug = true;
+            $doc = phpQuery::newDocument( $content );
+
+            $excl_sel = $this->get_opt( 'filter_excl_sel' );
+
+            // set ignored by selectors
+            if ( ! empty( $excl_sel ) ) {
+                $excludes = $doc->find( $excl_sel );
+
+                // links containing selector
+                $excludes->filter( 'a' )->attr( 'data-wpel-ignored', 'true' );
+
+                // links as descendant of element containing selector
+                $excludes->find( 'a' )->attr( 'data-wpel-ignored', 'true' );
+            }
+
+            $doc = (string) $doc;
+        } catch (Exception $ex) {
+            $doc = '';
+        }
+
+        if (empty($doc)) {
+            return $content;
+        }
+
+		return $doc;
+	}
+
+	/**
 	 * Filter content
 	 * @param string $content
 	 * @return string
@@ -498,51 +539,6 @@ final class WP_External_Links {
 		}
 
 		return $value;
-	}
-
-	/**
-	 * Experimental phpQuery...
-	 */
-
-	/**
-	 * Set ignored external links selections
-	 * @param string $content
-	 * @return string
-	 */
-	private function set_ignored_by_selectors( $content ) {
-        // Include phpQuery
-        if ( ! class_exists( 'phpQuery' ) ) {
-            require_once( 'phpQuery.php' );
-        }
-
-        try {
-            // set document
-            //phpQuery::$debug = true;
-            $doc = phpQuery::newDocument( $content );
-
-            $excl_sel = $this->get_opt( 'filter_excl_sel' );
-
-            // set ignored by selectors
-            if ( ! empty( $excl_sel ) ) {
-                $excludes = $doc->find( $excl_sel );
-
-                // links containing selector
-                $excludes->filter( 'a' )->attr( 'data-wpel-ignored', 'true' );
-
-                // links as descendant of element containing selector
-                $excludes->find( 'a' )->attr( 'data-wpel-ignored', 'true' );
-            }
-
-            $doc = (string) $doc;
-        } catch (Exception $ex) {
-            $doc = '';
-        }
-
-        if (empty($doc)) {
-            return $content;
-        }
-
-		return $doc;
 	}
 
 } // End WP_External_Links Class
