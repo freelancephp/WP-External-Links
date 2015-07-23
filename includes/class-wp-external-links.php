@@ -374,14 +374,14 @@ final class WP_External_Links {
         $is_ignored = $this->is_ignored_by_url( $href ) || isset($attrs['data-wpel-ignored']);
 
         if ( $is_ignored ) {
-			$this->add_attr_value( $attrs, 'data-wpel-ignored', 'true' );
+			self::add_attr_value( $attrs, 'data-wpel-ignored', 'true' );
             $created_link = self::create_link($label, $attrs);
     		return apply_filters('wpel_ignored_external_links', $created_link, $label, $attrs);
         }
 
 		// set rel="external" (when not already set)
 		if ( $this->get_opt( 'external' ) )
-			$this->add_attr_value( $attrs, 'rel', 'external' );
+			self::add_attr_value( $attrs, 'rel', 'external' );
 
 		// set rel="nofollow" 
 		if ( $this->get_opt( 'nofollow' ) ) {
@@ -394,7 +394,7 @@ final class WP_External_Links {
                     //$attrs[ 'rel' ] = ;
                 }
 
-    			$this->add_attr_value( $attrs, 'rel', 'nofollow' );
+    			self::add_attr_value( $attrs, 'rel', 'nofollow' );
             }
         }
 
@@ -406,7 +406,7 @@ final class WP_External_Links {
 		// set user-defined class
 		$class = $this->get_opt( 'class_name' );
 		if ( $class )
-			$this->add_attr_value( $attrs, 'class', $class );
+			self::add_attr_value( $attrs, 'class', $class );
 
 		// set icon class, unless no-icon class isset or another icon class ('ext-icon-...') is found or content contains image
 		if ( $this->get_opt( 'icon' ) > 0
@@ -414,7 +414,7 @@ final class WP_External_Links {
 					AND strpos( $attrs[ 'class' ], 'ext-icon-' ) === FALSE
 					AND !( $this->get_opt( 'image_no_icon' ) AND (bool) preg_match( '/<img([^>]*)>/is', $label )) ){
 			$icon_class = 'ext-icon-'. $this->get_opt( 'icon', 'style' );
-			$this->add_attr_value( $attrs, 'class', $icon_class );
+			self::add_attr_value( $attrs, 'class', $icon_class );
 		}
 
         // set target
@@ -474,7 +474,7 @@ final class WP_External_Links {
 	 * @param string $default  Optional, default NULL which means the attribute will be removed when (new) value is empty
 	 * @return New value
 	 */
-	public function add_attr_value( &$attrs, $attr_name, $value, $default = NULL ) {
+	public static function add_attr_value( &$attrs, $attr_name, $value, $default = NULL ) {
 		if ( key_exists( $attr_name, $attrs ) )
 			$old_value = $attrs[ $attr_name ];
 
