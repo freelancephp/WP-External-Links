@@ -222,7 +222,7 @@ final class WP_External_Links {
      * @param string $href
      * @return boolean
      */
-    private function is_ignored( $href ) {
+    private function is_ignored_by_url( $href ) {
 		// check if this links should be ignored
 		for ( $x = 0, $count = count($this->ignored); $x < $count; $x++ ) {
 			if ( strrpos( $href, $this->ignored[ $x ] ) !== FALSE )
@@ -364,7 +364,7 @@ final class WP_External_Links {
 
         // checks
         $is_external = $this->is_external( $href );
-        $is_ignored = $this->is_ignored( $href );
+        $is_ignored = $this->is_ignored_by_url( $href );
         $has_rel_external =  (strpos( $rel, 'external' ) !== FALSE);
 
 		// is an internal link?
@@ -510,7 +510,7 @@ final class WP_External_Links {
 
             $excl_sel = $this->get_opt( 'filter_excl_sel' );
 
-            // set excludes
+            // set ignored by selectors
             if ( ! empty( $excl_sel ) ) {
                 $excludes = $doc->find( $excl_sel );
 
