@@ -375,7 +375,7 @@ final class WP_External_Links {
 
         // is an ignored link?
         if ( $is_ignored ) {
-    		return apply_filters('wpel_external_link', $created_link, $link, $label, $attrs, TRUE);
+    		return apply_filters('wpel_ignored_external_links', $link, $label, $attrs);
         }
 
 		// set rel="external" (when not already set)
@@ -449,7 +449,7 @@ final class WP_External_Links {
 		$created_link .= '>'. $label .'</a>';
 
 		// filter
-		$created_link = apply_filters('wpel_external_link', $created_link, $link, $label, $attrs, FALSE);
+		$created_link = apply_filters('wpel_external_link', $created_link, $link, $label, $attrs, FALSE /* only used for backwards compatibility */);
 
 		return $created_link;
 	}
