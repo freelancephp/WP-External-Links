@@ -158,7 +158,7 @@ final class WP_External_Links {
 ?>
 <style type="text/css" media="screen">
 /* WP External Links Plugin */
-.ext-icon-<?php echo $icon ?> { background:url(<?php echo plugins_url('/images/ext-icons/ext-icon-' . $icon . '.png', WP_EXTERNAL_LINKS_FILE) ?>) no-repeat 100% 50%; padding-right:<?php echo $padding ?>px; }';
+.ext-icon-<?php echo $icon ?> { background:url(<?php echo plugins_url('/images/ext-icons/ext-icon-' . $icon . '.png', WP_EXTERNAL_LINKS_FILE) ?>) no-repeat 100% 50%; padding-right:<?php echo $padding ?>px; };
 </style>
 <?php
         }
