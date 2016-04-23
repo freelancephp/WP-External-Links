@@ -2,8 +2,8 @@
 Contributors: freelancephp
 Tags: links, external, icon, target, _blank, _new, _none, rel, nofollow, new window, new tab, javascript, xhtml, seo
 Requires at least: 3.6.0
-Tested up to: 4.2.3
-Stable tag: 1.80
+Tested up to: 4.5.0
+Stable tag: 1.81
 
 Open external links in a new window or tab, adding "nofollow", set link icon, styling, SEO friendly options and more. Easy install and go.
 
@@ -216,6 +216,10 @@ See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more possibi
 * [Icon](http://findicons.com/icon/164579/link_go?id=427009) made by [FatCow Web Hosting](http://www.fatcow.com/)
 
 == Changelog ==
+
+= 1.81 =
+* Security update (reported by Vulnerability Lab)
+* Some small changes
 
 = 1.80 =
 * Added filter hook wpel_external_link_attrs to change attributes before creating the link
