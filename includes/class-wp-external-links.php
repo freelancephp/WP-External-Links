@@ -158,7 +158,7 @@ final class WP_External_Links {
 ?>
 <style type="text/css" media="screen">
 /* WP External Links Plugin */
-.ext-icon-<?php echo $icon ?> { background:url(<?php echo plugins_url('/images/ext-icons/ext-icon-' . $icon . '.png', WP_EXTERNAL_LINKS_FILE) ?>) no-repeat 100% 50%; padding-right:<?php echo $padding ?>px; }';
+.ext-icon-<?php echo esc_html( $icon ) ?> { background:url(<?php echo plugins_url('/images/ext-icons/ext-icon-' . esc_html( $icon ) . '.png', WP_EXTERNAL_LINKS_FILE) ?>) no-repeat 100% 50%; padding-right:<?php echo $padding ?>px; };
 </style>
 <?php
         }
@@ -403,7 +403,7 @@ final class WP_External_Links {
         }
 
 		// is an internal link?
-        // rel=external will be threaded as external link
+        // rel=external will be treaded as external link
         $is_external = $this->is_external( $href );
         $has_rel_external =  (strpos( $rel, 'external' ) !== FALSE);
 
@@ -442,7 +442,7 @@ final class WP_External_Links {
 		// set title
 		$title_format = $this->get_opt( 'title' );
         $title = ( isset( $attrs[ 'title' ] ) ) ? $attrs[ 'title' ] : '';
-		$attrs[ 'title' ] = str_replace( '%title%', $title, $title_format );
+		$attrs[ 'title' ] = str_replace( '%title%', $title, esc_attr( $title_format ) );
 
 		// set user-defined class
 		$class = $this->get_opt( 'class_name' );
@@ -471,10 +471,10 @@ final class WP_External_Links {
         } elseif ($target && $target !== '_none') {
             if ($this->get_opt( 'use_js' )) {
                 // add data-attr for javascript
-                $attrs['data-wpel-target'] = $target;
+                $attrs['data-wpel-target'] = esc_attr( $target );
             } else {
                 // set target value
-                $attrs[ 'target' ] =  $target;
+                $attrs[ 'target' ] =  esc_attr( $target );
             }
         }
 
@@ -535,7 +535,7 @@ final class WP_External_Links {
 		if ( empty( $value ) AND $default === NULL ) {
 			unset( $attrs[ $attr_name ] );
 		} else {
-			$attrs[ $attr_name ] = $value;
+			$attrs[ $attr_name ] = esc_attr( $value );
 		}
 
 		return $value;

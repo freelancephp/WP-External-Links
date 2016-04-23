@@ -260,17 +260,17 @@ style;
 			</tr>
 			<tr>
 				<th style="width:250px;"><?php $this->_e( 'Make subdomains internal' ) ?>
-						<?php echo $this->tooltip_help( 'Threat all links to the site\'s domain and subdomains as internal links.' ) ?></th>
+						<?php echo $this->tooltip_help( 'Treat all links to the site\'s domain and subdomains as internal links.' ) ?></th>
 				<td>
 					<label><?php echo $this->form->checkbox( 'ignore_subdomains', 1 ); ?>
-					<span><?php $this->_e( 'Threat all links to the site\'s domain and subdomains as internal links' ) ?></span></label>
+					<span><?php $this->_e( 'Treat all links to the site\'s domain and subdomains as internal links' ) ?></span></label>
 				</td>
 			</tr>
 			<tr>
 				<th><?php $this->_e( 'Ignore links with URL\'s containing...' ) ?>
 					<?php echo $this->tooltip_help( 'This plugin will completely ignore links that contain one of the given texts in the URL. Use enter to seperate each text. This check is not case sensitive.' ) ?></th>
 				<td><label><?php echo $this->form->textarea( 'ignore' ); ?>
-						<span class="description"><?php _e( 'Seperate each by an enter. No wildcards nescessary, f.e. <code>wordpress.org</code> will be threaded as <code>*wordpress.org*</code>' ) ?></span></label>
+						<span class="description"><?php _e( 'Seperate each by an enter. No wildcards nescessary, f.e. <code>wordpress.org</code> will be treaded as <code>*wordpress.org*</code>' ) ?></span></label>
 				</td>
 			</tr>
             <?php

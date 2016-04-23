@@ -34,6 +34,15 @@ if (version_compare($wp_version, '3.6', '>=') && version_compare(phpversion(), '
 	// create instance
 	$WP_External_Links = new WP_External_Links();
 
+    // Warning for the next update to version 2.x
+    if (!function_exists('wpel_update_notice')) {
+        function wpel_update_notice()
+        {
+            echo '<p style="color:#f00; font-weight:bold;">ATTENTION: This update has some major changes. Please check the changelog first!</p>';
+        }
+        add_action('in_plugin_update_message-' . plugin_basename(__FILE__), 'wpel_update_notice');
+    }
+
     // init test
     if (class_exists('Test_WP_External_Links')) {
         $Test_WP_External_Links = new Test_WP_External_Links;
