@@ -403,7 +403,7 @@ final class WP_External_Links {
         }
 
 		// is an internal link?
-        // rel=external will be threaded as external link
+        // rel=external will be treaded as external link
         $is_external = $this->is_external( $href );
         $has_rel_external =  (strpos( $rel, 'external' ) !== FALSE);
 
