@@ -88,7 +88,12 @@ class WP_Option_Forms_01 {
 		$values = stripslashes_deep( $values );
 
         foreach ( $values as $key => $val ) {
-            $values[ $key ] = sanitize_text_field( $val );
+            if ( $key === 'ignore' ) {
+                // text area (don't remove line breaks)
+                $values[ $key ] = filter_var( $val, FILTER_SANITIZE_STRING );
+            } else {
+                $values[ $key ] = sanitize_text_field( $val );
+            }
         }
 
 		update_option( $option_name, $values );
