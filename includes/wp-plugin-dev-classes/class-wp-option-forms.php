@@ -71,18 +71,32 @@ class WP_Option_Forms_01 {
 	public function call_wp_ajax() {
 		check_ajax_referer( 'wpof_update_options', 'wpof-nonce' );
 
+        if ( ! current_user_can( 'manage_options' ) ) {
+            die( '0' );
+        }
+
 		$option_name = $_POST[ 'ajax_option_name' ];
-		$value = NULL;
+		$values = NULL;
 
 		if ( isset( $_POST[ $option_name ] ) )
-			$value = $_POST[ $option_name ];
+			$values = $_POST[ $option_name ];
 
-		if ( ! is_array( $value ) )
-			$value = trim( $value );
+		if ( ! is_array( $values ) ) {
+            die( '0' );
+        }
 
-		$value = stripslashes_deep( $value );
+		$values = stripslashes_deep( $values );
 
-		update_option( $option_name, $value );
+        foreach ( $values as $key => $val ) {
+            if ( $key === 'ignore' ) {
+                // text area (don't remove line breaks)
+                $values[ $key ] = filter_var( $val, FILTER_SANITIZE_STRING );
+            } else {
+                $values[ $key ] = sanitize_text_field( $val );
+            }
+        }
+
+		update_option( $option_name, $values );
 
 		die( '1' );
 	}
