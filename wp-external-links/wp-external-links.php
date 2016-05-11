@@ -1,68 +1,74 @@
-<?php defined('ABSPATH') OR die('No direct access.');
-/*
-Plugin Name: WP External Links
-Plugin URI: http://www.freelancephp.net/wp-external-links-plugin
-Description: Open external links in a new window/tab, add "external" / "nofollow" to rel-attribute, set icon, XHTML strict, SEO friendly...
-Author: Victor Villaverde Laan
-Version: 1.81
-Author URI: http://www.freelancephp.net
-License: Dual licensed under the MIT and GPL licenses
-*/
+<?php
+/**
+ * WP External Links Plugin
+ *
+ * @package  WPEL
+ * @category WordPress Plugin
+ * @version  1.81
+ * @author   Victor Villaverde Laan
+ * @link     https://wordpress.org/plugins/wp-external-links/
+ * @link     https://github.com/freelancephp/WP-External-Links
+ * @license  Dual licensed under the MIT and GPLv2+ licenses
+ *
+ * @wordpress-plugin
+ * Plugin Name:    WP External Links
+ * Version:        1.81
+ * Plugin URI:     https://wordpress.org/plugins/wp-external-links/
+ * Description:    Open external links in a new window/tab, add "external" / "nofollow" to rel-attribute, set icon, XHTML strict, SEO friendly...
+ * Author:         Victor Villaverde Laan
+ * Author URI:     http://www.finewebdev.com
+ * License:        Dual licensed under the MIT and GPLv2+ licenses
+ * Text Domain:    wpel
+ * Domain Path:    /languages
+ */
+call_user_func( function () {
 
-// constants
-if (!defined('WP_EXTERNAL_LINKS_FILE')) { define('WP_EXTERNAL_LINKS_FILE', __FILE__); }
-if (!defined('WP_EXTERNAL_LINKS_VERSION')) { define('WP_EXTERNAL_LINKS_VERSION', '1.81'); }
-if (!defined('WP_EXTERNAL_LINKS_KEY')) { define('WP_EXTERNAL_LINKS_KEY', 'wp_external_links'); }
-if (!defined('WP_EXTERNAL_LINKS_DOMAIN')) { define('WP_EXTERNAL_LINKS_DOMAIN', 'wp-external-links'); }
-if (!defined('WP_EXTERNAL_LINKS_OPTIONS_NAME')) { define('WP_EXTERNAL_LINKS_OPTIONS_NAME', 'WP_External_Links_options'); }
-if (!defined('WP_EXTERNAL_LINKS_ADMIN_PAGE')) { define('WP_EXTERNAL_LINKS_ADMIN_PAGE', 'wp-external-links-settings'); }
-
-// wp_version var was used by older WP versions
-if (!isset($wp_version)) {
-    $wp_version = get_bloginfo('version');
-}
-
-// check plugin compatibility
-if (version_compare($wp_version, '3.6', '>=') && version_compare(phpversion(), '5.2.4', '>=')) {
-
-	// include classes
-	require_once('includes/wp-plugin-dev-classes/class-wp-meta-box-page.php');
-	require_once('includes/wp-plugin-dev-classes/class-wp-option-forms.php');
-	require_once('includes/class-admin-external-links.php');
-	require_once('includes/class-wp-external-links.php');
-
-	// create instance
-	$WP_External_Links = new WP_External_Links();
-
-    // Warning for the next update to version 2.x
-    if (!function_exists('wpel_update_notice')) {
-        function wpel_update_notice()
-        {
-            echo '<p style="color:#f00; font-weight:bold;">ATTENTION: This update has some major changes. Please check the changelog first!</p>';
-        }
-        add_action('in_plugin_update_message-' . plugin_basename(__FILE__), 'wpel_update_notice');
+    // only load in WP environment
+    if ( !defined( 'ABSPATH' ) ) {
+        die();
     }
 
-    // init test
-    if (class_exists('Test_WP_External_Links')) {
-        $Test_WP_External_Links = new Test_WP_External_Links;
+    /**
+     * Autoloader
+     */
+    require_once __DIR__ . '/includes/libs/wprun/class-wprun-autoloader.php';
+
+    $autoloader = new WPRun_Autoloader_0x7x0();
+    $autoloader->add_path( __DIR__ . '/includes/', true );
+
+    /**
+     * Load debugger
+     */
+    if ( true === constant( 'WP_DEBUG' ) ) {
+        WP_Debug_0x7x0::create( array(
+            'log_hooks'  => false,
+        ) );
     }
 
-} else {
+    /**
+     * Set plugin vars
+     */
+    WPEL_Base::set_plugin_file( defined( 'TEST_WPEL_PLUGIN_FILE' ) ? TEST_WPEL_PLUGIN_FILE : __FILE__ );
+    WPEL_Base::set_plugin_dir( __DIR__ );
 
-	// set error message
-    if (!function_exists('wpel_error_notice')):
-        function wpel_error_notice() {
-            $plugin_title = get_admin_page_title();
+    /**
+     * Create plugin components
+     */
 
-            echo '<div class="error">'
-                    . sprintf(__('<p>Warning - The plugin <strong>%s</strong> requires PHP 5.2.4+ and WP 3.6+.  Please upgrade your PHP and/or WordPress.'
-                                 . '<br/>Disable the plugin to remove this message.</p>'
-                                 , WP_EXTERNAL_LINKS_KEY), $plugin_title)
-                . '</div>';
-        }
+    WPEL_Registerhooks::create();
+    WPEL_Textdomain::create();
 
-        add_action('admin_notices', 'wpel_error_notice');
-    endif;
+    if ( is_admin() ) {
 
-}
+    } else {
+        // Filter hooks
+        WP_Final_Output_0x7x0::create();
+        WP_Widget_Output_0x7x0::create();
+
+        WPEL_Front::create();
+    }
+
+} );
+
+
+/*?>*/
