@@ -116,14 +116,17 @@ abstract class WP_Settings_Section_Fields_0x7x0 extends WPRun_Base_0x7x0
         $values = is_array( $option ) ? $option : array();
 
         foreach ( $fields as $key => $field_settings ) {
-            $input_callback = $field_settings[ 'input_callback' ];
+            $input_callback = isset( $field_settings[ 'input_callback' ] ) ? $field_settings[ 'input_callback' ] : null;
+            $class = isset( $field_settings[ 'class' ] ) ? $field_settings[ 'class' ] : '';
+            $label = isset( $field_settings[ 'label' ] ) ? $field_settings[ 'label' ] : '';
+            $label_for = isset( $field_settings[ 'label_for' ] ) ? $field_settings[ 'label_for' ] : '';
 
             $field_name = $option_name .'['. $key . ']';
             $field_value = isset( $values[ $key ] ) ? $values[ $key ] : '';
 
             add_settings_field(
                 $key
-                , $field_settings[ 'label' ]
+                , $label
                 , $input_callback
                 , $this->get_setting( 'page_id' )
                 , $this->get_setting( 'section_id' )
@@ -131,9 +134,10 @@ abstract class WP_Settings_Section_Fields_0x7x0 extends WPRun_Base_0x7x0
                     'key'           => $key,
                     'field_name'    => $field_name,
                     'field_value'   => $field_value,
-                    'label_for'     => $field_settings[ 'label_for' ],
+                    'label_for'     => $label_for,
                     'option_name'   => $option_name,
                     'values'        => $values,
+                    'class'         => $class,
                 )
             );
         }

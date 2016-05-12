@@ -1,6 +1,6 @@
 <?php
 /**
- * Class WPEL_Link_Fields
+ * Class WPEL_Internal_Link_Fields
  *
  * @package  DWP
  * @category WordPress Plugin
@@ -10,7 +10,7 @@
  * @link     https://github.com/freelancephp/WPRun-Plugin-Base
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-final class WPEL_Link_Fields extends WP_Settings_Section_Fields_0x7x0
+final class WPEL_Internal_Link_Fields extends WP_Settings_Section_Fields_0x7x0
 {
 
     /**
@@ -19,21 +19,21 @@ final class WPEL_Link_Fields extends WP_Settings_Section_Fields_0x7x0
     protected function init()
     {
         $this->set_settings( array(
-            'section_id'        => 'wpel-link-fields',
-            'page_id'           => 'wpel-link-fields',
-            'option_name'       => 'wpel-link-settings',
-            'option_group'      => 'wpel-link-settings',
-            'title'             => __( 'External Links', 'wpel' ),
+            'section_id'        => 'wpel-internal-link-fields',
+            'page_id'           => 'wpel-internal-link-fields',
+            'option_name'       => 'wpel-internal-link-settings',
+            'option_group'      => 'wpel-internal-link-settings',
+            'title'             => __( 'Internal Links', 'wpel' ),
             'description'       => __( 'Lorem ipsum...', 'wpel' ),
             'fields'            => array(
-                'use_settings_external_links' => array(
-                    'label'             => __( 'Settings for external links:', 'wpel' ),
-                    'label_for'         => 'wpel-link-settings-use_settings_external_links',
+                'use_settings_interal_links' => array(
+                    'label'             => __( 'Settings for internal links:', 'wpel' ),
+                    'label_for'         => 'wpel-internal-link-settings-use_settings_interal_links',
                     'input_callback'    => $this->get_callback( 'show_field' ),
                 ),
                 'target' => array(
-                    'label'             => __( 'Open external links in:', 'wpel' ),
-                    'label_for'         => 'wpel-link-settings-target',
+                    'label'             => __( 'Open internal links in:', 'wpel' ),
+                    'label_for'         => 'wpel-internal-link-settings-target',
                     'input_callback'    => $this->get_callback( 'show_field' ),
                 ),
                 'target_overwrite' => array(
@@ -42,7 +42,7 @@ final class WPEL_Link_Fields extends WP_Settings_Section_Fields_0x7x0
                 ),
                 'rel_follow' => array(
                     'label'             => __( 'Set <code>nofollow</code>:', 'wpel' ),
-                    'label_for'         => 'wpel-link-settings-rel_follow',
+                    'label_for'         => 'wpel-internal-link-settings-rel_follow',
                     'input_callback'    => $this->get_callback( 'show_field' ),
                 ),
                 'rel_follow_overwrite' => array(
@@ -51,12 +51,12 @@ final class WPEL_Link_Fields extends WP_Settings_Section_Fields_0x7x0
                 ),
                 'title' => array(
                     'label'             => __( 'Set <code>title</code>:', 'wpel' ),
-                    'label_for'         => 'wpel-link-settings-title',
+                    'label_for'         => 'wpel-internal-link-settings-title',
                     'input_callback'    => $this->get_callback( 'show_field' ),
                 ),
                 'class' => array(
                     'label'             => __( 'Add to <code>class</code>:', 'wpel' ),
-                    'label_for'         => 'wpel-link-settings-class',
+                    'label_for'         => 'wpel-internal-link-settings-class',
                     'input_callback'    => $this->get_callback( 'show_field' ),
                 ),
                 'class_overwrite' => array(
@@ -75,17 +75,15 @@ final class WPEL_Link_Fields extends WP_Settings_Section_Fields_0x7x0
     {
         $html_fields = new WP_HTML_Fields_0x7x0(
             $args[ 'values' ]
-            , 'wpel-link-settings-%s'
-            , 'wpel-link-settings[%s]'
+            , 'wpel-internal-link-settings-%s'
+            , 'wpel-internal-link-settings[%s]'
         );
 
-        // @todo remove unused $args
-
         switch ( $args[ 'key' ] ) {
-            case 'use_settings_external_links':
+            case 'use_settings_interal_links':
                 echo '<label>';
                 $html_fields->check( $args[ 'key' ], '' );
-                echo __( ' Apply settings for external links'
+                echo __( ' Apply settings for internal links'
                         . ' <span class="description">(only enable when needed to prevent '
                         . 'using unnescessary resources)</span>', 'wpel' );
                 echo '</label>';

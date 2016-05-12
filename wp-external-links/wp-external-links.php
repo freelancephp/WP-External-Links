@@ -28,12 +28,25 @@ call_user_func( function () {
         die();
     }
 
+    // check requirements
+    $wp_version = get_bloginfo( 'version' );
+    $php_version = phpversion();
+
+    if ( version_compare( $wp_version, '3.6', '<' ) || version_compare( $php_version, '5.3', '<' ) ) {
+        add_action('admin_notices', function () {
+            include __DIR__ .'/templates/requirements-notice.php';
+        });
+
+        return;
+    }
+
     /**
      * Autoloader
      */
-    require_once __DIR__ . '/includes/libs/wprun/class-wprun-autoloader.php';
+    require_once __DIR__ . '/libs/wprun/class-wprun-autoloader.php';
 
     $autoloader = new WPRun_Autoloader_0x7x0();
+    $autoloader->add_path( __DIR__ . '/libs/', true );
     $autoloader->add_path( __DIR__ . '/includes/', true );
 
     /**
@@ -59,7 +72,7 @@ call_user_func( function () {
     WPEL_Textdomain::create();
 
     if ( is_admin() ) {
-
+        WPEL_Settings_Page::create();
     } else {
         // Filter hooks
         WP_Final_Output_0x7x0::create();
