@@ -85,9 +85,7 @@ final class WPEL_Link_Fields extends WP_Settings_Section_Fields_0x7x0
             case 'use_settings_external_links':
                 echo '<label>';
                 $html_fields->check( $args[ 'key' ], '' );
-                echo __( ' Apply settings for external links'
-                        . ' <span class="description">(only enable when needed to prevent '
-                        . 'using unnescessary resources)</span>', 'wpel' );
+                echo __( ' Apply settings for external links', 'wpel' );
                 echo '</label>';
             break;
 

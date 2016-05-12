@@ -37,8 +37,25 @@ final class WPEL_Exclusions_Fields extends WP_Settings_Section_Fields_0x7x0
                     'input_callback'    => $this->get_callback( 'show_field' ),
                 ),
                 'exclude_urls' => array(
-                    'label'             => __( 'Exclude links with URL\'s containing...:', 'wpel' ),
+                    'label'             => __( 'Exclude URL\'s:', 'wpel' ),
                     'label_for'         => 'wpel-exceptions-settings-exclude_urls',
+                    'input_callback'    => $this->get_callback( 'show_field' ),
+                ),
+                'exclude_post_content' => array(
+                    'label'             => __( 'Exclude sections:', 'wpel' ),
+                    'label_for'         => 'wpel-exceptions-settings-exclude_urls',
+                    'input_callback'    => $this->get_callback( 'show_field' ),
+                ),
+                'exclude_comments' => array(
+                    'class'             => 'hide-all',
+                    'input_callback'    => $this->get_callback( 'show_field' ),
+                ),
+                'exclude_widgets' => array(
+                    'class'             => 'hide-all',
+                    'input_callback'    => $this->get_callback( 'show_field' ),
+                ),
+                'exclude_rest_of_page' => array(
+                    'class'             => 'hide-all',
                     'input_callback'    => $this->get_callback( 'show_field' ),
                 ),
                 'exclusions_as_internal_links' => array(
@@ -81,8 +98,36 @@ final class WPEL_Exclusions_Fields extends WP_Settings_Section_Fields_0x7x0
             case 'exclusions_as_internal_links':
                 echo '<label>';
                 $html_fields->check( $args[ 'key' ], '' );
-                echo ' Treat excluded links as internal links';
+                echo __( ' Treat excluded links as internal links', 'wpel' );
                 echo '</label>';
+            break;
+
+            case 'exclude_post_content':
+                echo '<label>';
+                $html_fields->check( $args[ 'key' ], '' );
+                echo __( ' Post content', 'wpel' );
+                echo '</label>';
+
+                echo '<p>';
+                echo '<label>';
+                $html_fields->check( 'wpel-exceptions-settings[]', '', '' );
+                echo __( ' Comments', 'wpel' );
+                echo '</label>';
+                echo '</p>';
+
+                echo '<p>';
+                echo '<label>';
+                $html_fields->check( 'wpel-exceptions-settings[]', '', '' );
+                echo __( ' All widgets', 'wpel' );
+                echo '</label>';
+                echo '</p>';
+
+                echo '<p>';
+                echo '<label>';
+                $html_fields->check( 'wpel-exceptions-settings[]', '', '' );
+                echo __( ' Rest of the page', 'wpel' );
+                echo '</label>';
+                echo '</p>';
             break;
         }
     }

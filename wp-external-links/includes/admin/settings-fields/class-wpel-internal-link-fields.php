@@ -83,9 +83,7 @@ final class WPEL_Internal_Link_Fields extends WP_Settings_Section_Fields_0x7x0
             case 'use_settings_interal_links':
                 echo '<label>';
                 $html_fields->check( $args[ 'key' ], '' );
-                echo __( ' Apply settings for internal links'
-                        . ' <span class="description">(only enable when needed to prevent '
-                        . 'using unnescessary resources)</span>', 'wpel' );
+                echo __( ' Apply settings for internal links', 'wpel' );
                 echo '</label>';
             break;
 

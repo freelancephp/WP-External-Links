@@ -65,7 +65,11 @@ debug($t);
         // check external
         $url = $link->get_attr( 'href' );
 
-        // check subdomain
+        // excluded url's
+        // internal url's as external
+
+        // subdomain as internal
+        // excluded as internal
         
 
         // set target
