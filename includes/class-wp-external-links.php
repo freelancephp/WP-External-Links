@@ -39,7 +39,7 @@ final class WP_External_Links {
      */
     private function get_domain() {
         if ( empty($this->_domain_name) ) {
-            $url = get_bloginfo('wpurl');
+			$url = home_url();
             preg_match("/[a-z0-9\-]{1,63}\.[a-z\.]{2,6}$/", parse_url($url, PHP_URL_HOST), $domain_tld);
             $this->_domain_name = count($domain_tld) > 0 ? $domain_tld[0] : $_SERVER['SERVER_NAME'];
         }
@@ -197,7 +197,7 @@ final class WP_External_Links {
 	 * @return boolean
 	 */
 	private function is_external( $href ) {
-        $wpurl = strtolower( get_bloginfo( 'wpurl' ) );
+		$wpurl = strtolower( home_url() );
 
         // relative url's are internal
         // so just check absolute url's starting with these protocols
