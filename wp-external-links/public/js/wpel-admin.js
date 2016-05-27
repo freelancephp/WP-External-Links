@@ -3,98 +3,93 @@
 jQuery(function ($) {
     'use strict';
 
-    $( '#wpbody form' )
-        .on( 'change', '[name="wpel-link-settings[use_settings_external_links]"]', function () {
-            hide_other_fields( this, $( '.nav-tab' ).eq( 1 ) );
-        })
-        .on( 'change', '[name="wpel-icon-settings[add_icon]"]', function () {
-            hide_other_fields( this );
-        })
-        .on( 'change', '[name="wpel-internal-link-settings[use_settings_interal_links]"]', function () {
-            hide_other_fields( this );
-        });
+    var $wrapper = $('.wpel-admin-settings');
 
-    var hide_other_fields = function ( el, $other ) {
-        var $el = $( el );
-        var $form = $el.closest( 'form' );
-        var $other = $other || $();
+    /**
+     * Support
+     */
+    $wrapper.on('click', '.js-wpel-copy', function (e) {
+        e.preventDefault();
 
-        if ( $el.prop( 'checked' ) ) {
-            $form.find( 'input, select, textarea' ).not( el ).closest( 'tr' ).fadeIn();
-            $other.fadeIn();
+        var node = $wrapper.find('.js-wpel-copy-target').get(0);
+        node.select();
+
+        var range = document.createRange();
+        range.selectNode(node);
+        window.getSelection().addRange(range);
+
+        try {
+            document.execCommand('copy');
+        } catch(err) {
+            console.log('Unable to copy');
+        }
+    });
+
+    /**
+     * Apply Sections Settings
+     */
+    $wrapper.on('change', '.js-wpel-apply input', function () {
+        var apply_all = $(this).is(':checked');
+        var $items = $wrapper.find('.js-wpel-apply-child');
+
+        if (apply_all) {
+            $items.hide();
         } else {
-            $form.find( 'input, select, textarea' ).not( el ).closest( 'tr' ).fadeOut();
-            $other.fadeOut();
-        }
-    };
-
-
-    // fill dashicons  select options
-    $.get(wpelSettings.pluginUrl + '/public/data/json/fontawesome.json', null, function (data) {
-        var $select = $('.select-fontawesome');
-
-        // create select options
-        fillSelect($select, data.icons, 'unicode', 'className');
-
-        // select saved value
-        $select.find('option').each(function () {
-            if (this.value === wpelSettings.fontawesomeValue) {
-                $(this).prop('selected', true);
-            }
-        });
-    });
-
-    // fill fontawesome select options
-    $.get(wpelSettings.pluginUrl + '/public/data/json/dashicons.json', null, function (data) {
-        var $select = $('.select-dashicons');
-
-        // create select options
-        fillSelect($select, data.icons, 'unicode', 'className');
-
-        // select saved value
-        $select.find('option').each(function () {
-            if (this.value === wpelSettings.dashiconsValue) {
-                $(this).prop('selected', true);
-            }
-        });
-    });
-
-    // fill select helper function
-    function fillSelect($select, list, keyText, keyValue) {
-        $.each(list, function (index, item) {
-            var value = item[keyValue];
-            var text = item[keyText];
-
-            $select.append('<option value="'+ value +'">&#x'+ text +'</option>');
-        });
-    }
-
-    // mail icon
-    $('body').on('change', '*[name="wpel-icon-settings[icon_type]"]', function () {
-        var value = $(this).val();
-        var $images = $('.wrap-icon-images');
-        var $selectDashicons = $('.wrap-icon-dashicons');
-        var $selectFontAwesome = $('.wrap-icon-fontawesome');
-
-        $images.hide();
-        $selectDashicons.hide();
-        $selectFontAwesome.hide();
-
-//        var $form = $(this).closest( 'form' );
-//         if ( value ) {
-//            $form.find( 'input, select, textarea' ).not( this ).closest( 'tr' ).fadeIn();
-//        } else {
-//            $form.find( 'input, select, textarea' ).not( this ).closest( 'tr' ).fadeOut();
-//        }
-
-        if (value === 'image') {
-            $images.fadeIn();
-        } else if (value === 'dashicons') {
-            $selectDashicons.fadeIn();
-        } else if (value === 'fontawesome') {
-            $selectFontAwesome.fadeIn();
+            $items.show();
         }
     });
+
     // trigger immediatly
-    $('*[name="wpel-icon-settings[icon_type]"]').change();
+    $wrapper.find('.js-wpel-apply input').change();
+
+
+    /**
+     * Link Settings
+     */
+    $wrapper.on('change', '.js-apply-settings input', function () {
+        var $items = $wrapper.find('.form-table tr').not('.js-apply-settings');
+
+        if ($(this).prop('checked')) {
+            $items.show();
+            $wrapper.find('.js-icon-type select').change();
+        } else {
+            $items.hide();
+        }
+    });
+
+    // trigger immediatly
+    $wrapper.find('.js-apply-settings input').change();
+
+    $wrapper.on('change', '.js-icon-type select', function () {
+        var iconType = $(this).val();
+        var $items = $wrapper.find('.js-icon-type-child');
+
+        if (iconType === 'dashicon') {
+            $items.hide();
+            $items.not('.js-icon-type-fontawesome').show();
+        } else if (iconType === 'fontawesome') {
+            $items.hide();
+            $items.not('.js-icon-type-dashicon').show();
+        } else {
+            $items.hide();
+        }
+    });
+
+    // trigger immediatly
+    $wrapper.find('.js-icon-type select').change();
+
+    /**
+     * Other
+     */
+    $wrapper.on('click', '[data-wpel-help]', function () {
+        var helpKey = $(this).data('wpel-help');
+
+        if (helpKey) {
+            $('#tab-link-'+ helpKey +' a').click();
+        }
+
+        $('#contextual-help-link[aria-expanded="false"]').click();
+    });
+
+
 });

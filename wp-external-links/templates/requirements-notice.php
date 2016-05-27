@@ -14,7 +14,7 @@
 <div class="notice notice-error is-dismissible">
     <p>
         <?php _e('The plugin <strong>WP External Links</strong> requires'
-                    .'PHP version 5.3 or up and WordPress version 3.6 or up.'
+                    .' PHP version 5.3 or up and WordPress version 3.6 or up.'
                     .'<br>Please upgrade your PHP and/or WordPress.'
                     .' Deactivate the plugin to remove this message.', 'wpel' );
         ?>

@@ -1,6 +1,6 @@
 <?php
 /**
- * Class WPEL_Internal_Link_Fields
+ * Class WPEL_External_Link_Fields
  *
  * @package  DWP
  * @category WordPress Plugin
@@ -10,7 +10,7 @@
  * @link     https://github.com/freelancephp/WPRun-Plugin-Base
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-final class WPEL_Internal_Link_Fields extends WPEL_Link_Fields_Base
+final class WPEL_External_Link_Fields extends WPEL_Link_Fields_Base
 {
 
     /**
@@ -18,19 +18,20 @@ final class WPEL_Internal_Link_Fields extends WPEL_Link_Fields_Base
      */
     protected function init()
     {
-        $option_name = 'wpel-internal-link-settings';
+        $option_name = 'wpel-external-link-settings';
         $fields = $this->get_general_fields( $option_name );
+//delete_option($option_name);
 
-        // change some specific field labels
-        $fields[ 'apply_settings' ][ 'label' ] = __( 'Settings for internal links:', 'wpel' );
-        $fields[ 'target' ][ 'label' ] = __( 'Open internal links:', 'wpel' );
+        // set field labels
+        $fields[ 'apply_settings' ][ 'label' ] = __( 'Settings for external links:', 'wpel' );
+        $fields[ 'target' ][ 'label' ] = __( 'Open external links:', 'wpel' );
 
         $this->set_settings( array(
-            'section_id'        => 'wpel-internal-link-fields',
-            'page_id'           => 'wpel-internal-link-fields',
+            'section_id'        => 'wpel-external-link-fields',
+            'page_id'           => 'wpel-external-link-fields',
             'option_name'       => $option_name,
             'option_group'      => $option_name,
-            'title'             => __( 'Internal Links', 'wpel' ),
+            'title'             => __( 'External Links', 'wpel' ),
             'description'       => __( 'Lorem ipsum...', 'wpel' ),
             'fields' => $fields,
         ) );

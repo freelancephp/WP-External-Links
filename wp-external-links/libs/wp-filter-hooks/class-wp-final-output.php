@@ -1,6 +1,8 @@
 <?php
 /**
- * Class Final_Output_0x7x0
+ * Class WP_Final_Output_0x7x0
+ *
+ * @todo multiple versions - multiple filter applies
  *
  * @package  WP Filter Hooks
  * @category WordPress Plugin

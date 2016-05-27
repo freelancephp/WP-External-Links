@@ -22,6 +22,11 @@ class WP_Debug_0x7x0 extends WPRun_Base_0x7x0
     );
 
     /**
+     * @var array
+     */
+    private static $benchmarks = array();
+
+    /**
      * Initialize
      * @param array $settings Optional
      */
@@ -62,7 +67,7 @@ class WP_Debug_0x7x0 extends WPRun_Base_0x7x0
             $content = $title . ': ';
         }
 
-        $content .= print_r( $entry, true );
+        $content .= var_export( $entry, true );
 
         error_log( $content );
     }
@@ -76,6 +81,30 @@ class WP_Debug_0x7x0 extends WPRun_Base_0x7x0
         global $merged_filters;
 
         self::log( $merged_filters, 'WP Hooks' );
+    }
+
+    /**
+     * 
+     */
+    public static function start_benchmark( $label = 'benchmark' )
+    {
+        self::$benchmarks[ $label ][ 'start' ] = microtime( true );
+    }
+
+    /**
+     * 
+     */
+    public static function end_benchmark( $label = 'benchmark' )
+    {
+        $end_time = microtime( true );
+        self::$benchmarks[ $label ][ 'end' ] = $end_time;
+        $start_time = self::$benchmarks[ $label ][ 'start' ];
+
+        $total_time = $end_time - $start_time;
+
+        self::log( $total_time, $label );
+
+        return $total_time;
     }
 
 }

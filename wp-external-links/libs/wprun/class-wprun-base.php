@@ -72,7 +72,8 @@ abstract class WPRun_Base_0x7x0
      * Factory method
      * @param mixed $param1 Optional, will be passed on to the constructor and init() method
      * @param mixed $paramN Optional, will be passed on to the constructor and init() method
-     * @return WPRun_Base_0x7x0|false
+     * @return WPRun_Base_0x7x0
+     * @triggers E_USER_NOTICE  Class already created
      */
     final public static function create()
     {
@@ -81,7 +82,8 @@ abstract class WPRun_Base_0x7x0
 
         // check if instance of this class already exists
         if ( key_exists( $class_name, self::$instances ) ) {
-            return false;
+            trigger_error( 'Class "'. $class_name .'" was already created.' );
+            return;
         }
 
         // pass all arguments to constructor
@@ -101,16 +103,20 @@ abstract class WPRun_Base_0x7x0
 
         $this->arguments = $arguments;
 
-        $this->init_methods();
+        $this->init_hook_methods();
 
-        // call init
-        if ( method_exists( $this, 'init' ) ) {
-            $method_reflection = new ReflectionMethod( get_called_class(), 'init' );
+        $init_methods = array( 'before_init', 'init', 'after_init' );
 
-            if ( $method_reflection->isProtected() ) {
-                call_user_func_array( array( $this, 'init' ), $arguments );
-            } else {
-                trigger_error( 'Method "init" should be made protected in class "'. get_called_class() .'".' );
+        // call init methods
+        foreach ( $init_methods as $method_name ) {
+            if ( method_exists( $this, $method_name ) ) {
+                $method_reflection = new ReflectionMethod( get_called_class(), $method_name );
+
+                if ( $method_reflection->isProtected() ) {
+                    call_user_func_array( array( $this, $method_name ), $this->arguments );
+                } else {
+                    trigger_error( 'Method "'. $method_name .'" should be made protected in class "'. get_called_class() .'".' );
+                }
             }
         }
     }
@@ -138,7 +144,11 @@ abstract class WPRun_Base_0x7x0
      */
     final protected function set_settings( array $settings )
     {
-        $this->settings = wp_parse_args( $settings, $this->default_settings );
+        if ( empty( $this->settings ) ) {
+            $this->settings = wp_parse_args( $settings, $this->default_settings );
+        } else {
+            $this->settings = wp_parse_args( $settings, $this->settings );
+        }
     }
 
     /**
@@ -262,9 +272,9 @@ abstract class WPRun_Base_0x7x0
     }
 
     /**
-     * Check and auto-initialize methods for hooks, shortcodes and template tags
+     * Check and auto-initialize methods for hooks
      */
-    private function init_methods()
+    private function init_hook_methods()
     {
         $methods = get_class_methods( $this );
 

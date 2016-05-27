@@ -5,6 +5,8 @@
  * This component was inspired by:
  *   @todo
  *
+ * @todo multiple versions - multiple filter applies
+ *
  * @package  WP Filter Hooks
  * @category WordPress Plugin
  * @version  0.7.0
@@ -73,9 +75,6 @@ class WP_Widget_Output_0x7x0 extends WPRun_Base_0x7x0
         $widget_output = ob_get_clean();
 
         echo apply_filters( self::FILTER_NAME, $widget_output, $widget_id_base, $widget_id );
-
-        // remove filters after applying to prevent multiple applies
-        remove_all_filters( self::FILTER_NAME );
     }
 
 }

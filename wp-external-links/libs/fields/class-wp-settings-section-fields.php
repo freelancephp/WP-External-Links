@@ -23,11 +23,13 @@ abstract class WP_Settings_Section_Fields_0x7x0 extends WPRun_Base_0x7x0
         'page_id'           => '',
         'option_name'       => '',
         'option_group'      => '',
+        'network_site'      => false,
+        'html_fields_class' => 'WP_HTML_Fields_0x7x0',
         'fields'            => array(
-            //'name' => array(
+            //'key' => array(
             //    'label'             => '',
-            //    'label_for'         => '',
-            //    'input_callback'    => '',
+            //    'class'             => '',
+            //    'default_value'     => '',
             //),
         ),
     );
@@ -38,12 +40,20 @@ abstract class WP_Settings_Section_Fields_0x7x0 extends WPRun_Base_0x7x0
     private $field_errors = array();
 
     /**
-     * Get sanitize callback
-     * F.e. when using multiple sections on one form / page
+     * @var WP_HTML_Fields_0x7x0
      */
-    final public function get_sanitize_callback()
+    private $html_fields = null;
+
+    /**
+     * @var array
+     */
+    private $option_values = array();
+
+    
+    protected function after_init()
     {
-        return $this->get_callback( 'sanitize' );
+        $this->set_option_values();
+        $this->set_html_fields();
     }
 
     /**
@@ -71,6 +81,104 @@ abstract class WP_Settings_Section_Fields_0x7x0 extends WPRun_Base_0x7x0
         $this->add_fields();
     }
 
+    private function set_option_values()
+    {
+        $saved_values = $this->get_saved_values();
+        $default_values = $this->get_default_values();
+
+        $values = wp_parse_args( $saved_values, $default_values );
+        $this->option_values = $this->prepare_field_values( $values );
+    }
+
+    final public function update_option_values( $values )
+    {
+        $sanitized_values = $this->sanitize( $values );
+        $default_values = $this->get_default_values();
+
+        $update_values = wp_parse_args( $sanitized_values, $default_values );
+
+         if ( true === $this->get_setting( 'network_site' ) ) {
+            $updated = update_site_option( $this->get_setting( 'option_name' ), $update_values );
+        } else {
+            $updated = update_option( $this->get_setting( 'option_name' ), $update_values );
+        }
+
+        if ( $updated ) {
+            $this->option_values = $values;
+        }
+
+        return $updated;
+    }
+
+    final public function delete_option_values()
+    {
+         if ( true === $this->get_setting( 'network_site' ) ) {
+            return delete_site_option( $this->get_setting( 'option_name' ) );
+        }
+
+        return delete_option( $this->get_setting( 'option_name' ) );
+    }
+
+    final public function get_option_values()
+    {
+        return $this->option_values;
+    }
+
+    final public function get_default_values()
+    {
+        $fields = $this->get_setting( 'fields' );
+
+        $default_values = array_map( function ( $arr ) {
+            if ( ! isset( $arr[ 'default_value' ] ) ) {
+                return '';
+            }
+
+            return $arr[ 'default_value' ];
+        }, $fields );
+
+        return $default_values;
+    }
+
+    final public function get_saved_values()
+    {
+        if ( true === $this->get_setting( 'network_site' ) ) {
+            $option = get_site_option( $this->get_setting( 'option_name' ) );
+        } else {
+            $option = get_option( $this->get_setting( 'option_name' ) );
+        }
+
+        $saved_values = is_array( $option ) ? $option : array();
+        return $saved_values;
+    }
+
+    protected function prepare_field_values( array $values )
+    {
+        return $values;
+    }
+
+    /**
+     * Create html fields
+     */
+    private function set_html_fields()
+    {
+        $option_name = $this->get_setting( 'option_name' );
+
+        $html_fields_class = $this->get_setting( 'html_fields_class' );
+        $this->html_fields = new $html_fields_class(
+            $this->option_values
+            , $option_name .'-%s'
+            , $option_name .'[%s]'
+        );
+    }
+
+    /**
+     * @return WP_HTML_Fields_0x7x0
+     */
+    final protected function get_html_fields()
+    {
+        return $this->html_fields;
+    }
+
     /**
      * Sanitize settings callback
      * @param array $values
@@ -78,11 +186,11 @@ abstract class WP_Settings_Section_Fields_0x7x0 extends WPRun_Base_0x7x0
      */
     protected function sanitize( $values )
     {
-        $old_values = get_option( $this->get_setting( 'option_name' ));
+        $old_values = $this->option_values;
 
         $this->field_errors = array();
 
-        $new_values = $this->update( $values, $old_values );
+        $new_values = $this->before_update( $values, $old_values );
 
         if ( count ( $this->field_errors ) > 0 ) {
             add_settings_error(
@@ -102,7 +210,10 @@ abstract class WP_Settings_Section_Fields_0x7x0 extends WPRun_Base_0x7x0
      * @param array $old_values
      * @return array
      */
-    abstract protected function update( array $new_values, array $old_values );
+    protected function before_update( array $new_values, array $old_values )
+    {
+        return $new_values;
+    }
 
     /**
      * Add fields
@@ -110,36 +221,36 @@ abstract class WP_Settings_Section_Fields_0x7x0 extends WPRun_Base_0x7x0
     protected function add_fields()
     {
         $fields = $this->get_setting( 'fields' );
-        $option_name = $this->get_setting( 'option_name' );
-
-        $option = get_option( $option_name );
-        $values = is_array( $option ) ? $option : array();
 
         foreach ( $fields as $key => $field_settings ) {
-            $input_callback = isset( $field_settings[ 'input_callback' ] ) ? $field_settings[ 'input_callback' ] : null;
-            $class = isset( $field_settings[ 'class' ] ) ? $field_settings[ 'class' ] : '';
             $label = isset( $field_settings[ 'label' ] ) ? $field_settings[ 'label' ] : '';
-            $label_for = isset( $field_settings[ 'label_for' ] ) ? $field_settings[ 'label_for' ] : '';
-
-            $field_name = $option_name .'['. $key . ']';
-            $field_value = isset( $values[ $key ] ) ? $values[ $key ] : '';
+            $class = isset( $field_settings[ 'class' ] ) ? $field_settings[ 'class' ] : '';
 
             add_settings_field(
                 $key
                 , $label
-                , $input_callback
+                , $this->get_callback( 'field_callback' )
                 , $this->get_setting( 'page_id' )
                 , $this->get_setting( 'section_id' )
                 , array(
                     'key'           => $key,
-                    'field_name'    => $field_name,
-                    'field_value'   => $field_value,
-                    'label_for'     => $label_for,
-                    'option_name'   => $option_name,
-                    'values'        => $values,
+                    'label_for'     => $this->html_fields->get_field_id( $key ),
                     'class'         => $class,
                 )
             );
+        }
+    }
+
+    /**
+     * Show field callback
+     * @param array $args
+     */
+    final protected function field_callback( array $args )
+    {
+        $field_method = 'show_'. $args[ 'key' ];
+
+        if (is_callable( array( $this, $field_method ) ) ) {
+            $this->{ $field_method }( $args );
         }
     }
 

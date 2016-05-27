@@ -78,40 +78,42 @@ class WP_HTML_Fields_0x7x0
     /**
      * Show html label
      * @param string $key
-     * @param string $labelText
+     * @param string $label_text
+     * @param array $atts  Optional
      */
-    public function label( $key, $labelText )
+    public function label( $key, $label_text, array $atts = array() )
     {
-        echo '<label for="' . $this->get_field_id( $key ) . '">
-                     ' . $labelText . '
-               </label>';
+        echo '<label for="' . $this->get_field_id( $key ) . '"
+                    ' . $this->get_html_atts( $atts ) . '
+                >' . $label_text . '
+                </label>';
     }
 
     /**
      * Show text input field
      * @param string $key
-     * @param string $class
+     * @param array  $atts  Optional
      */
-    public function text( $key, $class = 'regular-text' )
+    public function text( $key, array $atts = array() )
     {
         echo '<input type="text"
-                    class="' . $class . '"
                     id="' . $this->get_field_id( $key ) . '"
                     name="' . $this->get_field_name( $key ) . '"
                     value="' . esc_attr( $this->get_value( $key ) ) . '"
+                    ' . $this->get_html_atts( $atts ) . '
                 >';
     }
 
     /**
      * Show text input field
      * @param string $key
-     * @param string $class
+     * @param array  $atts  Optional
      */
-    public function text_area( $key, $class = 'large-text' )
+    public function text_area( $key, array $atts = array() )
     {
-        echo '<textarea class="' . $class . '"
-                    id="' . $this->get_field_id( $key ) . '"
+        echo '<textarea id="' . $this->get_field_id( $key ) . '"
                     name="' . $this->get_field_name( $key ) . '"
+                    ' . $this->get_html_atts( $atts ) . '
                 >'. esc_textarea( $this->get_value( $key ) ) .'</textarea>';
     }
 
@@ -120,9 +122,9 @@ class WP_HTML_Fields_0x7x0
      * @param string $key
      * @param mixed $checked_value
      * @param mixed $unchecked_value
-     * @param string $class
+     * @param array $atts  Optional
      */
-    public function check( $key, $checked_value, $unchecked_value = null, $class = '' )
+    public function check( $key, $checked_value = '1', $unchecked_value = '', array $atts = array() )
     {
         // workaround for also posting a value when checkbox is unchecked
         if ( null !== $unchecked_value ) {
@@ -133,31 +135,62 @@ class WP_HTML_Fields_0x7x0
         }
 
         echo '<input type="checkbox"
-                    class="' . $class . '"
                     id="' . $this->get_field_id( $key ) . '"
                     name="' . $this->get_field_name( $key ) . '"
                     value="' . esc_attr( $checked_value ) . '"
                     ' . $this->get_checked_attr( $key, $checked_value ) . '
+                    ' . $this->get_html_atts( $atts ) . '
                 >';
+    }
+
+    /**
+     * Show a check field with label
+     * @param string $key
+     * @param string $label_text
+     * @param mixed $checked_value
+     * @param mixed $unchecked_value
+     * @param array $atts  Optional
+     */
+    public function check_with_label( $key, $label_text, $checked_value, $unchecked_value = null, array $atts = array() )
+    {
+        echo '<label>';
+        $this->check( $key, $checked_value, $unchecked_value, $atts );
+        echo $label_text;
+        echo '</label>';
     }
 
     /**
      * Show a radio field
      * @param string $key
      * @param mixed $checked_value
-     * @param string $class
+     * @param array $atts  Optional
      */
-    public function radio( $key, $checked_value, $class = '' )
+    public function radio( $key, $checked_value, array $atts = array() )
     {
         $id = $this->get_field_id( $key ) . '-' . sanitize_key( $checked_value );
 
         echo '<input type="radio"
-                    class="' . $class . '"
                     id="' . $id . '"
                     name="' . $this->get_field_name( $key ) . '"
                     value="' . esc_attr( $checked_value ) . '"
                     ' . $this->get_checked_attr( $key, $checked_value ) . '
+                    ' . $this->get_html_atts( $atts ) . '
                 >';
+    }
+
+    /**
+     * Show a check field with label
+     * @param string $key
+     * @param string $label_text
+     * @param mixed $checked_value
+     * @param array $atts  Optional
+     */
+    public function radio_with_label( $key, $label_text, $checked_value, array $atts = array() )
+    {
+        echo '<label>';
+        $this->radio( $key, $checked_value, $atts );
+        echo $label_text;
+        echo '</label>';
     }
 
     /**
@@ -165,18 +198,19 @@ class WP_HTML_Fields_0x7x0
      * @param string $key
      * @param mixed $checked_value
      * @param array $options
-     * @param string $class
+     * @param array $atts  Optional
      */
-    public function select( $key, $checked_value, array $options = array(), $class = '' )
+    public function select( $key, array $options = array(), array $atts = array() )
     {
-        echo '<select class="' . $class . '"
-                    class="' . $class . '"
-                    id="' . $this->get_field_id( $key ) . '"
+        $value = $this->get_value( $key );
+
+        echo '<select id="' . $this->get_field_id( $key ) . '"
                     name="' . $this->get_field_name( $key ) . '"
+                    ' . $this->get_html_atts( $atts ) . '
                 >';
 
-        foreach ( $options as $value => $text ) {
-            $this->select_option( $text, $value, ( $checked_value == $value ) );
+        foreach ( $options as $option_value => $option_text ) {
+            $this->select_option( $option_text, $option_value, ( $value == $option_value ) );
         }
 
         echo '</select>';
@@ -193,6 +227,25 @@ class WP_HTML_Fields_0x7x0
         echo '<option value="' . esc_attr( $value ) . '"' . ( $selected ? ' selected' : '' ) . '>
                     ' . $text  . '
                </option>';
+    }
+
+    /**
+     * @param array $atts
+     * @return string
+     */
+    private function get_html_atts( array $atts )
+    {
+        $html_atts = '';
+
+		foreach ( $atts as $key => $value ) {
+            if ( null === $value ) {
+    			$html_atts .= ' '. $key;
+            } else {
+    			$html_atts .= ' '. $key .'="'. esc_attr( $value ) .'"';
+            }
+        }
+
+        return $html_atts;
     }
 
     /**
