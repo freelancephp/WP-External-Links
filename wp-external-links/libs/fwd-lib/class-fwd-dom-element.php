@@ -37,7 +37,8 @@ class FWD_DOM_Element_0x7x0 extends DOMElement
         }
 
         $element = self::$doc->createElement( $tagName );
-        $element->setContent( $content );
+//        $element->setContent( $content );
+        $element->nodeValue = $content;
         $element->setAttributes( $attributes );
 
         return $element;
