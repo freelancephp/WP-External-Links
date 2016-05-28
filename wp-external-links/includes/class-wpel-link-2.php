@@ -1,6 +1,6 @@
 <?php
 /**
- * Class WPEL_Link
+ * Class WPEL_Link_2
  *
  * This class extends DOMElement which uses the camelCase naming style.
  * Therefore this class also contains camelCase names.
@@ -13,7 +13,7 @@
  * @link     https://github.com/freelancephp/WPRun-Plugin-Base
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-class WPEL_Link extends FWD_DOM_Element_0x7x0
+class WPEL_Link_2 extends DOMElement
 {
 
     /**
@@ -73,5 +73,6 @@ class WPEL_Link extends FWD_DOM_Element_0x7x0
     }
 
 }
+
 
 /*?>*/

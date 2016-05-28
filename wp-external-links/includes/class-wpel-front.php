@@ -139,11 +139,14 @@ final class WPEL_Front extends WPRun_Base_0x7x0
         $label = $matches[ 2 ];
 
         $created_link = $this->get_created_link( $label, $atts );
+//        $created_link = $this->get_created_link_2( $label, $atts );
 
         if ( false === $created_link ) {
             return $original_link;
         }
-
+//debug($original_link);
+//debug($created_link);
+//return $original_link;
         return $created_link;
     }
 
@@ -155,7 +158,145 @@ final class WPEL_Front extends WPRun_Base_0x7x0
      */
     protected function get_created_link( $label, array $atts )
     {
-        $link = new WPEL_Link( 'a', $atts, $label );
+        $link = WPEL_Link::create( 'a', $label, $atts );
+
+        if ( $link->isIgnore() ) {
+            return false;
+        }
+
+        $url = $link->getAttribute( 'href' );
+
+        $excludes_as_internal_links = $this->opt( 'excludes_as_internal_links' );
+
+        // exceptions
+        $is_included = $link->isExternal() || $this->is_included_url( $url );
+        $is_excluded = $link->isExcluded() || $this->is_excluded_url( $url );
+
+        // is internal or external
+        $is_internal = ( $link->isInternal() || $this->is_internal_url( $url ) ) || ( $is_excluded && $excludes_as_internal_links );
+        $is_external = ( $link->isExternal() || $is_included ) || ( ! $is_internal && ! $is_excluded );
+
+        if ( $is_external ) {
+            $link->setExternal();
+            $this->apply_link_settings( $link, 'external-links' );
+        } else if ( $is_internal ) {
+            $link->setInternal();
+            $this->apply_link_settings( $link, 'internal-links' );
+        } else {
+            $link->setExcluded();
+        }
+
+        /**
+         * Action for changing link object
+         * @param WPEL_Link $link
+         * @return void
+         */
+        do_action( 'wpel_link', $link );
+
+        return $link->getHTML();
+    }
+
+    /**
+     * @param WPEL_Link $link
+     * @param string $type
+     */
+    protected function apply_link_settings( WPEL_Link $link, $type )
+    {
+        if ( ! $this->opt( 'apply_settings', $type ) ) {
+            return;
+        }
+
+        // set target
+        $target = $this->opt( 'target', $type );
+        $target_overwrite = $this->opt( 'target_overwrite', $type );
+        $has_target = $link->hasAttribute( 'target' );
+
+        if ( $target && ( ! $has_target || $target_overwrite ) ) {
+            $link->setAttribute( 'target', $target );
+        }
+
+        // add "follow" / "nofollow"
+        $follow = $this->opt( 'rel_follow', $type );
+        $follow_overwrite = $this->opt( 'rel_follow_overwrite', $type );
+        $has_follow = $link->hasAttributeValue( 'rel', 'follow' ) || $link->hasAttributeValue( 'rel', 'nofollow' );
+
+        if ( $follow && ( ! $has_follow || $follow_overwrite ) ) {
+            if ( $has_follow ) {
+                $link->removeValueFromAttribute( 'rel', 'follow' );
+                $link->removeValueFromAttribute( 'rel', 'nofollow' );
+            }
+
+            $link->addValueToAttribute( 'rel', $follow );
+        }
+
+        // add "external"
+        if ( $this->opt( 'rel_external', $type ) ) {
+            $link->addValueToAttribute( 'rel', 'external' );
+        }
+
+        // add "noopener"
+        if ( $this->opt( 'rel_noopener', $type ) ) {
+            $link->addValueToAttribute( 'rel', 'noopener' );
+        }
+
+        // add "noreferrer"
+        if ( $this->opt( 'rel_noreferrer', $type ) ) {
+            $link->addValueToAttribute( 'rel', 'noreferrer' );
+        }
+
+        // set title
+        $title_format = $this->opt( 'title', $type );
+
+        if ( $title_format ) {
+            $title = $link->getAttribute( 'title' );
+            $text = esc_attr( $link->getContent() );
+            $new_title = str_replace( array( '{title}', '{text}' ), array( $title, $text ), $title_format );
+
+            if ( $new_title ) {
+                $link->setAttribute( 'title', $new_title );
+            }
+        }
+
+        // add classes
+        $class = $this->opt( 'class', $type );
+
+        if ( $class ) {
+            $link->addValueToAttribute( 'class', $class );
+        }
+
+        // add icon
+        $icon_type = $this->opt( 'icon_type', $type );
+        $no_icon_for_img = $this->opt( 'no_icon_for_img', $type );
+        $has_img = preg_match( '/<img([^>]*)>/is', $link->getContent() );
+
+        if ( $icon_type && ! ( $has_img && $no_icon_for_img ) ) {
+            if ( 'dashicon' === $icon_type ) {
+                $dashicon = $this->opt( 'dashicon', $type );
+                $icon = '<i class="dashicons-before '. $dashicon .'"></i>';
+            } else if ( 'fontawesome' === $icon_type ) {
+                $fa = $this->opt( 'fontawesome', $type );
+                $icon = '<i class="fa '. $fa .'" aria-hidden="true"></i>';
+            }
+
+            if ( 'left' === $this->opt( 'icon_position', $type ) ) {
+                $new_content = $icon .' '. $link->getContent();
+            } else {
+                $new_content = $link->getContent() .' '. $icon;
+            }
+
+            $link->setContent( $new_content );
+        }
+    }
+
+    /**
+     * Create html link
+     * @param string $label
+     * @param array $atts
+     * @return string
+     */
+    protected function get_created_link_2( $label, array $atts )
+    {
+        $link = new WPEL_Link_2( 'a', $atts, $label );
 
         if ( $link->is_ignore() ) {
             return false;
@@ -175,10 +316,10 @@ final class WPEL_Front extends WPRun_Base_0x7x0
 
         if ( $is_external ) {
             $link->set_external();
-            $this->apply_link_settings( $link, 'external-links' );
+            $this->apply_link_settings_2( $link, 'external-links' );
         } else if ( $is_internal ) {
             $link->set_internal();
-            $this->apply_link_settings( $link, 'internal-links' );
+            $this->apply_link_settings_2( $link, 'internal-links' );
         } else {
             $link->set_excluded();
         }
@@ -207,7 +348,7 @@ final class WPEL_Front extends WPRun_Base_0x7x0
      * @param WPEL_Link $link
      * @param string $type
      */
-    protected function apply_link_settings( WPEL_Link $link, $type )
+    protected function apply_link_settings_2( WPEL_Link $link, $type )
     {
         if ( ! $this->opt( 'apply_settings', $type ) ) {
             return;
