@@ -13,66 +13,59 @@
  * @link     https://github.com/freelancephp/WPRun-Plugin-Base
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-class WPEL_Link_2 extends DOMElement
+class WPEL_Link_2 extends WP_HTML_Element_0x7x0
 {
-
     /**
      * Mark as external link (by setting data attribute)
      */
-    public function setExternal()
+    public function set_external()
     {
-        $this->setAttribute( 'data-wpel-link', 'external' );
+        $this->set_attr( 'data-wpel-link', 'external' );
     }
-
     /**
      * @return boolean
      */
-    public function isExternal()
+    public function is_external()
     {
-        return 'external' === $this->getAttribute( 'data-wpel-link' );
+        return 'external' === $this->get_attr( 'data-wpel-link' );
     }
-
     /**
      * Mark as internal link (by setting data attribute)
      */
-    public function setInternal()
+    public function set_internal()
     {
-        $this->setAttribute( 'data-wpel-link', 'internal' );
+        $this->set_attr( 'data-wpel-link', 'internal' );
     }
-
     /**
      * @return boolean
      */
-    public function isInternal()
+    public function is_internal()
     {
-        return 'internal' === $this->getAttribute( 'data-wpel-link' );
+        return 'internal' === $this->get_attr( 'data-wpel-link' );
     }
-
     /**
      * Mark as excluded link (by setting data attribute)
      */
-    public function setExcluded()
+    public function set_excluded()
     {
-        $this->setAttribute( 'data-wpel-link', 'excluded' );
+        $this->set_attr( 'data-wpel-link', 'excluded' );
     }
-
     /**
      * @return boolean
      */
-    public function isExcluded()
+    public function is_excluded()
     {
-        return 'excluded' === $this->getAttribute( 'data-wpel-link' );
+        return 'excluded' === $this->get_attr( 'data-wpel-link' );
     }
-
     /**
      * @return boolean
      */
-    public function isIgnore()
+    public function is_ignore()
     {
-        return 'ignore' === $this->getAttribute( 'data-wpel-link' );
+        return 'ignore' === $this->get_attr( 'data-wpel-link' );
     }
-
 }
+
 
 
 /*?>*/

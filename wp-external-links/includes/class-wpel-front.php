@@ -116,6 +116,21 @@ final class WPEL_Front extends WPRun_Base_0x7x0
 
 		$content = preg_replace_callback( $regexp_links, $this->get_callback( 'match_link' ), $content );
 
+//        $dom = new DOMDocument();
+//
+//        try {
+//            $dom->loadHTML( $content );
+//            $links = $dom->getElementsByTagName( 'a' );
+//
+//            foreach ( $links as $link ) {
+//                $this->link_settings( $link );
+//            }
+//        } catch ( Exception $exception ) {
+//            debug( $exception );
+//        }
+//
+//        $content = $dom->saveHTML();
+
        /**
         * Filters after scanning content
         * @param string $content
@@ -138,8 +153,8 @@ final class WPEL_Front extends WPRun_Base_0x7x0
         $atts = shortcode_parse_atts( $matches[ 1 ] );
         $label = $matches[ 2 ];
 
-        $created_link = $this->get_created_link( $label, $atts );
-//        $created_link = $this->get_created_link_2( $label, $atts );
+//        $created_link = $this->get_created_link( $label, $atts );
+        $created_link = $this->get_created_link_2( $label, $atts );
 
         if ( false === $created_link ) {
             return $original_link;
@@ -348,7 +363,7 @@ final class WPEL_Front extends WPRun_Base_0x7x0
      * @param WPEL_Link $link
      * @param string $type
      */
-    protected function apply_link_settings_2( WPEL_Link $link, $type )
+    protected function apply_link_settings_2( WPEL_Link_2 $link, $type )
     {
         if ( ! $this->opt( 'apply_settings', $type ) ) {
             return;
