@@ -206,8 +206,9 @@ final class WPEL_Front extends WPRun_Base_0x7x0
          * @return void
          */
         do_action( 'wpel_link', $link );
-debug($link->ownerDocument->saveHTML($link));
-debug($link->ownerDocument->saveXML($link));
+//debug($link->ownerDocument->saveHTML($link));
+//debug($link->ownerDocument->saveXML($link));
+debug($link->getHTML());
         return $link->getHTML();
     }
 

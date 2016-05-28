@@ -19,11 +19,6 @@ class FWD_DOM_Element_0x7x0 extends DOMElement
     private static $doc = null;
 
     /**
-     * @var string
-     */
-    private $content = null;
-
-    /**
      * Factory method
      * @param string $tagName
      * @param string $content
@@ -37,8 +32,7 @@ class FWD_DOM_Element_0x7x0 extends DOMElement
         }
 
         $element = self::$doc->createElement( $tagName );
-//        $element->setContent( $content );
-        $element->nodeValue = $content;
+        $element->setContent( $content );
         $element->setAttributes( $attributes );
 
         return $element;
@@ -146,14 +140,31 @@ class FWD_DOM_Element_0x7x0 extends DOMElement
         $this->setAttribute( $name, $newAttrValue );
     }
 
+    public function removeChilds()
+    {
+        foreach ( $this->childNodes as $childNode ) {
+            $this->removeChild( $childNode );
+        }
+    }
+
     /**
      * Set element content
-     * @param string $value
-     * @param boolean $asHTML
+     * @param string $content
      */
     public function setContent( $content )
     {
-        $this->content = $content;
+//        $element->nodeValue = $content;
+        
+        $this->removeChilds();
+
+        $fragment = self::$doc->createDocumentFragment();
+
+        $content = str_replace( '&', '-', $content );
+
+        $fragment->appendXML( $content );
+        $this->appendChild( $fragment );
+        
+//        $this->content = $content;
     }
 
     /**
@@ -162,7 +173,7 @@ class FWD_DOM_Element_0x7x0 extends DOMElement
      */
     public function getContent()
     {
-        return $this->content;
+        return $this->nodeValue;
     }
 
     /**
@@ -183,10 +194,21 @@ class FWD_DOM_Element_0x7x0 extends DOMElement
             }
         }
 
-        if ( null === $this->content ) {
+        if ( null === $this->nodeValue ) {
     		$link .= '>';
         } else {
-    		$link .= '>'. $this->content .'</'. $this->tagName .'>';
+//    		$link .= '>'. $this->nodeValue .'</'. $this->tagName .'>';
+    		$link .= '>';
+
+            foreach ( $this->childNodes as $childNode ) {
+                if ( $childNode instanceof DOMText ) {
+                    $link .= $childNode->wholeText;
+                } else {
+                    $link .= $childNode->getHTML();
+                }
+            }
+
+    		$link .= '</'. $this->tagName .'>';
         }
 
         return $link;
@@ -201,23 +223,18 @@ class FWD_DOM_Element_0x7x0 extends DOMElement
     }
 
 //    /**
-//     * @return string
+//     * Append given html
+//     * @param string $html
 //     */
-//    public function getHTML()
+//    public function appendHTML( $html )
 //    {
-//        return self::$doc->saveXML( $this );
-//    }
+////        if ( version_compare( phpversion(), '5.3.6', '<' ) ) {
+//            $this->removeChilds();
+//
+//            $fragment = self::$doc->createDocumentFragment();
+//            $fragment->appendXML( $html );
+//            $this->appendChild( $fragment );
 
-    /**
-     * Append given html
-     * @param string $html
-     */
-    public function appendHTML( $html )
-    {
-//        if ( version_compare( phpversion(), '5.3.6', '<' ) ) {
-            $fragment = self::$doc->createDocumentFragment();
-            $fragment->appendXML( $html );
-            $this->appendChild( $fragment );
 //        } else {
 //            $doc = self::createDocument();
 //            $doc->loadHTML( $html );
@@ -227,10 +244,10 @@ class FWD_DOM_Element_0x7x0 extends DOMElement
 //                $this->appendChild( $node );
 //            }
 //        }
-    }
-
-    public function prependHTML()
-    {
+//    }
+//
+//    public function prependHTML()
+//    {
 
 //        $value = $this->nodeValue;
 //        $this->nodeValue = '';
@@ -247,9 +264,14 @@ class FWD_DOM_Element_0x7x0 extends DOMElement
 //
 //        foreach ( $newDoc->getElementsByTagName('body')->item(0)->childNodes as $childNode ) {
 //            $node = self::$doc->importNode( $childNode );
-//            $this->appendChild( $node );
-//        }
-    }
+//
+//    /**
+//     * @return string
+//     */
+//    public function getHTML()
+//    {
+//        return self::$doc->saveXML( $this );
+//    }
 
 }
 
