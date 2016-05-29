@@ -151,20 +151,32 @@ class FWD_DOM_Element_0x7x0 extends DOMElement
      * Set element content
      * @param string $content
      */
-    public function setContent( $content )
+    public function setContent( $content, $preserveHTML = true )
     {
-//        $element->nodeValue = $content;
-        
-        $this->removeChilds();
+//        if ( false !== strpos( $content, '&' ) ) {
+//            $content = htmlentities( $content, ENT_XML1 );
+//
+//            debug($content);
+//            $this->nodeValue = $content;
+//            return;
+//        }
+debug($content);
+        $this->appendHTML( $content );
 
-        $fragment = self::$doc->createDocumentFragment();
 
-        $content = str_replace( '&', '-', $content );
+//        $this->removeChilds();
+//        $fragment = self::$doc->createDocumentFragment();
+//        $fragment->appendXML( $content );
+//        $this->appendChild( $fragment );
+    }
 
-        $fragment->appendXML( $content );
-        $this->appendChild( $fragment );
-        
-//        $this->content = $content;
+    public function appendHTML( $source ) {
+        $tmpDoc = self::createDocument();
+        $tmpDoc->loadHTML($source);
+        foreach ($tmpDoc->getElementsByTagName('body')->item(0)->childNodes as $node) {
+            $node = $this->ownerDocument->importNode($node);
+            $this->appendChild($node);
+        }
     }
 
     /**
@@ -197,7 +209,6 @@ class FWD_DOM_Element_0x7x0 extends DOMElement
         if ( null === $this->nodeValue ) {
     		$link .= '>';
         } else {
-//    		$link .= '>'. $this->nodeValue .'</'. $this->tagName .'>';
     		$link .= '>';
 
             foreach ( $this->childNodes as $childNode ) {
