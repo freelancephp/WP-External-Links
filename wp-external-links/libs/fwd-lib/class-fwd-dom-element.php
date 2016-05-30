@@ -23,7 +23,7 @@ class FWD_DOM_Element_0x7x0 extends DOMElement
      * @param string $tagName
      * @param string $content
      * @param array $attributes
-     * @return WPEL_Link
+     * @return FWD_DOM_Element_0x7x0
      */
     public static function create( $tagName, $content = null, array $attributes = array() )
     {
@@ -49,6 +49,24 @@ class FWD_DOM_Element_0x7x0 extends DOMElement
         $doc = new DOMDocument();
         $doc->registerNodeClass( 'DOMElement', get_called_class() );
         return $doc;
+    }
+
+    /**
+     * Set element content
+     * @param string $content
+     */
+    public function setContent( $content )
+    {
+        $this->nodeValue = $content;
+    }
+
+    /**
+     * Get element content
+     * @return string
+     */
+    public function getContent()
+    {
+        return $this->nodeValue;
     }
 
     /**
@@ -102,7 +120,7 @@ class FWD_DOM_Element_0x7x0 extends DOMElement
      * @param string $value
      * @return boolean
      */
-    public function addValueToAttribute( $name, $value )
+    public function addToAttribute( $name, $value )
     {
         $attrValue = $this->getAttribute( $name );
 
@@ -125,7 +143,7 @@ class FWD_DOM_Element_0x7x0 extends DOMElement
      * @param string $value
      * @return boolean
      */
-    public function removeValueFromAttribute( $name, $value )
+    public function removeFromAttribute( $name, $value )
     {
         if ( ! $this->hasAttributeValue( $name, $value ) ) {
             return;
@@ -140,7 +158,10 @@ class FWD_DOM_Element_0x7x0 extends DOMElement
         $this->setAttribute( $name, $newAttrValue );
     }
 
-    public function removeChilds()
+    /**
+     * Remove all childs
+     */
+    public function removeAllChilds()
     {
         foreach ( $this->childNodes as $childNode ) {
             $this->removeChild( $childNode );
@@ -148,48 +169,45 @@ class FWD_DOM_Element_0x7x0 extends DOMElement
     }
 
     /**
-     * Set element content
-     * @param string $content
+     * Prepend child element
+     * @param FWD_DOM_Element_0x7x0 $element
      */
-    public function setContent( $content, $preserveHTML = true )
+    public function prependChild( $element )
     {
-//        if ( false !== strpos( $content, '&' ) ) {
-//            $content = htmlentities( $content, ENT_XML1 );
-//
-//            debug($content);
-//            $this->nodeValue = $content;
-//            return;
-//        }
-debug($content);
-        $this->appendHTML( $content );
-
-
-//        $this->removeChilds();
-//        $fragment = self::$doc->createDocumentFragment();
-//        $fragment->appendXML( $content );
-//        $this->appendChild( $fragment );
-    }
-
-    public function appendHTML( $source ) {
-        $tmpDoc = self::createDocument();
-        $tmpDoc->loadHTML($source);
-        foreach ($tmpDoc->getElementsByTagName('body')->item(0)->childNodes as $node) {
-            $node = $this->ownerDocument->importNode($node);
-            $this->appendChild($node);
+        if ( count( $this->childNodes ) > 0 ) {
+            $this->insertBefore( $element, $this->childNodes->item( 0 ) );
+        } else {
+            $this->appendChild( $element );
         }
     }
 
     /**
-     * Get element content
-     * @return string
+     * Append HTML content
+     * @param string $html
      */
-    public function getContent()
+    public function appendHTML( $html )
     {
-        return $this->nodeValue;
+        $tmpDoc = self::createDocument();
+        $tmpDoc->loadHTML( $html );
+
+        foreach ( $tmpDoc->getElementsByTagName( 'body' )->item( 0 )->childNodes as $node ) {
+            $node = $this->ownerDocument->importNode( $node );
+            $this->appendChild( $node );
+        }
+
+        // method 2:
+        //$fragment = self::$doc->createDocumentFragment();
+        //$fragment->appendXML( $html );
+        //$this->appendChild( $fragment );
     }
 
     /**
      * Return valid HTML5
+     * Instead of:
+     * <code>
+     *      self::$doc->saveXML( $this );
+     * </code>
+     * 
      * @return string
      */
     public function getHTML()
@@ -214,7 +232,7 @@ debug($content);
             foreach ( $this->childNodes as $childNode ) {
                 if ( $childNode instanceof DOMText ) {
                     $link .= $childNode->wholeText;
-                } else {
+                } elseif ( $childNode instanceof FWD_DOM_Element_0x7x0 ) {
                     $link .= $childNode->getHTML();
                 }
             }
@@ -224,65 +242,6 @@ debug($content);
 
         return $link;
     }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->getHTML();
-    }
-
-//    /**
-//     * Append given html
-//     * @param string $html
-//     */
-//    public function appendHTML( $html )
-//    {
-////        if ( version_compare( phpversion(), '5.3.6', '<' ) ) {
-//            $this->removeChilds();
-//
-//            $fragment = self::$doc->createDocumentFragment();
-//            $fragment->appendXML( $html );
-//            $this->appendChild( $fragment );
-
-//        } else {
-//            $doc = self::createDocument();
-//            $doc->loadHTML( $html );
-
-//            foreach ( $doc->getElementsByTagName('body')->item(0)->childNodes as $childNode ) {
-//                $node = $doc->importNode( $childNode );
-//                $this->appendChild( $node );
-//            }
-//        }
-//    }
-//
-//    public function prependHTML()
-//    {
-
-//        $value = $this->nodeValue;
-//        $this->nodeValue = '';
-//
-//        $newDoc = self::createDocument();
-//        $newDoc->loadHTML( $html );
-//
-//        $textElement = self::create( 'span' );
-//        $textElement->setAttribute( 'class', 'wpel-text' );
-////        $textElement->setValue( $value );
-//        $textElement->nodeValue = $value;
-//
-//        $this->appendChild( $textElement );
-//
-//        foreach ( $newDoc->getElementsByTagName('body')->item(0)->childNodes as $childNode ) {
-//            $node = self::$doc->importNode( $childNode );
-//
-//    /**
-//     * @return string
-//     */
-//    public function getHTML()
-//    {
-//        return self::$doc->saveXML( $this );
-//    }
 
 }
 
