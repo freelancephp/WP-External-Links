@@ -72,10 +72,20 @@ final class WPEL_Front extends WPRun_Base_0x7x0
         if ( 'dashicon' === $icon_type_int || 'dashicon' === $icon_type_ext ) {
             wp_enqueue_style( 'dashicons' );
         }
+
         if ( 'fontawesome' === $icon_type_int || 'fontawesome' === $icon_type_ext ) {
             wp_enqueue_style(
                 'font-awesome'
                 , 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'
+                , array()
+                , null
+            );
+        }
+
+        if ( $this->opt( 'icon_type', 'external-links' ) || $this->opt( 'icon_type', 'internal-links' ) ) {
+            wp_enqueue_style(
+                'wpel-style'
+                , plugins_url( '/public/css/wpel.css', WPEL_Plugin::get_plugin_file() )
                 , array()
                 , null
             );
@@ -116,26 +126,26 @@ final class WPEL_Front extends WPRun_Base_0x7x0
 
 		$content = preg_replace_callback( $regexp_links, $this->get_callback( 'match_link' ), $content );
 
-//        $dom = new DOMDocument();
-//
-//        try {
-//            $dom->loadHTML( $content );
-//            $links = $dom->getElementsByTagName( 'a' );
-//
-//            foreach ( $links as $link ) {
-//                $this->link_settings( $link );
-//            }
-//        } catch ( Exception $exception ) {
-//            debug( $exception );
-//        }
-//
-//        $content = $dom->saveHTML();
+        $dom = FWD_DOM_Element_0x7x0::createDocument();
+
+        try {
+            $dom->loadHTML( $content );
+            $links = $dom->getElementsByTagName( 'a' );
+
+            foreach ( $links as $link ) {
+                $this->set_link( $link );
+            }
+        } catch ( Exception $exception ) {
+            debug( $exception );
+        }
+
+        $content = $dom->saveHTML();
 
        /**
         * Filters after scanning content
         * @param string $content
         */
-        $content = apply_filters( 'wpel_after_filter', $content );
+//        $content = apply_filters( 'wpel_after_filter', $content );
 
         WP_Debug_0x7x0::end_benchmark( 'scan_links' );
 
@@ -158,9 +168,7 @@ final class WPEL_Front extends WPRun_Base_0x7x0
         if ( false === $created_link ) {
             return $original_link;
         }
-//debug($original_link);
-//debug($created_link);
-//return $original_link;
+
         return $created_link;
     }
 
@@ -173,7 +181,17 @@ final class WPEL_Front extends WPRun_Base_0x7x0
     protected function get_created_link( $label, array $atts )
     {
         $link = WPEL_Link::create( 'a', $label, $atts );
+        $this->set_link( $link );
 
+        return $link->getHTML();
+    }
+
+    /**
+     * Set link
+     * @param WPEL_Link $link
+     */
+    protected function set_link( WPEL_Link $link )
+    {
         if ( $link->isIgnore() ) {
             return false;
         }
@@ -206,10 +224,6 @@ final class WPEL_Front extends WPRun_Base_0x7x0
          * @return void
          */
         do_action( 'wpel_link', $link );
-//debug($link->ownerDocument->saveHTML($link));
-//debug($link->ownerDocument->saveXML($link));
-//debug($link->getHTML());
-        return $link->getHTML();
     }
 
     /**
@@ -238,26 +252,26 @@ final class WPEL_Front extends WPRun_Base_0x7x0
 
         if ( $follow && ( ! $has_follow || $follow_overwrite ) ) {
             if ( $has_follow ) {
-                $link->removeValueFromAttribute( 'rel', 'follow' );
-                $link->removeValueFromAttribute( 'rel', 'nofollow' );
+                $link->removeFromAttribute( 'rel', 'follow' );
+                $link->removeFromAttribute( 'rel', 'nofollow' );
             }
 
-            $link->addValueToAttribute( 'rel', $follow );
+            $link->addToAttribute( 'rel', $follow );
         }
 
         // add "external"
         if ( $this->opt( 'rel_external', $type ) ) {
-            $link->addValueToAttribute( 'rel', 'external' );
+            $link->addToAttribute( 'rel', 'external' );
         }
 
         // add "noopener"
         if ( $this->opt( 'rel_noopener', $type ) ) {
-            $link->addValueToAttribute( 'rel', 'noopener' );
+            $link->addToAttribute( 'rel', 'noopener' );
         }
 
         // add "noreferrer"
         if ( $this->opt( 'rel_noreferrer', $type ) ) {
-            $link->addValueToAttribute( 'rel', 'noreferrer' );
+            $link->addToAttribute( 'rel', 'noreferrer' );
         }
 
         // set title
@@ -277,7 +291,7 @@ final class WPEL_Front extends WPRun_Base_0x7x0
         $class = $this->opt( 'class', $type );
 
         if ( $class ) {
-            $link->addValueToAttribute( 'class', $class );
+            $link->addToAttribute( 'class', $class );
         }
 
         // add icon
@@ -288,19 +302,25 @@ final class WPEL_Front extends WPRun_Base_0x7x0
         if ( $icon_type && ! ( $has_img && $no_icon_for_img ) ) {
             if ( 'dashicon' === $icon_type ) {
                 $dashicon = $this->opt( 'dashicon', $type );
-                $icon = '<i class="dashicons-before '. $dashicon .'"></i>';
+                $icon = FWD_DOM_Element_0x7x0::create( 'i', '', array(
+                    'class'         => 'wpel-icon dashicons-before '. $dashicon,
+                    'aria-hidden'   => 'true',
+                ) );
             } else if ( 'fontawesome' === $icon_type ) {
                 $fa = $this->opt( 'fontawesome', $type );
-                $icon = '<i class="fa '. $fa .'" aria-hidden="true"></i>';
+                $icon = FWD_DOM_Element_0x7x0::create( 'i', '', array( 
+                    'class'         => 'wpel-icon fa '. $fa,
+                    'aria-hidden'   => 'true',
+                ) );
             }
 
             if ( 'left' === $this->opt( 'icon_position', $type ) ) {
-                $new_content = $icon .' '. $link->getContent();
+                $link->addToAttribute( 'class', 'wpel-icon-left' );
+                $link->prependChild( $icon );
             } else {
-                $new_content = $link->getContent() .' '. $icon;
+                $link->addToAttribute( 'class', 'wpel-icon-right' );
+                $link->appendChild( $icon );
             }
-
-            $link->setContent( $new_content );
         }
     }
 
