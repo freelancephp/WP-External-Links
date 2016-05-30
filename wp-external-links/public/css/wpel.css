@@ -1,0 +1,12 @@
+/*
+    WP External Links Plugin
+    Front Style
+*/
+
+.wpel-icon-left i.wpel-icon {
+    margin-right: 0.3em;
+}
+
+.wpel-icon-right i.wpel-icon {
+    margin-left: 0.3em;
+}
