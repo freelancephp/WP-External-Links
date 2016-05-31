@@ -98,7 +98,6 @@ final class WPEL_Registerhooks extends WPRun_Base_0x7x0
             $exceptions_link_values[ 'apply_comments' ] = $old_main[ 'filter_comments' ];
             $exceptions_link_values[ 'apply_widgets' ] = $old_main[ 'filter_widgets' ];
             $exceptions_link_values[ 'exclude_urls' ] = $old_main[ 'ignore' ];
-
         }
         if ( ! empty( $old_seo ) ) {
             $external_link_values[ 'rel_follow' ] = ( 1 == $old_seo[ 'nofollow' ] ) ? 'nofollow' : 'follow';
@@ -108,8 +107,8 @@ final class WPEL_Registerhooks extends WPRun_Base_0x7x0
         }
         if ( ! empty( $old_style ) ) {
             if ( $old_style[ 'icon' ] ) {
-                $external_link_values[ 'icon_type' ] = 'fontawesome';
-                $external_link_values[ 'icon_fontawesome' ] = 'fa-external-link';
+                $external_link_values[ 'icon_type' ] = 'image';
+                $external_link_values[ 'icon_image' ] = $old_style[ 'icon' ];
             }
             $external_link_values[ 'class' ] = $old_style[ 'class_name' ];
             $external_link_values[ 'no_icon_for_img' ] = (string) $old_style[ 'image_no_icon' ];
