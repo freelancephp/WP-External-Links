@@ -126,26 +126,11 @@ final class WPEL_Front extends WPRun_Base_0x7x0
 
 		$content = preg_replace_callback( $regexp_links, $this->get_callback( 'match_link' ), $content );
 
-        $dom = FWD_DOM_Element_0x7x0::createDocument();
-
-        try {
-            $dom->loadHTML( $content );
-            $links = $dom->getElementsByTagName( 'a' );
-
-            foreach ( $links as $link ) {
-                $this->set_link( $link );
-            }
-        } catch ( Exception $exception ) {
-            debug( $exception );
-        }
-
-        $content = $dom->saveHTML();
-
        /**
         * Filters after scanning content
         * @param string $content
         */
-//        $content = apply_filters( 'wpel_after_filter', $content );
+        $content = apply_filters( 'wpel_after_filter', $content );
 
         WP_Debug_0x7x0::end_benchmark( 'scan_links' );
 
@@ -312,14 +297,26 @@ final class WPEL_Front extends WPRun_Base_0x7x0
                     'class'         => 'wpel-icon fa '. $fa,
                     'aria-hidden'   => 'true',
                 ) );
+            } else if ( 'image' === $icon_type ) {
+//                $image = $this->opt( 'image_icon', $type );
+//                $link->addToAttribute( 'class', 'wpel-icon-'. $image );
+                $icon = FWD_DOM_Element_0x7x0::create( 'span', null, array(
+                    'class' => 'wpel-icon wpel-image wpel-icon-'. $this->opt( 'image_icon', $type ),
+                ) );
             }
 
             if ( 'left' === $this->opt( 'icon_position', $type ) ) {
                 $link->addToAttribute( 'class', 'wpel-icon-left' );
-                $link->prependChild( $icon );
-            } else {
+
+                if ( isset( $icon ) ) {
+                    $link->prependChild( $icon );
+                }
+            } else if ( 'right' === $this->opt( 'icon_position', $type ) ) {
                 $link->addToAttribute( 'class', 'wpel-icon-right' );
-                $link->appendChild( $icon );
+
+                if ( isset( $icon ) ) {
+                    $link->appendChild( $icon );
+                }
             }
         }
     }

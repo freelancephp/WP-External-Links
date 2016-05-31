@@ -29,7 +29,6 @@ a.toplevel_page_wpel-network-settings-page .wp-menu-image:before {
     margin-right: 5px;
 }
 
-
 .wpel-admin-settings form {
     position: relative;
 }
@@ -48,6 +47,14 @@ a.toplevel_page_wpel-network-settings-page .wp-menu-image:before {
 
 .js-wpel-apply-child td {
     padding-left: 30px;
+}
+
+.wpel-icon-type-image-column {
+    min-width: 10em;
+    float: left;
+}
+.wpel-icon-type-image-column:after {
+    clear: both;
 }
 
 ::-webkit-input-placeholder {

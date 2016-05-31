@@ -41,7 +41,7 @@ final class WPEL_Front_Ignore extends WPRun_Base_0x7x0
      */
     protected function filter_wpel_after_filter_10000000000( $content )
     {
-       return $this->get_restored_placeholders( $content );
+       return $this->restore_content_placeholders( $content );
     }
 
     /**
@@ -72,7 +72,7 @@ final class WPEL_Front_Ignore extends WPRun_Base_0x7x0
      * @param string $content
      * @return string
      */
-    protected function get_restored_placeholders( $content )
+    protected function restore_content_placeholders( $content )
     {
         foreach ( $this->content_placeholders as $placeholder => $placeholding_content ) {
             $content = str_replace( $placeholder, $placeholding_content, $content );

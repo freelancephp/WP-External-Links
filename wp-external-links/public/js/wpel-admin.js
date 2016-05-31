@@ -62,16 +62,22 @@ jQuery(function ($) {
 
     $wrapper.on('change', '.js-icon-type select', function () {
         var iconType = $(this).val();
-        var $items = $wrapper.find('.js-icon-type-child');
+        var $itemsChild = $wrapper.find('.js-icon-type-child');
+        var $itemsDepend = $wrapper.find('.js-icon-type-depend');
 
-        if (iconType === 'dashicon') {
-            $items.hide();
-            $items.not('.js-icon-type-fontawesome').show();
+        $itemsChild.hide();
+
+        if (iconType === 'image') {
+            $itemsDepend.show();
+            $itemsChild.filter('.js-icon-type-image').show();
+        } else if (iconType === 'dashicon') {
+            $itemsDepend.show();
+            $itemsChild.filter('.js-icon-type-dashicon').show();
         } else if (iconType === 'fontawesome') {
-            $items.hide();
-            $items.not('.js-icon-type-dashicon').show();
+            $itemsDepend.show();
+            $itemsChild.filter('.js-icon-type-fontawesome').show();
         } else {
-            $items.hide();
+            $itemsDepend.hide();
         }
     });
 

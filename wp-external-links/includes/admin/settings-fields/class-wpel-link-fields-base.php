@@ -71,6 +71,10 @@ abstract class WPEL_Link_Fields_Base extends WP_Settings_Section_Fields_0x7x0
                 'label'             => __( 'Choose icon type:', 'wpel' ),
                 'class'             => 'js-icon-type wpel-hidden',
             ),
+            'icon_image' => array(
+                'label'             => __( 'Choose icon image:', 'wpel' ),
+                'class'             => 'js-icon-type-child js-icon-type-image wpel-hidden',
+            ),
             'icon_dashicon' => array(
                 'label'             => __( 'Choose dashicon:', 'wpel' ),
                 'class'             => 'js-icon-type-child js-icon-type-dashicon wpel-hidden',
@@ -81,12 +85,12 @@ abstract class WPEL_Link_Fields_Base extends WP_Settings_Section_Fields_0x7x0
             ),
             'icon_position' => array(
                 'label'             => __( 'Icon position:', 'wpel' ),
-                'class'             => 'js-icon-type-child wpel-hidden',
+                'class'             => 'js-icon-type-depend wpel-hidden',
                 'default_value'     => 'right',
             ),
             'no_icon_for_img' => array(
                 'label'             => __( 'Skip icon with <code>&lt;img&gt;</code>:', 'wpel' ),
-                'class'             => 'js-icon-type-child wpel-hidden',
+                'class'             => 'js-icon-type-depend wpel-hidden',
                 'default_value'     => '1',
             ),
         );
@@ -208,10 +212,33 @@ abstract class WPEL_Link_Fields_Base extends WP_Settings_Section_Fields_0x7x0
             $args[ 'key' ]
             , array(
                 ''              => __( '- no icon -', 'wpel' ),
-                'dashicon'     => __( 'Dashicons', 'wpel' ),
+                'image'         => __( 'Image', 'wpel' ),
+                'dashicon'      => __( 'Dashicon', 'wpel' ),
                 'fontawesome'   => __( 'Font Awesome', 'wpel' ),
             )
         );
+    }
+
+    protected function show_icon_image( array $args )
+    {
+        echo '<fieldset>';
+        echo '<div class="wpel-icon-type-image-column">';
+
+        for ( $x = 1; $x <= 20; $x++ ) {
+            echo '<label>';
+            echo $this->get_html_fields()->radio( 'image_icon', strval( $x ) );
+            echo '<img src="'. plugins_url( '/public/images/wpel-icons/icon-'. esc_attr( $x ) .'.png', WPEL_Plugin::get_plugin_file() ) .'">';
+            echo '</label>';
+            echo '<br>';
+
+            if ( $x % 5 === 0 ) {
+                echo '</div>';
+				echo '<div class="wpel-icon-type-image-column">';
+            }
+        }
+
+        echo '</div>';
+        echo '</fieldset>';
     }
 
     protected function show_icon_dashicon( array $args )
@@ -224,7 +251,7 @@ abstract class WPEL_Link_Fields_Base extends WP_Settings_Section_Fields_0x7x0
         foreach ( $dashicons as $icon ) {
             $options[ $icon[ 'className' ] ] = '&#x'. $icon[ 'unicode' ];
         }
-        
+
         $this->get_html_fields()->select( 'dashicon', $options, array(
             'style' => 'font-family:dashicons',
         ) );
