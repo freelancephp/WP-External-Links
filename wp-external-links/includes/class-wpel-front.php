@@ -298,25 +298,18 @@ final class WPEL_Front extends WPRun_Base_0x7x0
                     'aria-hidden'   => 'true',
                 ) );
             } else if ( 'image' === $icon_type ) {
-//                $image = $this->opt( 'image_icon', $type );
-//                $link->addToAttribute( 'class', 'wpel-icon-'. $image );
+                $image = $this->opt( 'image_icon', $type );
                 $icon = FWD_DOM_Element_0x7x0::create( 'span', null, array(
-                    'class' => 'wpel-icon wpel-image wpel-icon-'. $this->opt( 'image_icon', $type ),
+                    'class' => 'wpel-icon wpel-image wpel-icon-'. $image,
                 ) );
             }
 
             if ( 'left' === $this->opt( 'icon_position', $type ) ) {
                 $link->addToAttribute( 'class', 'wpel-icon-left' );
-
-                if ( isset( $icon ) ) {
-                    $link->prependChild( $icon );
-                }
+                $link->prependChild( $icon );
             } else if ( 'right' === $this->opt( 'icon_position', $type ) ) {
                 $link->addToAttribute( 'class', 'wpel-icon-right' );
-
-                if ( isset( $icon ) ) {
-                    $link->appendChild( $icon );
-                }
+                $link->appendChild( $icon );
             }
         }
     }
