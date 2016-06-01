@@ -243,7 +243,7 @@ abstract class WPEL_Link_Fields_Base extends WP_Settings_Section_Fields_0x7x0
 
     protected function show_icon_dashicon( array $args )
     {
-        $dashicons_str = file_get_contents( WPEL_Plugin::get_plugin_dir( '/public/data/json/dashicons.json' ) );
+        $dashicons_str = file_get_contents( WPEL_Plugin::get_plugin_dir( '/data/json/dashicons.json' ) );
         $dashicons_json = json_decode( $dashicons_str, true );
         $dashicons = $dashicons_json[ 'icons' ];
 
@@ -259,7 +259,7 @@ abstract class WPEL_Link_Fields_Base extends WP_Settings_Section_Fields_0x7x0
 
     protected function show_icon_fontawesome( array $args )
     {
-        $fa_icons_str = file_get_contents( WPEL_Plugin::get_plugin_dir( '/public/data/json/fontawesome.json' ) );
+        $fa_icons_str = file_get_contents( WPEL_Plugin::get_plugin_dir( '/data/json/fontawesome.json' ) );
         $fa_icons_json = json_decode( $fa_icons_str, true );
         $fa_icons = $fa_icons_json[ 'icons' ];
 
@@ -303,7 +303,6 @@ abstract class WPEL_Link_Fields_Base extends WP_Settings_Section_Fields_0x7x0
     protected function before_update( array $new_values, array $old_values )
     {
         $update_values = $new_values;
-
 
         return $update_values;
     }
