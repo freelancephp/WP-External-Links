@@ -36,6 +36,7 @@ final class WPEL_Plugin extends WPRun_Base_0x7x0
         WPEL_Registerhooks::create();
         WPEL_Textdomain::create();
 
+        // network admin page
         $network_page = WPEL_Network_Page::create( array(
             'network-settings'          => WPEL_Network_Fields::create(),
             'network-admin-settings'    => WPEL_Network_Admin_Fields::create(),
@@ -49,6 +50,7 @@ final class WPEL_Plugin extends WPRun_Base_0x7x0
             'exceptions'        => WPEL_Exceptions_Fields::create(),
         ) );
 
+        // front site
         if ( ! is_admin() ) {
             // filter hooks
             WP_Final_Output_0x7x0::create();

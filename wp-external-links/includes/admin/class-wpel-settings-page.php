@@ -160,6 +160,9 @@ final class WPEL_Settings_Page extends WPRun_Base_0x7x0
         }
     }
 
+    /**
+     * Action for "admin_enqueue_scripts"
+     */
     protected function action_admin_enqueue_scripts()
     {
         // set admin style

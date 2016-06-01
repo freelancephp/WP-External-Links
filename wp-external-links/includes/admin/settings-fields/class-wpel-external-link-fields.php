@@ -20,7 +20,6 @@ final class WPEL_External_Link_Fields extends WPEL_Link_Fields_Base
     {
         $option_name = 'wpel-external-link-settings';
         $fields = $this->get_general_fields( $option_name );
-//delete_option($option_name);
 
         // set field labels
         $fields[ 'apply_settings' ][ 'label' ] = __( 'Settings for external links:', 'wpel' );

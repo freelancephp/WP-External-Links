@@ -14,14 +14,15 @@ final class WPEL_Front extends WPRun_Base_0x7x0
 {
 
     /**
-     * @var array
+     * @var WPEL_Settings_Page
      */
     private $settings_page = null;
 
     /**
+     * Initialize
      * @param WPEL_Settings_Page $settings_page
      */
-    protected function init( $settings_page )
+    protected function init( WPEL_Settings_Page $settings_page )
     {
         $this->settings_page = $settings_page;
 
@@ -52,7 +53,7 @@ final class WPEL_Front extends WPRun_Base_0x7x0
     /**
      * Get option value
      * @param string $key
-     * @param string $type
+     * @param string|null $type
      * @return string
      * @triggers E_USER_NOTICE Option value cannot be found
      */
@@ -93,6 +94,7 @@ final class WPEL_Front extends WPRun_Base_0x7x0
     }
 
     /**
+     * Scan content for links
      * @param string $content
      * @return string
      */
@@ -107,8 +109,6 @@ final class WPEL_Front extends WPRun_Base_0x7x0
         if ( false === $apply_settings ) {
             return $content;
         }
-
-        WP_Debug_0x7x0::start_benchmark( 'scan_links' );
 
        /**
         * Filters before scanning content
@@ -131,8 +131,6 @@ final class WPEL_Front extends WPRun_Base_0x7x0
         * @param string $content
         */
         $content = apply_filters( 'wpel_after_filter', $content );
-
-        WP_Debug_0x7x0::end_benchmark( 'scan_links' );
 
         return $content;
     }
@@ -166,6 +164,11 @@ final class WPEL_Front extends WPRun_Base_0x7x0
     protected function get_created_link( $label, array $atts )
     {
         $link = WPEL_Link::create( 'a', $label, $atts );
+
+        if ( $link->isIgnore() ) {
+            return false;
+        }
+
         $this->set_link( $link );
 
         return $link->getHTML();
@@ -177,10 +180,6 @@ final class WPEL_Front extends WPRun_Base_0x7x0
      */
     protected function set_link( WPEL_Link $link )
     {
-        if ( $link->isIgnore() ) {
-            return false;
-        }
-
         $url = $link->getAttribute( 'href' );
 
         $excludes_as_internal_links = $this->opt( 'excludes_as_internal_links' );

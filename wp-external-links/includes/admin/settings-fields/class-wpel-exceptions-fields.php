@@ -18,7 +18,6 @@ final class WPEL_Exceptions_Fields extends WP_Settings_Section_Fields_0x7x0
      */
     protected function init()
     {
-        delete_option('wpel-apply-settings');
         $this->set_settings( array(
             'section_id'        => 'wpel-exceptions-fields',
             'page_id'           => 'wpel-exceptions-fields',
@@ -106,11 +105,11 @@ final class WPEL_Exceptions_Fields extends WP_Settings_Section_Fields_0x7x0
         $this->get_html_fields()->text_area( $args[ 'key' ], array(
             'class' => 'large-text',
             'rows'  => 6,
-            'placeholder' => 'Put each url on a separate row. Be as specific as you want, for example:'. "\n". "\n"
+            'placeholder' => __( 'Put each url on a separate row. Be as specific as you want, for example:'. "\n". "\n"
                             .'sub.domain.com'. "\n"
                             .'somedomain.org'. "\n"
                             .'//otherdomain.net/some-slug'
-                            . "\n" .'http://otherdomain.net',
+                            . "\n" .'http://otherdomain.net', 'wpel' ),
         ) );
     }
 
@@ -119,11 +118,11 @@ final class WPEL_Exceptions_Fields extends WP_Settings_Section_Fields_0x7x0
         $this->get_html_fields()->text_area( $args[ 'key' ], array(
             'class' => 'large-text',
             'rows'  => 6,
-            'placeholder' => 'Put each url on a separate row. Be as specific as you want, for example:'. "\n". "\n"
+            'placeholder' => __( 'Put each url on a separate row. Be as specific as you want, for example:'. "\n". "\n"
                             .'sub.domain.com'. "\n"
                             .'somedomain.org'. "\n"
                             .'//otherdomain.net/some-slug'
-                            . "\n" .'http://otherdomain.net',
+                            . "\n" .'http://otherdomain.net', 'wpel' ),
         ) );
     }
 

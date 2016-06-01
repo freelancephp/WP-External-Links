@@ -44,6 +44,23 @@ final class WPEL_Front_Ignore extends WPRun_Base_0x7x0
        return $this->restore_content_placeholders( $content );
     }
 
+//    protected function action_wpel_link( $link_object )
+//    {
+//        $url = $link_object->getAttribute( 'href' );
+//        $link_object->setAttribute( 'href', '//somedom.com?url='. urlencode( $url ) );
+//
+////        global $post;
+////        debug( $post->ID );
+////        add_filter( 'wpel_apply_settings', '__return_false' );
+////        add_filter( 'wpel_apply_settings', function () use ( $post ) {
+////            if ( $post->ID == '285' ) {
+////                return false;
+////            }
+////
+////            return true;
+////        } );
+//    }
+
     /**
      * Pregmatch callback
      * @param array $matches
@@ -68,7 +85,7 @@ final class WPEL_Front_Ignore extends WPRun_Base_0x7x0
     }
 
     /**
-     *
+     * Restore placeholders with original content
      * @param string $content
      * @return string
      */
@@ -80,32 +97,6 @@ final class WPEL_Front_Ignore extends WPRun_Base_0x7x0
 
         return $content;
     }
-
-//add_filter( 'wpel_link', function ( $link_object ) {
-//    $url = $link_object->get_attr( 'href' );
-//    $link_object->set_attr( 'href', '//somedom.com?url='.urlencode( $url ) );
-//
-////    static $count = 0;
-////    error_log($count++);
-//}, 10, 2 );
-//add_filter( 'wpel_link', function ( $link_object ) {
-//    return 'WHATEVER';
-//}, 10, 2 );
-//add_filter( 'wpel_link', function ( $link_object ) {
-//    $l = new WPEL_Link( 'a', array( 'href' => '#', 'title' => 'funny' ), 'linkje' );
-//    return $l;
-//}, 10, 2 );
-
-//        global $post;
-//        debug( $post->ID );
-//        add_filter( 'wpel_apply_settings', '__return_false' );
-//        add_filter( 'wpel_apply_settings', function () use ( $post ) {
-//            if ( $post->ID == '285' ) {
-//                return false;
-//            }
-//
-//            return true;
-//        } );
 
 }
 

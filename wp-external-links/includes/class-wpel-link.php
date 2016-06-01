@@ -25,6 +25,7 @@ class WPEL_Link extends FWD_DOM_Element_0x7x0
     }
 
     /**
+     * Is marked as external link
      * @return boolean
      */
     public function isExternal()
@@ -41,6 +42,7 @@ class WPEL_Link extends FWD_DOM_Element_0x7x0
     }
 
     /**
+     * Is marked as internal link
      * @return boolean
      */
     public function isInternal()
@@ -57,6 +59,7 @@ class WPEL_Link extends FWD_DOM_Element_0x7x0
     }
 
     /**
+     * Is marked as excluded link
      * @return boolean
      */
     public function isExcluded()
@@ -65,6 +68,7 @@ class WPEL_Link extends FWD_DOM_Element_0x7x0
     }
 
     /**
+     * Is marked as ignored link
      * @return boolean
      */
     public function isIgnore()

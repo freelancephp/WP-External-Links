@@ -23,11 +23,6 @@ final class WPEL_Registerhooks extends WPRun_Base_0x7x0
             , $this->get_callback( 'activate' )
         );
 
-        register_deactivation_hook(
-            WPEL_Plugin::get_plugin_file()
-            , $this->get_callback( 'deactivate' )
-        );
-
         register_uninstall_hook(
             WPEL_Plugin::get_plugin_file()
             , $this->get_callback( 'uninstall' )
@@ -60,6 +55,10 @@ final class WPEL_Registerhooks extends WPRun_Base_0x7x0
         }
     }
 
+    /**
+     * Activate site
+     * @return void
+     */
     private function activate_site()
     {
         // convert old to new db option values
@@ -135,14 +134,6 @@ final class WPEL_Registerhooks extends WPRun_Base_0x7x0
         delete_option( 'wp_external_links-style' );
         delete_option( 'wp_external_links-extra' );
         delete_option( 'wp_external_links-screen' );
-    }
-
-    /**
-     * Plugin deactivation procedure
-     */
-    protected function deactivate()
-    {
-        error_log( 'WPEL Demo Deactivate!' );
     }
 
     /**

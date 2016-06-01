@@ -122,6 +122,9 @@ final class WPEL_Network_Page extends WPRun_Base_0x7x0
         add_action( 'load-'. $this->page_hook, $this->get_callback( 'add_help_tabs' ) );
     }
 
+    /**
+     * Action for "admin_enqueue_scripts"
+     */
     protected function action_admin_enqueue_scripts()
     {
         // set admin style

@@ -43,6 +43,10 @@ final class WPEL_Network_Fields extends WP_Settings_Section_Fields_0x7x0
         }
     }
 
+    /**
+     * Save network settings
+     * @global type $new_whitelist_options
+     */
     protected function save_network_settings()
     {
         // when calling 'settings_fields' but we must add the '-options' postfix
@@ -116,7 +120,6 @@ final class WPEL_Network_Fields extends WP_Settings_Section_Fields_0x7x0
     protected function before_update( array $new_values, array $old_values )
     {
         $update_values = $new_values;
-
 
         return $update_values;
     }
