@@ -26,6 +26,8 @@
     display: inline-block;
     width: 10px;
     height: 10px;
+    background-repeat: no-repeat;
+    background-position: 100% 50%;
 }
 .wpel-icon-left .wpel-icon.wpel-image {
     margin-right: 0.3em;
@@ -34,23 +36,23 @@
     margin-left: 0.3em;
 }
 
-.wpel-icon-1 { background: url('../images/wpel-icons/icon-1.png') no-repeat 100% 50%; }
-.wpel-icon-2 { background: url('../images/wpel-icons/icon-2.png') no-repeat 100% 50%; }
-.wpel-icon-3 { background: url('../images/wpel-icons/icon-3.png') no-repeat 100% 50%; }
-.wpel-icon-4 { background: url('../images/wpel-icons/icon-4.png') no-repeat 100% 50%; }
-.wpel-icon-5 { background: url('../images/wpel-icons/icon-5.png') no-repeat 100% 50%; }
-.wpel-icon-6 { background: url('../images/wpel-icons/icon-6.png') no-repeat 100% 50%; }
-.wpel-icon-7 { background: url('../images/wpel-icons/icon-7.png') no-repeat 100% 50%; }
-.wpel-icon-8 { background: url('../images/wpel-icons/icon-8.png') no-repeat 100% 50%; }
-.wpel-icon-9 { background: url('../images/wpel-icons/icon-9.png') no-repeat 100% 50%; }
-.wpel-icon-10 { background: url('../images/wpel-icons/icon-10.png') no-repeat 100% 50%; }
-.wpel-icon-11 { background: url('../images/wpel-icons/icon-11.png') no-repeat 100% 50%; }
-.wpel-icon-12 { background: url('../images/wpel-icons/icon-12.png') no-repeat 100% 50%; }
-.wpel-icon-13 { background: url('../images/wpel-icons/icon-13.png') no-repeat 100% 50%; }
-.wpel-icon-14 { background: url('../images/wpel-icons/icon-14.png') no-repeat 100% 50%; }
-.wpel-icon-15 { background: url('../images/wpel-icons/icon-15.png') no-repeat 100% 50%; }
-.wpel-icon-16 { background: url('../images/wpel-icons/icon-16.png') no-repeat 100% 50%; }
-.wpel-icon-17 { background: url('../images/wpel-icons/icon-17.png') no-repeat 100% 50%; }
-.wpel-icon-18 { background: url('../images/wpel-icons/icon-18.png') no-repeat 100% 50%; }
-.wpel-icon-19 { background: url('../images/wpel-icons/icon-19.png') no-repeat 100% 50%; }
-.wpel-icon-20 { background: url('../images/wpel-icons/icon-20.png') no-repeat 100% 50%; }
+.wpel-icon-1 { background-image: url('../images/wpel-icons/icon-1.png'); }
+.wpel-icon-2 { background-image: url('../images/wpel-icons/icon-2.png'); }
+.wpel-icon-3 { background-image: url('../images/wpel-icons/icon-3.png'); }
+.wpel-icon-4 { background-image: url('../images/wpel-icons/icon-4.png'); }
+.wpel-icon-5 { background-image: url('../images/wpel-icons/icon-5.png'); }
+.wpel-icon-6 { background-image: url('../images/wpel-icons/icon-6.png'); }
+.wpel-icon-7 { background-image: url('../images/wpel-icons/icon-7.png'); }
+.wpel-icon-8 { background-image: url('../images/wpel-icons/icon-8.png'); }
+.wpel-icon-9 { background-image: url('../images/wpel-icons/icon-9.png'); }
+.wpel-icon-10 { background-image: url('../images/wpel-icons/icon-10.png'); }
+.wpel-icon-11 { background-image: url('../images/wpel-icons/icon-11.png'); }
+.wpel-icon-12 { background-image: url('../images/wpel-icons/icon-12.png'); }
+.wpel-icon-13 { background-image: url('../images/wpel-icons/icon-13.png'); }
+.wpel-icon-14 { background-image: url('../images/wpel-icons/icon-14.png'); }
+.wpel-icon-15 { background-image: url('../images/wpel-icons/icon-15.png'); }
+.wpel-icon-16 { background-image: url('../images/wpel-icons/icon-16.png'); }
+.wpel-icon-17 { background-image: url('../images/wpel-icons/icon-17.png'); }
+.wpel-icon-18 { background-image: url('../images/wpel-icons/icon-18.png'); }
+.wpel-icon-19 { background-image: url('../images/wpel-icons/icon-19.png'); }
+.wpel-icon-20 { background-image: url('../images/wpel-icons/icon-20.png'); }
