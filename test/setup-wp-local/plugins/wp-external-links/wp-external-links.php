@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: WP External Links
-Plugin URI: http://www.freelancephp.net/wp-external-links-plugin
+Plugin URI: http://www.finewebdev.comwp-external-links-plugin
 Description: DEV version
 Author: Victor Villaverde Laan
 Version: 1000

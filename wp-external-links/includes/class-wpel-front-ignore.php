@@ -2,15 +2,15 @@
 /**
  * Class WPEL_Front_Ignore
  *
- * @package  DWP
+ * @package  WPEL
  * @category WordPress Plugin
- * @version  0.7.0
+ * @version  2.0.0
  * @author   Victor Villaverde Laan
- * @link     http://www.freelancephp.net/
- * @link     https://github.com/freelancephp/WPRun-Plugin-Base
+ * @link     http://www.finewebdev.com
+ * @link     https://github.com/freelancephp/WP-External-Links
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-final class WPEL_Front_Ignore extends WPRun_Base_0x7x0
+final class WPEL_Front_Ignore extends WPRun_Base_1x0x0
 {
 
     /**
@@ -44,21 +44,29 @@ final class WPEL_Front_Ignore extends WPRun_Base_0x7x0
        return $this->restore_content_placeholders( $content );
     }
 
+//    protected function action_wp()
+//    {
+//        global $post;
+////        debug( gettype( $post->ID ) );
+////        add_filter( 'wpel_apply_settings', '__return_false' );
+//        add_filter( 'wpel_apply_settings', function () use ( $post ) {
+//            $excluded_posts = array( 1, 2, 4 );
+//
+//            if ( in_array( $post->ID, $excluded_posts ) ) {
+//                return false;
+//            }
+//
+//            return true;
+//        } );
+//    }
+
 //    protected function action_wpel_link( $link_object )
 //    {
-//        $url = $link_object->getAttribute( 'href' );
-//        $link_object->setAttribute( 'href', '//somedom.com?url='. urlencode( $url ) );
-//
-////        global $post;
-////        debug( $post->ID );
-////        add_filter( 'wpel_apply_settings', '__return_false' );
-////        add_filter( 'wpel_apply_settings', function () use ( $post ) {
-////            if ( $post->ID == '285' ) {
-////                return false;
-////            }
-////
-////            return true;
-////        } );
+//        if ( $link_object->isExternal() ) {
+//            $url = $link_object->getAttribute( 'href' );
+//            $redirect_url = '//somedom.com?url='. urlencode( $url );
+//            $link_object->setAttribute( 'href', $redirect_url );
+//        }
 //    }
 
     /**

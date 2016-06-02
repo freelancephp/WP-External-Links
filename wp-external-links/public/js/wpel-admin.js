@@ -1,4 +1,7 @@
-/* WP External Links - Admin */
+/**
+ * WP External Links Plugin
+ * Admin
+ */
 /*global jQuery, window*/
 jQuery(function ($) {
     'use strict';

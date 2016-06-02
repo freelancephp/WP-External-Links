@@ -1,21 +1,34 @@
 <?php
 /**
- * Class WPRun_Base_0x7x0
+ * Class WPRun_Base_1x0x0
  *
  * Base class for concrete subclasses
  * All subclasses are singletons and can be instantiated with
  * the static "create()" factory method.
  *
  * @package  WPRun
- * @category WordPress Plugin
- * @version  0.7.0
+ * @category WordPress Library
+ * @version  1.0.0
  * @author   Victor Villaverde Laan
- * @link     http://www.freelancephp.net/
- * @link     https://github.com/freelancephp/WPRun-Plugin-Base
+ * @link     http://www.finewebdev.com
+ * @link     https://github.com/freelancephp/WPRun-WordPress-Development
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-abstract class WPRun_Base_0x7x0
+abstract class WPRun_Base_1x0x0
 {
+
+    /**
+     * Page hook
+     * If page hook isset, will only apply hook methods when page hook is the current screen id
+     * @var string
+     */
+    protected $page_hook = null;
+
+    /**
+     * Automatically set action and filter methods
+     * @var boolean
+     */
+    protected $autoset_hook_methods = true;
 
     /**
      * @var string
@@ -28,22 +41,9 @@ abstract class WPRun_Base_0x7x0
     protected $filter_prefix = 'filter_';
 
     /**
-     * Extract template vars array as separate variables
-     * Discouraged by the WordPress Code guidelines
-     * @link https://make.wordpress.org/core/handbook/best-practices/coding-standards/php/#dont-extract
-     * @var boolean
-     */
-    protected $extract_template_vars = false;
-
-    /**
      * @var array
      */
     protected $default_settings = array();
-
-    /**
-     * @var string
-     */
-    protected $page_hook = null;
 
     /**
      * @var array
@@ -72,7 +72,7 @@ abstract class WPRun_Base_0x7x0
      * Factory method
      * @param mixed $param1 Optional, will be passed on to the constructor and init() method
      * @param mixed $paramN Optional, will be passed on to the constructor and init() method
-     * @return WPRun_Base_0x7x0
+     * @return WPRun_Base_1x0x0
      * @triggers E_USER_NOTICE  Class already created
      */
     final public static function create()
@@ -103,7 +103,9 @@ abstract class WPRun_Base_0x7x0
 
         $this->arguments = $arguments;
 
-        $this->init_hook_methods();
+        if ( true === $this->autoset_hook_methods ) {
+            $this->set_hook_methods();
+        }
 
         $init_methods = array( 'before_init', 'init', 'after_init' );
 
@@ -122,9 +124,9 @@ abstract class WPRun_Base_0x7x0
     }
 
     /**
-     * @return WPRun_Base_0x7x0
+     * @return WPRun_Base_1x0x0
      */
-    public static function get_instance()
+    final public static function get_instance()
     {
         $class_name = get_called_class();
         return self::$instances[ $class_name ];
@@ -175,14 +177,9 @@ abstract class WPRun_Base_0x7x0
      * @param array $vars Optional
      * @triggers E_USER_NOTICE Template file not readable
      */
-    final protected function show_template( $template_file_path, array $vars = array() )
+    final public static function show_template( $template_file_path, array $vars = array() )
     {
         if ( is_readable( $template_file_path ) ) {
-            if ( true === $this->extract_template_vars ) {
-                // create separate template variables
-                extract( $vars );
-            }
-
             // show file
             include $template_file_path;
         } else {
@@ -195,7 +192,7 @@ abstract class WPRun_Base_0x7x0
      * @param array  $vars Optional
      * @triggers E_USER_NOTICE Template file not readable
      */
-    final protected function render_template( $template_file_path, array $vars = array() )
+    final public static function render_template( $template_file_path, array $vars = array() )
     {
         // start output buffer
         ob_start();
@@ -274,7 +271,7 @@ abstract class WPRun_Base_0x7x0
     /**
      * Check and auto-initialize methods for hooks
      */
-    private function init_hook_methods()
+    final protected function set_hook_methods()
     {
         $methods = get_class_methods( $this );
 
@@ -294,7 +291,7 @@ abstract class WPRun_Base_0x7x0
     }
 
     /**
-     * @param WPRun_Base_0x7x0 $self
+     * @param WPRun_Base_1x0x0 $self
      * @param string $hook_type "action" or "filter"
      * @param string $hook_name
      * @param string $method_name

@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  1.81
+ * @version  2.0.0
  * @author   Victor Villaverde Laan
  * @link     https://wordpress.org/plugins/wp-external-links/
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -12,7 +12,7 @@
  *
  * @wordpress-plugin
  * Plugin Name:    WP External Links
- * Version:        1.81
+ * Version:        2.0.0
  * Plugin URI:     https://wordpress.org/plugins/wp-external-links/
  * Description:    Open external links in a new window/tab, add "external" / "nofollow" to rel-attribute, set icon, XHTML strict, SEO friendly...
  * Author:         Victor Villaverde Laan
@@ -51,7 +51,7 @@ if ( ! function_exists( 'wpel_init' ) ):
          */
         require_once __DIR__ . '/libs/wprun/class-wprun-autoloader.php';
 
-        $autoloader = new WPRun_Autoloader_0x7x0();
+        $autoloader = new WPRun_Autoloader_1x0x0();
         $autoloader->add_path( __DIR__ . '/libs/', true );
         $autoloader->add_path( __DIR__ . '/includes/', true );
 
@@ -59,7 +59,7 @@ if ( ! function_exists( 'wpel_init' ) ):
          * Load debugger
          */
         if ( true === constant( 'WP_DEBUG' ) ) {
-            WP_Debug_0x7x0::create( array(
+            FWP_Debug_1x0x0::create( array(
                 'log_hooks'  => false,
             ) );
         }

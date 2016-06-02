@@ -1,16 +1,16 @@
 <?php
 /**
- * Class FWD_DOM_Element_0x7x0
+ * Class FWP_DOM_Element_1x0x0
  *
- * @package  DWP
- * @category WordPress Plugin
- * @version  0.7.0
+ * @package  FWP
+ * @category WordPress Library
+ * @version  1.0.0
  * @author   Victor Villaverde Laan
- * @link     http://www.freelancephp.net/
- * @link     https://github.com/freelancephp/WPRun-Plugin-Base
+ * @link     http://www.finewebdev.com
+ * @link     https://github.com/freelancephp/WPRun-WordPress-Development
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-class FWD_DOM_Element_0x7x0 extends DOMElement
+class FWP_DOM_Element_1x0x0 extends DOMElement
 {
 
     /**
@@ -23,7 +23,7 @@ class FWD_DOM_Element_0x7x0 extends DOMElement
      * @param string $tagName
      * @param string $content
      * @param array $attributes
-     * @return FWD_DOM_Element_0x7x0
+     * @return FWP_DOM_Element_1x0x0
      */
     public static function create( $tagName, $content = null, array $attributes = array() )
     {
@@ -170,7 +170,7 @@ class FWD_DOM_Element_0x7x0 extends DOMElement
 
     /**
      * Prepend child element
-     * @param FWD_DOM_Element_0x7x0 $element
+     * @param FWP_DOM_Element_1x0x0 $element
      */
     public function prependChild( $element )
     {
@@ -232,7 +232,7 @@ class FWD_DOM_Element_0x7x0 extends DOMElement
             foreach ( $this->childNodes as $childNode ) {
                 if ( $childNode instanceof DOMText ) {
                     $link .= $childNode->wholeText;
-                } elseif ( $childNode instanceof FWD_DOM_Element_0x7x0 ) {
+                } elseif ( $childNode instanceof FWP_DOM_Element_1x0x0 ) {
                     $link .= $childNode->getHTML();
                 }
             }

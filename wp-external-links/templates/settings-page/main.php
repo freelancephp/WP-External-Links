@@ -2,16 +2,20 @@
 /**
  * Admin Settings
  *
- * @package  DWP
+ * @package  WPEL
  * @category WordPress Plugin
- * @version  0.7.0
+ * @version  2.0.0
  * @author   Victor Villaverde Laan
- * @link     http://www.freelancephp.net/
- * @link     https://github.com/freelancephp/WPRun-Plugin-Base
+ * @link     http://www.finewebdev.com
+ * @link     https://github.com/freelancephp/WP-External-Links
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  *
  * @var array $vars
+ *      @option array  "tabs"
  *      @option string "current_tab"
+ *      @option string "page_url"
+ *      @option string "menu_url"
+ *      @option string "own_admin_menu"
  */
 ?>
 <div class="wrap wpel-admin-settings">
@@ -23,7 +27,7 @@
 
         // nav tabs
         $nav_tabs_template = WPEL_Plugin::get_plugin_dir( '/templates/partials/nav-tabs.php' );
-        $this->show_template( $nav_tabs_template, $vars );
+        WPEL_Plugin::show_template( $nav_tabs_template, $vars );
     ?>
 
     <form method="post" action="options.php">
@@ -32,14 +36,14 @@
             $default_tab_template = WPEL_Plugin::get_plugin_dir( '/templates/partials/tab-contents/'. $vars[ 'current_tab' ] .'.php' );
 
             if ( is_readable( $content_tab_template ) ):
-                $this->show_template( $content_tab_template, $vars );
+                WPEL_Plugin::show_template( $content_tab_template, $vars );
             elseif ( is_readable( $default_tab_template ) ):
-                $this->show_template( $default_tab_template, $vars );
+                WPEL_Plugin::show_template( $default_tab_template, $vars );
             else:
                 $content_tab_template = WPEL_Plugin::get_plugin_dir( '/templates/partials/tab-contents/fields-default.php' );
 
                 if ( is_readable( $content_tab_template ) ):
-                    $this->show_template( $content_tab_template, $vars );
+                    WPEL_Plugin::show_template( $content_tab_template, $vars );
                 endif;
             endif;
         ?>

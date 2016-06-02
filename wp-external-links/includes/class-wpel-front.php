@@ -2,15 +2,15 @@
 /**
  * Class WPEL_Front
  *
- * @package  DWP
+ * @package  WPEL
  * @category WordPress Plugin
- * @version  0.7.0
+ * @version  2.0.0
  * @author   Victor Villaverde Laan
- * @link     http://www.freelancephp.net/
- * @link     https://github.com/freelancephp/WPRun-Plugin-Base
+ * @link     http://www.finewebdev.com
+ * @link     https://github.com/freelancephp/WP-External-Links
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-final class WPEL_Front extends WPRun_Base_0x7x0
+final class WPEL_Front extends WPRun_Base_1x0x0
 {
 
     /**
@@ -116,15 +116,15 @@ final class WPEL_Front extends WPRun_Base_0x7x0
         */
         $content = apply_filters( 'wpel_before_filter', $content );
 
-        $regexp_links = '/<a[^A-Za-z](.*?)>(.*?)<\/a[\s+]*>/is';
+        $regexp_link = '/<a[^A-Za-z](.*?)>(.*?)<\/a[\s+]*>/is';
 
        /**
         * Filters for changing regular expression for getting html links
-        * @param string $regexp_links
+        * @param string $regexp_link
         */
-        $regexp_links = apply_filters( 'wpel_regexp_link', $regexp_links );
+        $regexp_link = apply_filters( 'wpel_regexp_link', $regexp_link );
 
-		$content = preg_replace_callback( $regexp_links, $this->get_callback( 'match_link' ), $content );
+		$content = preg_replace_callback( $regexp_link, $this->get_callback( 'match_link' ), $content );
 
        /**
         * Filters after scanning content
@@ -186,7 +186,7 @@ final class WPEL_Front extends WPRun_Base_0x7x0
 
         // exceptions
         $is_included = $link->isExternal() || $this->is_included_url( $url );
-        $is_excluded = $link->isExcluded() || $this->is_excluded_url( $url );
+        $is_excluded = $link->isExclude() || $this->is_excluded_url( $url );
 
         // is internal or external
         $is_internal = ( $link->isInternal() || $this->is_internal_url( $url ) ) || ( $is_excluded && $excludes_as_internal_links );
@@ -199,7 +199,7 @@ final class WPEL_Front extends WPRun_Base_0x7x0
             $link->setInternal();
             $this->apply_link_settings( $link, 'internal-links' );
         } else {
-            $link->setExcluded();
+            $link->setExclude();
         }
 
         /**
@@ -286,19 +286,19 @@ final class WPEL_Front extends WPRun_Base_0x7x0
         if ( $icon_type && ! ( $has_img && $no_icon_for_img ) ) {
             if ( 'dashicon' === $icon_type ) {
                 $dashicon = $this->opt( 'dashicon', $type );
-                $icon = FWD_DOM_Element_0x7x0::create( 'i', '', array(
+                $icon = FWP_DOM_Element_1x0x0::create( 'i', '', array(
                     'class'         => 'wpel-icon dashicons-before '. $dashicon,
                     'aria-hidden'   => 'true',
                 ) );
             } else if ( 'fontawesome' === $icon_type ) {
                 $fa = $this->opt( 'fontawesome', $type );
-                $icon = FWD_DOM_Element_0x7x0::create( 'i', '', array( 
+                $icon = FWP_DOM_Element_1x0x0::create( 'i', '', array( 
                     'class'         => 'wpel-icon fa '. $fa,
                     'aria-hidden'   => 'true',
                 ) );
             } else if ( 'image' === $icon_type ) {
                 $image = $this->opt( 'image_icon', $type );
-                $icon = FWD_DOM_Element_0x7x0::create( 'span', null, array(
+                $icon = FWP_DOM_Element_1x0x0::create( 'span', null, array(
                     'class' => 'wpel-icon wpel-image wpel-icon-'. $image,
                 ) );
             }

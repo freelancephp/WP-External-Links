@@ -1,16 +1,16 @@
 <?php
 /**
- * Class WP_Settings_0x7x0
+ * Class FWP_Settings_Section_Fields_1x0x0
  *
- * @package  WPEL_Base
- * @category WordPress Plugin
- * @version  0.7.0
+ * @package  FWP
+ * @category WordPress Library
+ * @version  1.0.0
  * @author   Victor Villaverde Laan
- * @link     http://www.freelancephp.net/
- * @link     https://github.com/freelancephp/WPRun-Plugin-Base
+ * @link     http://www.finewebdev.com
+ * @link     https://github.com/freelancephp/WPRun-WordPress-Development
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-abstract class WP_Settings_Section_Fields_0x7x0 extends WPRun_Base_0x7x0
+abstract class FWP_Settings_Section_Fields_1x0x0 extends WPRun_Base_1x0x0
 {
 
     /**
@@ -24,7 +24,7 @@ abstract class WP_Settings_Section_Fields_0x7x0 extends WPRun_Base_0x7x0
         'option_name'       => '',
         'option_group'      => '',
         'network_site'      => false,
-        'html_fields_class' => 'WP_HTML_Fields_0x7x0',
+        'html_fields_class' => 'FWP_HTML_Fields_1x0x0',
         'fields'            => array(
             //'key' => array(
             //    'label'             => '',
@@ -40,7 +40,7 @@ abstract class WP_Settings_Section_Fields_0x7x0 extends WPRun_Base_0x7x0
     private $field_errors = array();
 
     /**
-     * @var WP_HTML_Fields_0x7x0
+     * @var FWP_HTML_Fields_1x0x0
      */
     private $html_fields = null;
 
@@ -172,7 +172,7 @@ abstract class WP_Settings_Section_Fields_0x7x0 extends WPRun_Base_0x7x0
     }
 
     /**
-     * @return WP_HTML_Fields_0x7x0
+     * @return FWP_HTML_Fields_1x0x0
      */
     final protected function get_html_fields()
     {

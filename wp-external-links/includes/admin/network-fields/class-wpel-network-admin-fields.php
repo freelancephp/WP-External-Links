@@ -2,15 +2,15 @@
 /**
  * Class WPEL_Network_Admin_Fields
  *
- * @package  DWP
+ * @package  WPEL
  * @category WordPress Plugin
- * @version  0.7.0
+ * @version  2.0.0
  * @author   Victor Villaverde Laan
- * @link     http://www.freelancephp.net/
- * @link     https://github.com/freelancephp/WPRun-Plugin-Base
+ * @link     http://www.finewebdev.com
+ * @link     https://github.com/freelancephp/WP-External-Links
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-final class WPEL_Network_Admin_Fields extends WP_Settings_Section_Fields_0x7x0
+final class WPEL_Network_Admin_Fields extends FWP_Settings_Section_Fields_1x0x0
 {
 
     /**

@@ -5,15 +5,15 @@
  * This class extends DOMElement which uses the camelCase naming style.
  * Therefore this class also contains camelCase names.
  *
- * @package  DWP
+ * @package  WPEL
  * @category WordPress Plugin
- * @version  0.7.0
+ * @version  2.0.0
  * @author   Victor Villaverde Laan
- * @link     http://www.freelancephp.net/
- * @link     https://github.com/freelancephp/WPRun-Plugin-Base
+ * @link     http://www.finewebdev.com
+ * @link     https://github.com/freelancephp/WP-External-Links
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-class WPEL_Link extends FWD_DOM_Element_0x7x0
+class WPEL_Link extends FWP_DOM_Element_1x0x0
 {
 
     /**
@@ -53,18 +53,18 @@ class WPEL_Link extends FWD_DOM_Element_0x7x0
     /**
      * Mark as excluded link (by setting data attribute)
      */
-    public function setExcluded()
+    public function setExclude()
     {
-        $this->setAttribute( 'data-wpel-link', 'excluded' );
+        $this->setAttribute( 'data-wpel-link', 'exclude' );
     }
 
     /**
      * Is marked as excluded link
      * @return boolean
      */
-    public function isExcluded()
+    public function isExclude()
     {
-        return 'excluded' === $this->getAttribute( 'data-wpel-link' );
+        return 'exclude' === $this->getAttribute( 'data-wpel-link' );
     }
 
     /**

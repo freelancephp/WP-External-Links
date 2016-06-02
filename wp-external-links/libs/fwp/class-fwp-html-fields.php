@@ -1,16 +1,16 @@
 <?php
 /**
- * Class WP_Form_Fields_0x7x0
+ * Class WP_Form_Fields_1x0x0
  *
- * @package  DWP_Base
- * @category WordPress Plugin
- * @version  0.7.0
+ * @package  FWP
+ * @category WordPress Library
+ * @version  1.0.0
  * @author   Victor Villaverde Laan
- * @link     http://www.freelancephp.net/
- * @link     https://github.com/freelancephp/WPRun-Plugin-Base
+ * @link     http://www.finewebdev.com
+ * @link     https://github.com/freelancephp/WPRun-WordPress-Development
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-class WP_HTML_Fields_0x7x0
+class FWP_HTML_Fields_1x0x0
 {
 
     /**

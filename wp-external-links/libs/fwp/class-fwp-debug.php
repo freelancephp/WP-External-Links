@@ -1,16 +1,16 @@
 <?php
 /**
- * Class WP_Debug_0x7x0
+ * Class FWP_Debug_1x0x0
  *
- * @package  WPEL_Base
- * @category WordPress Plugin
- * @version  0.7.0
+ * @package  FWP
+ * @category WordPress Library
+ * @version  1.0.0
  * @author   Victor Villaverde Laan
- * @link     http://www.freelancephp.net/
- * @link     https://github.com/freelancephp/WPRun-Plugin-Base
+ * @link     http://www.finewebdev.com
+ * @link     https://github.com/freelancephp/WPRun-WordPress-Development
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-class WP_Debug_0x7x0 extends WPRun_Base_0x7x0
+class FWP_Debug_1x0x0 extends WPRun_Base_1x0x0
 {
 
     /**
@@ -36,7 +36,7 @@ class WP_Debug_0x7x0 extends WPRun_Base_0x7x0
 
         $this->create_func();
 
-        if ($this->settings[ 'log_hooks' ] ) {
+        if ( $this->settings[ 'log_hooks' ] ) {
             register_shutdown_function( $this->get_callback( 'log_hooks' ) );
         }
     }
@@ -53,7 +53,7 @@ class WP_Debug_0x7x0 extends WPRun_Base_0x7x0
             return;
         }
 
-        eval( 'function '. $func .'( $entry, $title = "" ) { WP_Debug_0x7x0::log( $entry, $title ); }' );
+        eval( 'function '. $func .'( $entry, $title = "" ) { FWP_Debug_1x0x0::log( $entry, $title ); }' );
     }
 
     /**

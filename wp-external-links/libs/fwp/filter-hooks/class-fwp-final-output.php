@@ -1,18 +1,18 @@
 <?php
 /**
- * Class WP_Final_Output_0x7x0
+ * Class FWP_Final_Output_1x0x0
  *
  * @todo multiple versions - multiple filter applies
  *
- * @package  WP Filter Hooks
- * @category WordPress Plugin
- * @version  0.7.0
+ * @package  FWP
+ * @category WordPress Library
+ * @version  1.0.0
  * @author   Victor Villaverde Laan
- * @link     http://www.freelancephp.net/
- * @link     https://github.com/freelancephp/WPRun-Plugin-Base
+ * @link     http://www.finewebdev.com
+ * @link     https://github.com/freelancephp/WPRun-WordPress-Development
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-class WP_Final_Output_0x7x0 extends WPRun_Base_0x7x0
+class FWP_Final_Output_1x0x0 extends WPRun_Base_1x0x0
 {
 
     const FILTER_NAME = 'final_output';

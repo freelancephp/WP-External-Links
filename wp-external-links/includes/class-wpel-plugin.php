@@ -2,15 +2,15 @@
 /**
  * Class WPEL_Plugin
  *
- * @package  DWP
+ * @package  WPEL
  * @category WordPress Plugin
- * @version  0.7.0
+ * @version  2.0.0
  * @author   Victor Villaverde Laan
- * @link     http://www.freelancephp.net/
- * @link     https://github.com/freelancephp/WPRun-Plugin-Base
+ * @link     http://www.finewebdev.com
+ * @link     https://github.com/freelancephp/WP-External-Links
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-final class WPEL_Plugin extends WPRun_Base_0x7x0
+final class WPEL_Plugin extends WPRun_Base_1x0x0
 {
 
     /**
@@ -53,8 +53,8 @@ final class WPEL_Plugin extends WPRun_Base_0x7x0
         // front site
         if ( ! is_admin() ) {
             // filter hooks
-            WP_Final_Output_0x7x0::create();
-            WP_Widget_Output_0x7x0::create();
+            FWP_Final_Output_1x0x0::create();
+            FWP_Widget_Output_1x0x0::create();
 
             // front site
             WPEL_Front::create( $settings_page );

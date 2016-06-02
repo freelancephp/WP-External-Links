@@ -1,16 +1,16 @@
 <?php
 /**
- * Class WPRun_Autoloader_0x7x0
+ * Class WPRun_Autoloader_1x0x0
  *
  * @package  WPRun
- * @category WordPress Plugin
- * @version  0.7.0
+ * @category WordPress Library
+ * @version  1.0.0
  * @author   Victor Villaverde Laan
- * @link     http://www.freelancephp.net/
- * @link     https://github.com/freelancephp/WPRun-Plugin-Base
+ * @link     http://www.finewebdev.com
+ * @link     https://github.com/freelancephp/WPRun-WordPress-Development
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-class WPRun_Autoloader_0x7x0
+class WPRun_Autoloader_1x0x0
 {
 
     /**

@@ -1,29 +1,30 @@
 === WP External Links (nofollow new window seo) ===
 Contributors: freelancephp
-Tags: links, external, icon, target, _blank, _new, _none, rel, nofollow, new window, new tab, javascript, xhtml, seo
+Tags: links, new window, new tab, external, internal, nofollow, follow, seo, noopener, noreferrer, icon, font icon, target, _blank
 Requires at least: 3.6.0
-Tested up to: 4.5.0
-Stable tag: 1.81
+Tested up to: 4.5.2
+Stable tag: 2.0.0
 
 Open external links in a new window or tab, adding "nofollow", set link icon, styling, SEO friendly options and more. Easy install and go.
 
 == Description ==
 
-Configure settings for all external links on your site.
+Configure settings for all internal and external links on your site.
 
 = Features =
-* Open in new window or tab
-* Add "nofollow"
-* Choose from 20 icons
-* Set other link options (like classes, title etc)
-* Make it SEO friendly
-* Compatible with WPMU (Multisite)
+* Open links in new window or tab
+* Add "follow" or "nofollow"
+* Add "noopener" and "noreferrer"
+* Add font icons (font awesome and dashicons)
+* WPMU Settings (Multi Site)
+* Better SEO
 
 = Easy to use =
-After activating the plugin all options are already set to make your external links SEO friendly. Optionally you can also set the target for opening in a new window or tab or styling options, like adding an icon.
+After activating you can set all options for external and internal links.
 
 = On the fly =
-The plugin will change the output of the (external) links on the fly. So when you deactivate the plugin, all contents will remain the same as it was before installing the plugin.
+The plugin filters the output of links on the fly. This means the real content of posts, pages etcetera will not be changed.
+When deactivating the plugin, all contents will be the same as it was before.
 
 = Sources =
 * [Documentation](http://wordpress.org/extend/plugins/wp-external-links/other_notes/)
@@ -43,60 +44,45 @@ The plugin will change the output of the (external) links on the fly. So when yo
 
 == Frequently Asked Questions ==
 
-= How to treat internal links as external links? =
+= Links to subdomains should also be treated as internal links. How? =
 
-You could add `rel="external"` to those internal links that should be treated as external. The plugin settings will also be applied to those links.
+Add your main domain to the option "Exclude external links by URL:" and also enable the option "Treat excluded links as internal links".
 
-= Why are links to my own domain treated as external links? =
+= I want certain posts or pages to be ignored by the plugin. How? =
 
-Only links pointing to your WordPress site (`wp_url`) are by default threaded as internal links.
-There is an option to mark all links to your domain (and subdomains) as internal links.
+`add_action( 'wpel_apply_settings', function () {
+    global $post;
+    $excluded_post_ids = array( 1, 2, 4 );
 
-= How to treat links to subdomains as internal links? =
+    if ( in_array( $post->ID, $excluded_post_ids ) ) {
+        return false;
+    }
 
-Add your main domain to the option "Ingore links (URL) containing..." and they will not be treated as external.
+    return true;
+}, 10 );`
 
-= How to create a redirect for external links? =
+= How to create a redirect for external links? (f.e. affiliate links) =
 
-By using the `wpel_external_link` filter. Add this code to functions.php of your theme:
+Create redirect by using the `wpel_link` action. Add some code to functions.php of your theme, like:
 
-`function redirect_external_link($created_link, $original_link, $label, $attrs = array()) {
-    $href = $attrs['href'];
+`add_action( 'wpel_link', function ( $link_object ) {
+    if ( $link_object->isExternal() ) {
+        // get current url
+        $url = $link_object->getAttribute( 'href' );
 
-    // create redirect url
-    $href_new = get_bloginfo('wpurl') . '/redirect.php?url=' . urlencode($attrs['href']);
+        // set redirect url
+        $redirect_url = '//somedom.com?url='. urlencode( $url );
+        $link_object->setAttribute( 'href', $redirect_url );
+    }
+}, 10, 1 );`
 
-    return str_replace($href, $href_new, $created_link);
-}
-
-add_filter('wpel_external_link', 'redirect_external_link', 10, 4);`
-
-= Set a font icon for external links, like [Font Awesome Icons](http://fortawesome.github.io/Font-Awesome/)? =
-
-Use the `wpel_external_link` filter and add this code to functions.php of your theme:
-
-`function set_font_icon_on_external_link($created_link, $original_link, $label, $attrs = array()) {
-    $label_with_font = $label . ' <i class="fa fa-external-link"></i>';
-    return str_replace($label, $label_with_font, $created_link);
-}
-
-add_filter('wpel_external_link', 'set_font_icon_on_external_link', 10, 4);`
-
-The CSS of Font Awesome Icons alse needs to be loaded. To do so also add this code:
-
-`function add_font_awesome_style() {
-    wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css');
-}
-
-add_action('wp_enqueue_scripts', 'add_font_awesome_style');`
-
-= How to open external links in popup browser window with a certain size? =
+= How to open external links in a new popup window? =
 
 By adding this JavaScript code to your site:
 
 `jQuery(function ($) {
 
-    $('a[rel*="external"]').click(function (e) {
+    $('a[data-wpel-link="external"]').click(function (e) {
         // open link in popup window
         window.open($(this).attr('href'), '_blank', 'width=800, height=600');
 
@@ -115,7 +101,7 @@ Add this JavaScript code to your site:
 
 `jQuery(function ($) {
 
-    $('a[rel*="external"]').click(function (e) {
+    $('a[data-wpel-link="external"]').click(function (e) {
         if (!confirm('Are you sure you want to open this link?')) {
             // cancelled
             e.preventDefault();
@@ -125,19 +111,7 @@ Add this JavaScript code to your site:
 
 });`
 
-= How to make all internal links "follow"? =
-
-By using the `wp_internal_link` filter. Add this code to functions.php of your theme:
-
-`function set_follow_to_internal_link($link, $label, $attrs) {
-    return str_replace('nofollow', 'follow', $link);
-}
-
-add_filter('wpel_internal_link', 'set_follow_to_internal_link', 10, 3);
-`
-
-
-[Do you have a question? Please ask me](http://www.freelancephp.net/contact/)
+[Do you have a question? Please ask me](http://www.finewebdev.comcontact/)
 
 == Screenshots ==
 
@@ -146,76 +120,84 @@ add_filter('wpel_internal_link', 'set_follow_to_internal_link', 10, 3);
 
 == Documentation ==
 
-After activating the plugin all options are already set to make your external links SEO friendly. Optionally you can also set the target for opening in a new window or tab or styling options, like adding an icon.
+After activating you can set all options for external and internal links.
 
-= Action hook: wpel_ready =
-The plugin also has a hook when ready, f.e. to add extra filters:
-`function extra_filters($filter_callback, $object) {
-	add_filter('some_filter', $filter_callback);
-}
+= Data attribute "data-wpel-link" =
 
-add_action('wpel_ready', 'extra_filters');`
+It's possible to add a special data attribute to individual links, so they will be marked (and treated)
+as external link, internal link, excluded link or completely ignored.
 
-= Filter hook 1: wpel_external_link =
-The `wpel_external_link` filter gives you the possibility to manipulate output of all external links, like:
-`add_filter('wpel_external_link', 'wpel_special_external_link', 10, 5);
+`<a href="http://somedomain.com" data-wpel-link="ignore">Go to somedomain</a>`
 
-function wpel_special_external_link($created_link, $original_link, $label, $attrs, $is_ignored_link) {
-	// skip links that contain the class "not-external"
-	if (isset($attrs['class']) && strpos($attrs['class'], 'not-external') !== false) {
-		return $original_link;
-	}
+Possible values are `external`, `internal`, `exclude` or `ignore`. All links filtered
+by the plugin will contain this data attribute and the value on how they were treated.
 
-	return '<b>'. $created_link .'</b>';
-}`
+= Action "wpel_link" =
 
-Now all external links will be processed and wrapped around a `<b>`-tag. And links containing the class "not-external" will not be processed by the plugin at all (and stay the way they are).
+Use this action to change the link object after all plugin settings have been applied.
 
-= Filter hook 2: wpel_external_link_attrs =
+`add_action( 'wpel_link', ( $link_object ) {
+    if ( $link_object->isExternal() ) {
+        // get current url
+        $url = $link_object->getAttribute( 'href' );
 
-The `wpel_external_link_attrs` filter can be used to manipulate attributes of external links.
-`add_filter('wpel_external_link_attrs', 'wpel_custom_title', 10, 3);
-
-function wpel_custom_title($attrs, $original_attrs, $label) {
-    if (empty($attrs['title']) && isset($attrs['href'])) {
-        $attrs['title'] = $attrs['href'];
+        // set redirect url
+        $redirect_url = '//somedom.com?url='. urlencode( $url );
+        $link_object->setAttribute( 'href', $redirect_url );
     }
+}, 10, 1 )`
 
-    return $attrs;
-}`
-
-In this example when an external links has an empty title, the title will contain the url.
-
-= Filter hook 3: wpel_ignored_external_link =
-With the `wpel_ignored_external_link` filter you can manipulate the output of the ignored external links.
-`add_filter('wpel_ignored_external_link', 'wpel_custom_ignored_link', 10, 3);
-
-function wpel_custom_ignored_link($link, $label, $attrs) {
-    return '<del>'. $link  .'</del>';
-}`
-
-In this case all ignored links will be marked as deleted (strikethrough).
-
-= Filter hook 4: wpel_internal_link =
-With the `wpel_internal_link` filter you can manipulate the output of all internal links on your site. F.e.:
-`add_filter('wpel_internal_link', 'special_internal_link', 10, 3);
-
-function special_internal_link($link, $label, $attrs) {
-    return '<b>'. $link  .'</b>';
-}`
-
-In this case all internal links will be made bold.
+The link object is an instance of WPEL_Link class (a subclass of [DOMElement](http://php.net/manual/en/class.domelement.php)).
 
 
-See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more possibilities of using these filters.
+= Filter hook "wpel_apply_settings" =
+
+When filter returns false the plugin settings will not be applied. Can be used when f.e. certain posts or pages should be ignored by this plugin.
+
+`add_filter( 'wpel_apply_settings', '__return_false' );`
+
+= Filter hook "wpel_before_filter" =
+
+Filter the content before searching for links and apply setttings.
+
+`add_filter( 'wpel_before_filter', function ( $content ) {
+    // some code..
+
+    return $changed_content;
+}, 10 );`
+
+= Filter hook "wpel_after_filter" =
+
+Filter the content after applying link setttings.
+
+`add_filter( 'wpel_after_filter', function ( $content ) {
+    // some code..
+
+    return $changed_content;
+}, 10 );`
+
+= Filter hook "wpel_regexp_link" =
+
+A filter for changing the regular expression for links. Should only be used to solve bugs on your site.
+
+`add_filter( 'wpel_regexp_link', function ( $regexp_link ) {
+    $custom_regexp_link = '/<a (.*?)>(.*?)<\/a>/is';
+    return $custom_regexp_link;
+}, 10 );`
 
 
-= Credits =
-* [jQuery Tipsy Plugin](http://plugins.jquery.com/project/tipsy) made by [Jason Frame](http://onehackoranother.com/)
-* [phpQuery](http://code.google.com/p/phpquery/) made by [Tobiasz Cudnik](http://tobiasz123.wordpress.com)
-* [Icon](http://findicons.com/icon/164579/link_go?id=427009) made by [FatCow Web Hosting](http://www.fatcow.com/)
+See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more info.
+
 
 == Changelog ==
+
+= 2.0.0 =
+* REQUIREMENTS: PHP 5.3+
+* Complete rebuilt
+* Adding "noopener" and "noreferrer"
+* Use font icons (font awesome and dashicons)
+* Also options for internal links
+* Multi Site settings
 
 = 1.81 =
 * Security update (reported by Vulnerability Lab)
