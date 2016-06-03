@@ -285,19 +285,19 @@ final class WPEL_Front extends WPRun_Base_1x0x0
 
         if ( $icon_type && ! ( $has_img && $no_icon_for_img ) ) {
             if ( 'dashicon' === $icon_type ) {
-                $dashicon = $this->opt( 'dashicon', $type );
+                $dashicon = $this->opt( 'icon_dashicon', $type );
                 $icon = FWP_DOM_Element_1x0x0::create( 'i', '', array(
                     'class'         => 'wpel-icon dashicons-before '. $dashicon,
                     'aria-hidden'   => 'true',
                 ) );
             } else if ( 'fontawesome' === $icon_type ) {
-                $fa = $this->opt( 'fontawesome', $type );
+                $fa = $this->opt( 'icon_fontawesome', $type );
                 $icon = FWP_DOM_Element_1x0x0::create( 'i', '', array( 
                     'class'         => 'wpel-icon fa '. $fa,
                     'aria-hidden'   => 'true',
                 ) );
             } else if ( 'image' === $icon_type ) {
-                $image = $this->opt( 'image_icon', $type );
+                $image = $this->opt( 'icon_image', $type );
                 $icon = FWP_DOM_Element_1x0x0::create( 'span', null, array(
                     'class' => 'wpel-icon wpel-image wpel-icon-'. $image,
                 ) );
@@ -320,7 +320,14 @@ final class WPEL_Front extends WPRun_Base_1x0x0
      */
     protected function is_included_url( $url )
     {
-        $include_urls_arr = $this->opt( 'include_urls' );
+        // should be using private property, but static is more practical
+        static $include_urls_arr = null;
+
+        if ( null === $include_urls_arr ) {
+            $include_urls = $this->opt( 'include_urls' );
+            $include_urls = str_replace( "\n", ',', $include_urls );
+            $include_urls_arr = array_map( 'trim', explode( ',', $include_urls ) );
+        }
 
         foreach ( $include_urls_arr as $include_url ) {
 			if ( false !== strrpos( $url, $include_url ) ) {
@@ -338,7 +345,14 @@ final class WPEL_Front extends WPRun_Base_1x0x0
      */
     protected function is_excluded_url( $url )
     {
-        $exclude_urls_arr = $this->opt( 'exclude_urls' );
+        // should be using private property, but static is more practical
+        static $exclude_urls_arr = null;
+
+        if ( null === $exclude_urls_arr ) {
+            $exclude_urls = $this->opt( 'exclude_urls' );
+            $exclude_urls = str_replace( "\n", ',', $exclude_urls );
+            $exclude_urls_arr = array_map( 'trim', explode( ',', $exclude_urls ) );
+        }
 
         foreach ( $exclude_urls_arr as $exclude_url ) {
 			if ( false !== strrpos( $url, $exclude_url ) ) {
@@ -382,6 +396,7 @@ final class WPEL_Front extends WPRun_Base_1x0x0
      * @return string
      */
     protected function get_domain() {
+        // should be using private property, but static is more practical
         static $domain_name = null;
 
         if ( null === $domain_name ) {
