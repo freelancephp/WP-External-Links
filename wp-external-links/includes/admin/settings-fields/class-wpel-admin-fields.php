@@ -65,7 +65,8 @@ final class WPEL_Admin_Fields extends FWP_Settings_Section_Fields_1x0x0
         $is_valid = $is_valid && in_array( $new_values[ 'own_admin_menu' ], array( '', '1' ) );
 
         if ( false === $is_valid ) {
-            $this->add_error( __( 'Invalid value', 'wpel' ) );
+            // error when user input is not valid conform the UI, probably tried to "hack"
+            $this->add_error( __( 'Something went wrong. One or more values were invalid.', 'wpel' ) );
             return $old_values;
         }
 
