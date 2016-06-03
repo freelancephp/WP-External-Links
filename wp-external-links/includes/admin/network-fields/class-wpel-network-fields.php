@@ -25,7 +25,6 @@ final class WPEL_Network_Fields extends FWP_Settings_Section_Fields_1x0x0
             'option_group'      => 'wpel-network-settings',
             'network_site'      => true,
             'title'             => __( 'Multi Site Settings', 'wpel' ),
-            'description'       => __( 'Lorem ipsum...', 'wpel' ),
             'fields'            => array(
                 'capability' => array(
                     'label'         => __( 'Capability for individual sites:', 'wpel' ),
@@ -66,7 +65,7 @@ final class WPEL_Network_Fields extends FWP_Settings_Section_Fields_1x0x0
             }
         }
 
-        $redirect_url = filter_input( INPUT_POST, '_wp_http_referer', FILTER_SANITIZE_STRING );;
+        $redirect_url = filter_input( INPUT_POST, '_wp_http_referer', FILTER_SANITIZE_STRING );
 
         wp_redirect( add_query_arg(
             array(
