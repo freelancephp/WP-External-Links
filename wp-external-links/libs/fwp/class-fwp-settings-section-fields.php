@@ -81,6 +81,10 @@ abstract class FWP_Settings_Section_Fields_1x0x0 extends WPRun_Base_1x0x0
         $this->add_fields();
     }
 
+    /**
+     * @todo Simplify option values or create own class
+     */
+
     private function set_option_values()
     {
         $saved_values = $this->get_saved_values();
