@@ -31,7 +31,6 @@ final class WPEL_Internal_Link_Fields extends WPEL_Link_Fields_Base
             'option_name'       => $option_name,
             'option_group'      => $option_name,
             'title'             => __( 'Internal Links', 'wpel' ),
-            'description'       => __( 'Lorem ipsum...', 'wpel' ),
             'fields' => $fields,
         ) );
     }

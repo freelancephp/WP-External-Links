@@ -21,8 +21,9 @@ final class WPEL_External_Link_Fields extends WPEL_Link_Fields_Base
         $option_name = 'wpel-external-link-settings';
         $fields = $this->get_general_fields( $option_name );
 
-        // set field labels
+        // specific field settings
         $fields[ 'apply_settings' ][ 'label' ] = __( 'Settings for external links:', 'wpel' );
+        $fields[ 'apply_settings' ][ 'default_value' ] = '1';
         $fields[ 'target' ][ 'label' ] = __( 'Open external links:', 'wpel' );
 
         $this->set_settings( array(
@@ -31,7 +32,6 @@ final class WPEL_External_Link_Fields extends WPEL_Link_Fields_Base
             'option_name'       => $option_name,
             'option_group'      => $option_name,
             'title'             => __( 'External Links', 'wpel' ),
-            'description'       => __( 'Lorem ipsum...', 'wpel' ),
             'fields' => $fields,
         ) );
     }
