@@ -1,11 +1,12 @@
 === WP External Links (nofollow new window seo) ===
 Contributors: freelancephp
-Tags: links, new window, new tab, external, internal, nofollow, follow, seo, noopener, noreferrer, icon, font icon, target, _blank
+Tags: links, new window, new tab, external links, nofollow, follow, seo, noopener, noreferrer, internal links, link icon, link target, _blank, wpmu
 Requires at least: 3.6.0
 Tested up to: 4.5.2
 Stable tag: 2.0.0
 
-Open external links in a new window or tab, adding "nofollow", set link icon, styling, SEO friendly options and more. Easy install and go.
+Open external links in a new tab or window, adding "nofollow" and "noopener", set font icon, SEO friendly options and more. Easy install and go.
+
 
 == Description ==
 
@@ -14,13 +15,19 @@ Configure settings for all internal and external links on your site.
 = Features =
 * Open links in new window or tab
 * Add "follow" or "nofollow"
-* Add "noopener" and "noreferrer"
-* Add font icons (font awesome and dashicons)
-* WPMU Settings (Multi Site)
+* Add "noopener" and "noreferrer" (for security)
+* Scan posts, comments, widgets or the whole page
+* Add font icons (font awesome and dashicons) and CSS classes
 * Better SEO
 
+= And more... =
+* WPMU Settings (Multi Site)
+* Use template tag to apply plugin settings on specific contents
+* Set data-attribute to change how individual links will be treated
+* Use action and filters to implement your specific needs
+
 = Easy to use =
-After activating you can set all options for external and internal links.
+After activating you can set all options for external and internal links on the plugins admin page.
 
 = On the fly =
 The plugin filters the output of links on the fly. This means the real content of posts, pages etcetera will not be changed.
@@ -32,7 +39,7 @@ When deactivating the plugin, all contents will be the same as it was before.
 * [Github](https://github.com/freelancephp/WP-External-Links)
 
 = Like this plugin? =
-[Send your review](http://wordpress.org/support/view/plugin-reviews/wp-external-links-plugin).
+[Share it](http://wordpress.org/support/view/plugin-reviews/wp-external-links-plugin) to support the development of this plugin.
 
 
 == Installation ==
@@ -41,6 +48,7 @@ When deactivating the plugin, all contents will be the same as it was before.
 1. Click on the button `Add new`
 1. Search for `WP External Links` and click 'Install Now' OR click on the `upload` link to upload `wp-external-links.zip`
 1. Click on `Activate plugin`
+
 
 == Frequently Asked Questions ==
 
@@ -66,6 +74,7 @@ Add your main domain to the option "Exclude external links by URL:" and also ena
 Create redirect by using the `wpel_link` action. Add some code to functions.php of your theme, like:
 
 `add_action( 'wpel_link', function ( $link_object ) {
+    // check if link is an external links
     if ( $link_object->isExternal() ) {
         // get current url
         $url = $link_object->getAttribute( 'href' );
@@ -113,10 +122,12 @@ Add this JavaScript code to your site:
 
 [Do you have a question? Please ask me](http://www.finewebdev.comcontact/)
 
+
 == Screenshots ==
 
 1. Link Icon on the Site
 1. Admin Settings Page
+
 
 == Documentation ==
 
@@ -194,10 +205,11 @@ See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more info.
 = 2.0.0 =
 * REQUIREMENTS: PHP 5.3+
 * Complete rebuilt
-* Adding "noopener" and "noreferrer"
+* Adding `noopener` and `noreferrer`
 * Use font icons (font awesome and dashicons)
 * Also options for internal links
 * Multi Site settings
+* Contribution: David Page solving bug `home_url()`
 
 = 1.81 =
 * Security update (reported by Vulnerability Lab)
