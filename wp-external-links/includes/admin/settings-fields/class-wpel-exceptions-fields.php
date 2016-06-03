@@ -48,7 +48,6 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
                 ),
                 'subdomains_as_internal_links' => array(
                     'label'         => __( 'Make subdomains internal:', 'wpel' ),
-                    'default_value' => '1',
                 ),
                 'include_urls' => array(
                     'label' => __( 'Include external links by URL:', 'wpel' ),
@@ -165,31 +164,6 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
     }
 
     /**
-     * @param array $values
-     * @return array
-     */
-    protected function prepare_field_values( array $values )
-    {
-        $prepared_values = $values;
-
-        if ( $prepared_values[ 'include_urls' ] ) {
-            $include_urls = str_replace( "\n", ',', $values[ 'include_urls' ] );
-            $prepared_values[ 'include_urls' ] = array_map( 'trim', explode( ',', $include_urls ) );
-        } else {
-            $prepared_values[ 'include_urls' ] = array();
-        }
-
-        if ( $prepared_values[ 'exclude_urls' ] ) {
-            $exclude_urls = str_replace( "\n", ',', $values[ 'exclude_urls' ] );
-            $prepared_values[ 'exclude_urls' ] = array_map( 'trim', explode( ',', $exclude_urls ) );
-        } else {
-            $prepared_values[ 'exclude_urls' ] = array();
-        }
-
-        return $prepared_values;
-    }
-
-    /**
      * Validate and sanitize user input before saving to databse
      * @param array $new_values
      * @param array $old_values
@@ -209,17 +183,16 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
         $is_valid = $is_valid && in_array( $new_values[ 'excludes_as_internal_links' ], array( '', '1' ) );
 
         if ( false === $is_valid ) {
-            $this->add_error( __( 'Invalid value', 'wpel' ) );
+            // error when user input is not valid conform the UI, probably tried to "hack"
+            $this->add_error( __( 'Something went wrong. One or more values were invalid.', 'wpel' ) );
             return $old_values;
         }
 
         if ( '' !== trim( $new_values[ 'include_urls' ] ) ) {
-//            $update_values[ 'include_urls' ] = sanitize_text_field( $new_values[ 'include_urls' ] );
             $update_values[ 'include_urls' ] = implode( "\n", array_map( 'sanitize_text_field', explode( "\n", $new_values[ 'include_urls' ] ) ) );
         }
 
         if ( '' !== trim( $new_values[ 'exclude_urls' ] ) ) {
-//            $update_values[ 'exclude_urls' ] = sanitize_text_field( $new_values[ 'exclude_urls' ] );
             $update_values[ 'exclude_urls' ] = implode( "\n", array_map( 'sanitize_text_field', explode( "\n", $new_values[ 'exclude_urls' ] ) ) );
         }
 
