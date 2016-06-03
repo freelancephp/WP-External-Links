@@ -29,6 +29,10 @@ a.toplevel_page_wpel-network-settings-page .wp-menu-image:before {
     margin-right: 5px;
 }
 
+.wpel-admin-settings .nav-tab-support {
+    float: right;
+}
+
 .wpel-admin-settings form {
     position: relative;
 }
