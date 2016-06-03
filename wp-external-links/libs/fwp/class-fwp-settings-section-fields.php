@@ -87,7 +87,7 @@ abstract class FWP_Settings_Section_Fields_1x0x0 extends WPRun_Base_1x0x0
         $default_values = $this->get_default_values();
 
         $values = wp_parse_args( $saved_values, $default_values );
-        $this->option_values = $this->prepare_field_values( $values );
+        $this->option_values = $values;
     }
 
     final public function update_option_values( $values )
@@ -119,9 +119,13 @@ abstract class FWP_Settings_Section_Fields_1x0x0 extends WPRun_Base_1x0x0
         return delete_option( $this->get_setting( 'option_name' ) );
     }
 
-    final public function get_option_values()
+    final public function get_option_values( $prepared = true )
     {
-        return $this->option_values;
+        if ( false === $prepared ) {
+            return $this->option_values;
+        }
+
+        return $this->prepare_field_values( $this->option_values );
     }
 
     final public function get_default_values()
