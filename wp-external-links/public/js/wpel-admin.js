@@ -9,26 +9,6 @@ jQuery(function ($) {
     var $wrapper = $('.wpel-admin-settings');
 
     /**
-     * Support
-     */
-    $wrapper.on('click', '.js-wpel-copy', function (e) {
-        e.preventDefault();
-
-        var node = $wrapper.find('.js-wpel-copy-target').get(0);
-        node.select();
-
-        var range = document.createRange();
-        range.selectNode(node);
-        window.getSelection().addRange(range);
-
-        try {
-            document.execCommand('copy');
-        } catch(err) {
-            console.log('Unable to copy');
-        }
-    });
-
-    /**
      * Apply Sections Settings
      */
     $wrapper.on('change', '.js-wpel-apply input', function () {
@@ -88,13 +68,37 @@ jQuery(function ($) {
     $wrapper.find('.js-icon-type select').change();
 
     /**
-     * Other
+     * Support
+     */
+    $wrapper.on('click', '.js-wpel-copy', function (e) {
+        e.preventDefault();
+
+        var node = $wrapper.find('.js-wpel-copy-target').get(0);
+        node.select();
+
+        var range = document.createRange();
+        range.selectNode(node);
+        window.getSelection().addRange(range);
+
+        try {
+            document.execCommand('copy');
+        } catch(err) {
+            console.log('Unable to copy');
+        }
+    });
+
+    /**
+     * Help documentation links/buttons
      */
     $wrapper.on('click', '[data-wpel-help]', function () {
         var helpKey = $(this).data('wpel-help');
 
         if (helpKey) {
+            // activate given tab
             $('#tab-link-'+ helpKey +' a').click();
+        } else {
+            // activate first tab
+            $('.contextual-help-tabs li a').first().click();
         }
 
         $('#contextual-help-link[aria-expanded="false"]').click();
