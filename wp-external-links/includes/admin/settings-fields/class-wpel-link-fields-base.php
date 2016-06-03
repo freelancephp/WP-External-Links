@@ -28,7 +28,7 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
             'target' => array(
                 'label'             => __( 'Open links:', 'wpel' ),
                 'class'             => 'wpel-hidden',
-                'default_value'     => '_blank',
+                'default_value'     => '',
             ),
             'target_overwrite' => array(
                 'label'             => '',
@@ -37,7 +37,7 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
             'rel_follow' => array(
                 'label'             => __( 'Set <code>follow</code> or <code>nofollow</code>:', 'wpel' ),
                 'class'             => 'wpel-hidden',
-                'default_value'     => 'nofollow',
+                'default_value'     => '',
             ),
             'rel_follow_overwrite' => array(
                 'label'             => '',
@@ -74,6 +74,7 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
             'icon_image' => array(
                 'label'             => __( 'Choose icon image:', 'wpel' ),
                 'class'             => 'js-icon-type-child js-icon-type-image wpel-hidden',
+                'default_value'     => '1',
             ),
             'icon_dashicon' => array(
                 'label'             => __( 'Choose dashicon:', 'wpel' ),
@@ -226,7 +227,7 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
 
         for ( $x = 1; $x <= 20; $x++ ) {
             echo '<label>';
-            echo $this->get_html_fields()->radio( 'image_icon', strval( $x ) );
+            echo $this->get_html_fields()->radio( $args[ 'key' ], strval( $x ) );
             echo '<img src="'. plugins_url( '/public/images/wpel-icons/icon-'. esc_attr( $x ) .'.png', WPEL_Plugin::get_plugin_file() ) .'">';
             echo '</label>';
             echo '<br>';
@@ -252,7 +253,7 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
             $options[ $icon[ 'className' ] ] = '&#x'. $icon[ 'unicode' ];
         }
 
-        $this->get_html_fields()->select( 'dashicon', $options, array(
+        $this->get_html_fields()->select( $args[ 'key' ], $options, array(
             'style' => 'font-family:dashicons',
         ) );
     }
@@ -268,7 +269,7 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
             $options[ $icon[ 'className' ] ] = '&#x'. $icon[ 'unicode' ];
         }
 
-        $this->get_html_fields()->select( 'fontawesome', $options, array(
+        $this->get_html_fields()->select( $args[ 'key' ], $options, array(
             'style' => 'font-family:FontAwesome',
         ) );
     }
@@ -314,7 +315,8 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
         $is_valid = $is_valid && in_array( $new_values[ 'no_icon_for_img' ], array( '', '1' ) );
 
         if ( false === $is_valid ) {
-            $this->add_error( __( 'Invalid value', 'wpel' ) );
+            // error when user input is not valid conform the UI, probably tried to "hack"
+            $this->add_error( __( 'Something went wrong. One or more values were invalid.', 'wpel' ) );
             return $old_values;
         }
 
