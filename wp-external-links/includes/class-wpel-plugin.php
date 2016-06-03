@@ -58,7 +58,9 @@ final class WPEL_Plugin extends WPRun_Base_1x0x0
 
             // front site
             WPEL_Front::create( $settings_page );
-            WPEL_Front_Ignore::create();
+            WPEL_Front_Ignore::create( $settings_page );
+
+            WPEL_Template_Tags::create();
         }
     }
 
