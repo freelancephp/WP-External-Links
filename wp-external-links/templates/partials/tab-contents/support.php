@@ -17,7 +17,7 @@
 <h2><?php _e( 'Support', 'wpel' ); ?></h2>
 
 <h3><?php _e( 'Documentation', 'wpel' ); ?></h3>
-<p><?php _e( 'Take a look at the help section for documentation (see "help" on top-left of the page)', 'wpel' ); ?></p>
+<p><?php _e( 'Take a look at the <a href="#" data-wpel-help>help section</a> for documentation', 'wpel' ); ?></p>
 
 <h3><?php _e( 'FAQ', 'wpel' ); ?></h3>
 <p><?php _e( 'On the <a href="https://wordpress.org/plugins/wp-external-links/faq/" target="_blank">FAQ page</a> you can find some additional tips & trics.', 'wpel' ); ?></p>
@@ -26,11 +26,13 @@
 <p><?php _e( 'When you experience problems using this plugin please look if your problem was <a href="https://wordpress.org/support/plugin/wp-external-links" target="_blank">already reported</a>.', 'wpel' ); ?></p>
 
 <h3><?php _e( 'Send your issue', 'wpel' ); ?></h3>
-<p><?php _e( 'If not then you can report it <a href="https://wordpress.org/support/plugin/wp-external-links#postform" target="_blank">here</a>.', 'wpel' ); ?>
-    <?php _e( 'Please include your plugin settings within your post:', 'wpel' ); ?></p>
-
+<p><?php _e( 'If it wasn\'t yet reported then you can <a href="https://wordpress.org/support/plugin/wp-external-links#postform" target="_blank">send your problem</a>.', 'wpel' ); ?>
+    <?php _e( 'Please after reporting send me the following technical information <a href="http://www.finewebdev.com/contact" target="_blank">by mail</a>. That will make it easier to solve the problem.', 'wpel' ); ?>
+</p>
 <p>
-    <label for="plugin-settings"><?php _e( 'Your WPEL Plugin Settings:', 'wpel' ); ?></label>
+    <button class="button js-wpel-copy"><?php _e( 'Copy Technical Info', 'wpel' ); ?></button>
+</p>
+<p>
 <textarea id="plugin-settings" class="large-text js-wpel-copy-target" rows="8" readonly="readonly">
 <?php _e( 'WP url:', 'wpel' ); ?>  <?php bloginfo( 'wpurl' ); ?>
 
@@ -38,8 +40,18 @@
 
 <?php _e( 'PHP version:', 'wpel' ); ?>  <?php echo phpversion(); ?>
 
+<?php _e( 'Installed Plugins:', 'wpel' ); ?>
 
-<?php _e( 'WPEL plugin settings:', 'wpel' ); ?>
+<?php
+$plugins = get_plugins() ;
+
+foreach ( $plugins as $plugin ) {
+    echo ' - '. $plugin[ 'Name' ] .', version: '. $plugin[ 'Version' ] ."\n";
+}
+?>
+
+<?php _e( 'WPEL Settings:', 'wpel' ); ?>
+
 array(
 <?php
 foreach ( $vars[ 'tabs' ] as $tab_key => $values ) {
@@ -57,5 +69,4 @@ foreach ( $vars[ 'tabs' ] as $tab_key => $values ) {
 ?>
 );
 </textarea>
-    <button class="button js-wpel-copy"><?php _e( 'Copy Plugin Settings', 'wpel' ); ?></button>
 </p>
