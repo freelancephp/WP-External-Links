@@ -23,7 +23,7 @@ $set_tab_active_class = function ( $tab ) use ( $vars ) {
 ?>
 <h2 class="nav-tab-wrapper">
     <?php foreach ( $vars[ 'tabs' ] as $tab_key => $tab_values ): ?>
-        <a class="nav-tab<?php $set_tab_active_class( $tab_key ); ?>" href="<?php echo $vars[ 'page_url' ]; ?>&tab=<?php echo $tab_key; ?>">
+        <a class="nav-tab<?php $set_tab_active_class( $tab_key ); ?> nav-tab-<?php echo $tab_key; ?>" href="<?php echo $vars[ 'page_url' ]; ?>&tab=<?php echo $tab_key; ?>">
             <?php echo $tab_values[ 'icon' ]; ?> <?php echo $tab_values[ 'title' ]; ?>
         </a>
     <?php endforeach; ?>
