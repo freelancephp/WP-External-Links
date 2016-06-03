@@ -23,7 +23,6 @@ final class WPEL_Network_Admin_Fields extends FWP_Settings_Section_Fields_1x0x0
             'page_id'           => 'wpel-network-admin-fields',
             'option_name'       => 'wpel-network-admin-settings',
             'option_group'      => 'wpel-network-admin-settings',
-            'network_site'      => true,
             'title'             => __( 'Network Admin Settings', 'wpel' ),
             'fields'            => array(
                 'own_admin_menu' => array(
@@ -33,7 +32,7 @@ final class WPEL_Network_Admin_Fields extends FWP_Settings_Section_Fields_1x0x0
             ),
         ) );
 
-        if ( $this->get_setting( 'network_site' ) ) {
+        if ( is_network_admin() ) {
             add_action( 'network_admin_edit_'. $this->get_setting( 'option_group' ) , $this->get_callback( 'save_network_settings' ) );
         }
     }
@@ -97,15 +96,14 @@ final class WPEL_Network_Admin_Fields extends FWP_Settings_Section_Fields_1x0x0
     protected function before_update( array $new_values, array $old_values )
     {
         $update_values = $new_values;
+        $is_valid = true;
 
-        $is_valid_check = function ( $value ) {
-            $valid_vals = array( '', '1' );
-            return in_array( $value, $valid_vals );
-        };
+        $is_valid = $is_valid && in_array( $new_values[ 'own_admin_menu' ], array( '', '1' ) );
 
-        if ( ! $is_valid_check( $new_values[ 'own_admin_menu' ] ) ) {
-            $update_values = $old_values;
-            $this->add_error( __( 'Wrong values!', 'wpel' ) );
+        if ( false === $is_valid ) {
+            // error when user input is not valid conform the UI, probably tried to "hack"
+            $this->add_error( __( 'Something went wrong. One or more values were invalid.', 'wpel' ) );
+            return $old_values;
         }
 
         return $update_values;
