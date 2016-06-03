@@ -92,11 +92,12 @@ final class WPEL_Registerhooks extends WPRun_Base_1x0x0
         // mapping
         if ( ! empty( $old_main ) ) {
             $external_link_values[ 'target' ] = str_replace( '_none', '_self', $old_main[ 'filter_page' ] );
-            $exceptions_link_values[ 'apply_all' ] = $old_main[ 'filter_page' ];
-            $exceptions_link_values[ 'apply_post_content' ] = $old_main[ 'filter_posts' ];
-            $exceptions_link_values[ 'apply_comments' ] = $old_main[ 'filter_comments' ];
-            $exceptions_link_values[ 'apply_widgets' ] = $old_main[ 'filter_widgets' ];
-            $exceptions_link_values[ 'exclude_urls' ] = $old_main[ 'ignore' ];
+            $exceptions_link_values[ 'apply_all' ] = (string) $old_main[ 'filter_page' ];
+            $exceptions_link_values[ 'apply_post_content' ] = (string) $old_main[ 'filter_posts' ];
+            $exceptions_link_values[ 'apply_comments' ] = (string) $old_main[ 'filter_comments' ];
+            $exceptions_link_values[ 'apply_widgets' ] = (string) $old_main[ 'filter_widgets' ];
+            $exceptions_link_values[ 'exclude_urls' ] = (string) $old_main[ 'ignore' ];
+            $exceptions_link_values[ 'subdomains_as_internal_links' ] = (string) $old_main[ 'ignore_subdomains' ];
         }
         if ( ! empty( $old_seo ) ) {
             $external_link_values[ 'rel_follow' ] = ( 1 == $old_seo[ 'nofollow' ] ) ? 'nofollow' : 'follow';
@@ -111,6 +112,9 @@ final class WPEL_Registerhooks extends WPRun_Base_1x0x0
             }
             $external_link_values[ 'class' ] = $old_style[ 'class_name' ];
             $external_link_values[ 'no_icon_for_img' ] = (string) $old_style[ 'image_no_icon' ];
+        }
+        if ( ! empty( $old_extra ) ) {
+            $exceptions_link_values[ 'ignore_script_tags' ] = (string) $old_style[ 'fix_js' ];
         }
         if ( ! empty( $old_screen ) ) {
             $admin_link_values[ 'own_admin_menu' ] = ( 'admin.php' == $old_screen[ 'menu_position' ] ) ? '1' : '0';
