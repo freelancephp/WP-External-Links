@@ -23,7 +23,6 @@ final class WPEL_Network_Fields extends FWP_Settings_Section_Fields_1x0x0
             'page_id'           => 'wpel-network-fields',
             'option_name'       => 'wpel-network-settings',
             'option_group'      => 'wpel-network-settings',
-            'network_site'      => true,
             'title'             => __( 'Multi Site Settings', 'wpel' ),
             'fields'            => array(
                 'capability' => array(
@@ -37,7 +36,7 @@ final class WPEL_Network_Fields extends FWP_Settings_Section_Fields_1x0x0
             ),
         ) );
 
-        if ( $this->get_setting( 'network_site' ) ) {
+        if ( is_network_admin() ) {
             add_action( 'network_admin_edit_'. $this->get_setting( 'option_group' ) , $this->get_callback( 'save_network_settings' ) );
         }
     }
@@ -119,6 +118,9 @@ final class WPEL_Network_Fields extends FWP_Settings_Section_Fields_1x0x0
     protected function before_update( array $new_values, array $old_values )
     {
         $update_values = $new_values;
+
+        $update_values[ 'capability' ] = sanitize_text_field( $new_values[ 'capability' ] );
+        $update_values[ 'default_settings_site' ] = sanitize_text_field( $new_values[ 'default_settings_site' ] );
 
         return $update_values;
     }
