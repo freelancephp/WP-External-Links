@@ -23,7 +23,6 @@ abstract class FWP_Settings_Section_Fields_1x0x0 extends WPRun_Base_1x0x0
         'page_id'           => '',
         'option_name'       => '',
         'option_group'      => '',
-        'network_site'      => false,
         'html_fields_class' => 'FWP_HTML_Fields_1x0x0',
         'fields'            => array(
             //'key' => array(
@@ -49,7 +48,9 @@ abstract class FWP_Settings_Section_Fields_1x0x0 extends WPRun_Base_1x0x0
      */
     private $option_values = array();
 
-    
+    /**
+     * After init
+     */
     protected function after_init()
     {
         $this->set_option_values();
@@ -82,9 +83,8 @@ abstract class FWP_Settings_Section_Fields_1x0x0 extends WPRun_Base_1x0x0
     }
 
     /**
-     * @todo Simplify option values or create own class
+     * Set option values
      */
-
     private function set_option_values()
     {
         $saved_values = $this->get_saved_values();
@@ -94,44 +94,19 @@ abstract class FWP_Settings_Section_Fields_1x0x0 extends WPRun_Base_1x0x0
         $this->option_values = $values;
     }
 
-    final public function update_option_values( $values )
+    /**
+     * Get option values
+     * @return array
+     */
+    final public function get_option_values()
     {
-        $sanitized_values = $this->sanitize( $values );
-        $default_values = $this->get_default_values();
-
-        $update_values = wp_parse_args( $sanitized_values, $default_values );
-
-         if ( true === $this->get_setting( 'network_site' ) ) {
-            $updated = update_site_option( $this->get_setting( 'option_name' ), $update_values );
-        } else {
-            $updated = update_option( $this->get_setting( 'option_name' ), $update_values );
-        }
-
-        if ( $updated ) {
-            $this->option_values = $values;
-        }
-
-        return $updated;
+        return $this->option_values;
     }
 
-    final public function delete_option_values()
-    {
-         if ( true === $this->get_setting( 'network_site' ) ) {
-            return delete_site_option( $this->get_setting( 'option_name' ) );
-        }
-
-        return delete_option( $this->get_setting( 'option_name' ) );
-    }
-
-    final public function get_option_values( $prepared = true )
-    {
-        if ( false === $prepared ) {
-            return $this->option_values;
-        }
-
-        return $this->prepare_field_values( $this->option_values );
-    }
-
+    /**
+     * Get the default option values
+     * @return array
+     */
     final public function get_default_values()
     {
         $fields = $this->get_setting( 'fields' );
@@ -147,9 +122,13 @@ abstract class FWP_Settings_Section_Fields_1x0x0 extends WPRun_Base_1x0x0
         return $default_values;
     }
 
+    /**
+     * Get saved option values from database
+     * @return type
+     */
     final public function get_saved_values()
     {
-        if ( true === $this->get_setting( 'network_site' ) ) {
+        if ( is_network_admin() ) {
             $option = get_site_option( $this->get_setting( 'option_name' ) );
         } else {
             $option = get_option( $this->get_setting( 'option_name' ) );
@@ -157,11 +136,6 @@ abstract class FWP_Settings_Section_Fields_1x0x0 extends WPRun_Base_1x0x0
 
         $saved_values = is_array( $option ) ? $option : array();
         return $saved_values;
-    }
-
-    protected function prepare_field_values( array $values )
-    {
-        return $values;
     }
 
     /**
