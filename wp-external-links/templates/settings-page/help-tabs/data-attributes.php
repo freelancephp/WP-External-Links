@@ -18,5 +18,6 @@
 <ul>
     <li><?php _e( 'Links with <code>data-wpel-link="internal"</code> will be treated as internal links.', 'wpel' ); ?></li>
     <li><?php _e( 'Links with <code>data-wpel-link="external"</code> will be treated as external links.', 'wpel' ); ?></li>
-    <li><?php _e( 'Links with <code>data-wpel-link="excluded"</code> will be treated as excluded links.', 'wpel' ); ?></li>
+    <li><?php _e( 'Links with <code>data-wpel-link="exclude"</code> will be treated as excluded links (which optionally can be treated as internal links).', 'wpel' ); ?></li>
+    <li><?php _e( 'Links with <code>data-wpel-link="ignore"</code> will be completely ignored by this plugin.', 'wpel' ); ?></li>
 </ul>
