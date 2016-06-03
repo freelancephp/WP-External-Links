@@ -57,7 +57,7 @@ final class WPEL_Front extends WPRun_Base_1x0x0
      * @return string
      * @triggers E_USER_NOTICE Option value cannot be found
      */
-    private function opt( $key, $type = null )
+    protected function opt( $key, $type = null )
     {
         return $this->settings_page->get_option_value( $key, $type );
     }
@@ -98,7 +98,7 @@ final class WPEL_Front extends WPRun_Base_1x0x0
      * @param string $content
      * @return string
      */
-    protected function scan( $content )
+    public function scan( $content )
     {
         /**
          * Filter whether the plugin settings will be applied on links
@@ -320,8 +320,7 @@ final class WPEL_Front extends WPRun_Base_1x0x0
      */
     protected function is_included_url( $url )
     {
-        $include_urls_str = $this->opt( 'include_urls' );
-        $include_urls_arr = explode( "\n", $include_urls_str );
+        $include_urls_arr = $this->opt( 'include_urls' );
 
         foreach ( $include_urls_arr as $include_url ) {
 			if ( false !== strrpos( $url, $include_url ) ) {
@@ -339,8 +338,7 @@ final class WPEL_Front extends WPRun_Base_1x0x0
      */
     protected function is_excluded_url( $url )
     {
-        $exclude_urls_str = $this->opt( 'exclude_urls' );
-        $exclude_urls_arr = explode( "\n", $exclude_urls_str );
+        $exclude_urls_arr = $this->opt( 'exclude_urls' );
 
         foreach ( $exclude_urls_arr as $exclude_url ) {
 			if ( false !== strrpos( $url, $exclude_url ) ) {
@@ -371,7 +369,36 @@ final class WPEL_Front extends WPRun_Base_1x0x0
             return true;
         }
 
+        // check subdomains
+        if ( $this->opt( 'subdomains_as_internal_links' ) && false !== strpos( $url, $this->get_domain() ) ) {
+            return true;
+        }
+
         return false;
+    }
+
+    /**
+     * Get domain name
+     * @return string
+     */
+    protected function get_domain() {
+        static $domain_name = null;
+
+        if ( null === $domain_name ) {
+            preg_match(
+                '/[a-z0-9\-]{1,63}\.[a-z\.]{2,6}$/'
+                , parse_url( home_url(), PHP_URL_HOST )
+                , $domain_tld
+            );
+
+            if ( count( $domain_tld ) > 0 ) {
+                $domain_name = $domain_tld[ 0 ];
+            } else {
+                $domain_name = $_SERVER[ 'SERVER_NAME' ];
+            }
+        }
+
+        return $domain_name;
     }
 
 }
