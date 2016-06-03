@@ -63,7 +63,7 @@ final class WPEL_Settings_Page extends WPRun_Base_1x0x0
             ),
             'support' => array(
                 'title'     => __( 'Support', 'wpel' ),
-                'icon'      => '<i class="fa fa-smile-o" aria-hidden="true"></i>',
+                'icon'      => '<i class="fa fa-question" aria-hidden="true"></i>',
             ),
         );
 
