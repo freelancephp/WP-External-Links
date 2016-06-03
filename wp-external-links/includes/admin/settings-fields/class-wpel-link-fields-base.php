@@ -303,6 +303,30 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
     protected function before_update( array $new_values, array $old_values )
     {
         $update_values = $new_values;
+        $is_valid = true;
+
+        $is_valid = $is_valid && in_array( $new_values[ 'apply_settings' ], array( '', '1' ) );
+        $is_valid = $is_valid && in_array( $new_values[ 'target_overwrite' ], array( '', '1' ) );
+        $is_valid = $is_valid && in_array( $new_values[ 'rel_follow_overwrite' ], array( '', '1' ) );
+        $is_valid = $is_valid && in_array( $new_values[ 'rel_external' ], array( '', '1' ) );
+        $is_valid = $is_valid && in_array( $new_values[ 'rel_noopener' ], array( '', '1' ) );
+        $is_valid = $is_valid && in_array( $new_values[ 'rel_noreferrer' ], array( '', '1' ) );
+        $is_valid = $is_valid && in_array( $new_values[ 'no_icon_for_img' ], array( '', '1' ) );
+
+        if ( false === $is_valid ) {
+            $this->add_error( __( 'Invalid value', 'wpel' ) );
+            return $old_values;
+        }
+
+        $update_values[ 'target' ]          = sanitize_text_field( $new_values[ 'target' ] );
+        $update_values[ 'rel_follow' ]      = sanitize_text_field( $new_values[ 'rel_follow' ] );
+        $update_values[ 'title' ]           = sanitize_text_field( $new_values[ 'title' ] );
+        $update_values[ 'class' ]           = sanitize_text_field( $new_values[ 'class' ] );
+        $update_values[ 'icon_type' ]       = sanitize_text_field( $new_values[ 'icon_type' ] );
+        $update_values[ 'icon_image' ]      = sanitize_text_field( $new_values[ 'icon_image' ] );
+        $update_values[ 'icon_dashicon' ]   = sanitize_text_field( $new_values[ 'icon_dashicon' ] );
+        $update_values[ 'icon_fontawesome' ] = sanitize_text_field( $new_values[ 'icon_fontawesome' ] );
+        $update_values[ 'icon_position' ]   = sanitize_text_field( $new_values[ 'icon_position' ] );
 
         return $update_values;
     }
