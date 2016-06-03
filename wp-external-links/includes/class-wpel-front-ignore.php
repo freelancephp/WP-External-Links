@@ -19,6 +19,32 @@ final class WPEL_Front_Ignore extends WPRun_Base_1x0x0
     private $content_placeholders = array();
 
     /**
+     * @var WPEL_Settings_Page
+     */
+    private $settings_page = null;
+
+    /**
+     * Initialize
+     * @param WPEL_Settings_Page $settings_page
+     */
+    protected function init( WPEL_Settings_Page $settings_page )
+    {
+        $this->settings_page = $settings_page;
+    }
+
+    /**
+     * Get option value
+     * @param string $key
+     * @param string|null $type
+     * @return string
+     * @triggers E_USER_NOTICE Option value cannot be found
+     */
+    protected function opt( $key, $type = null )
+    {
+        return $this->settings_page->get_option_value( $key, $type );
+    }
+
+    /**
      * Filter for "wpel_before_filter"
      * @param string $content
      * @return string
@@ -26,12 +52,30 @@ final class WPEL_Front_Ignore extends WPRun_Base_1x0x0
     protected function filter_wpel_before_filter_10000000000( $content )
     {
         $content = preg_replace_callback(
-            '/<script([^>]*)>(.*?)<\/script[^>]*>/is'
-            , $this->get_callback( 'skip_script_tags' )
+            $this->get_tag_regexp( 'head' )
+            , $this->get_callback( 'skip_tag' )
             , $content
         );
 
+        if ( $this->opt( 'ignore_script_tags' ) ) {
+            $content = preg_replace_callback(
+                $this->get_tag_regexp( 'script' )
+                , $this->get_callback( 'skip_tag' )
+                , $content
+            );
+        }
+
         return $content;
+    }
+
+    /**
+     *
+     * @param type $tag_name
+     * @return type
+     */
+    protected function get_tag_regexp( $tag_name )
+    {
+        return '/<'. $tag_name .'([^>]*)>(.*?)<\/'. $tag_name .'[^>]*>/is';
     }
 
     /**
@@ -74,10 +118,10 @@ final class WPEL_Front_Ignore extends WPRun_Base_1x0x0
      * @param array $matches
      * @return string
      */
-    protected function skip_script_tags( $matches )
+    protected function skip_tag( $matches )
     {
-        $script_content = $matches[ 0 ];
-        return $this->get_placeholder( $script_content );
+        $skip_content = $matches[ 0 ];
+        return $this->get_placeholder( $skip_content );
     }
 
     /**
