@@ -24,7 +24,6 @@ final class WPEL_Admin_Fields extends FWP_Settings_Section_Fields_1x0x0
             'option_name'       => 'wpel-admin-settings',
             'option_group'      => 'wpel-admin-settings',
             'title'             => __( 'Admin Settings', 'wpel' ),
-            'description'       => __( 'Lorem ipsum...', 'wpel' ),
             'fields'            => array(
                 'own_admin_menu' => array(
                     'label'         => __( 'Main Admin Menu:', 'wpel' ),
@@ -61,15 +60,13 @@ final class WPEL_Admin_Fields extends FWP_Settings_Section_Fields_1x0x0
     protected function before_update( array $new_values, array $old_values )
     {
         $update_values = $new_values;
+        $is_valid = true;
 
-        $is_valid_check = function ( $value ) {
-            $valid_vals = array( '', '1' );
-            return in_array( $value, $valid_vals );
-        };
+        $is_valid = $is_valid && in_array( $new_values[ 'own_admin_menu' ], array( '', '1' ) );
 
-        if ( ! $is_valid_check( $new_values[ 'own_admin_menu' ] ) ) {
-            $update_values = $old_values;
-            $this->add_error( __( 'Wrong values!', 'wpel' ) );
+        if ( false === $is_valid ) {
+            $this->add_error( __( 'Invalid value', 'wpel' ) );
+            return $old_values;
         }
 
         return $update_values;
