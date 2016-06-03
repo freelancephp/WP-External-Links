@@ -24,7 +24,6 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
             'option_name'       => 'wpel-exceptions-settings',
             'option_group'      => 'wpel-exceptions-settings',
             'title'             => __( 'Exceptions', 'wpel' ),
-            'description'       => __( 'Lorem', 'wpel' ),
             'fields'            => array(
                 'apply_all' => array(
                     'label'         => __( 'Apply settings on:', 'wpel' ),
@@ -43,6 +42,14 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
                     'class'         => 'js-wpel-apply-child wpel-hidden wpel-no-label',
                     'default_value' => '1',
                 ),
+                'ignore_script_tags' => array(
+                    'label'         => __( 'Skip <code>&lt;script&gt;</code>:', 'wpel' ),
+                    'default_value' => '1',
+                ),
+                'subdomains_as_internal_links' => array(
+                    'label'         => __( 'Make subdomains internal:', 'wpel' ),
+                    'default_value' => '1',
+                ),
                 'include_urls' => array(
                     'label' => __( 'Include external links by URL:', 'wpel' ),
                 ),
@@ -50,7 +57,8 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
                     'label' => __( 'Exclude external links by URL:', 'wpel' ),
                 ),
                 'excludes_as_internal_links' => array(
-                    'label' => __( 'Excludes as internal links:', 'wpel' ),
+                    'label'         => '',
+                    'class'         => 'wpel-no-label',
                 ),
             ),
         ) );
@@ -100,6 +108,26 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
         );
     }
 
+    protected function show_ignore_script_tags( array $args )
+    {
+        $this->get_html_fields()->check_with_label(
+            $args[ 'key' ]
+            , __( 'Ignore all links in <code>&lt;script&gt;</code> blocks', 'wpel' )
+            , '1'
+            , ''
+        );
+    }
+
+    protected function show_subdomains_as_internal_links( array $args )
+    {
+        $this->get_html_fields()->check_with_label(
+            $args[ 'key' ]
+            , __( 'Threat all links to the site\'s domain and subdomains as internal links', 'wpel' )
+            , '1'
+            , ''
+        );
+    }
+
     protected function show_include_urls( array $args )
     {
         $this->get_html_fields()->text_area( $args[ 'key' ], array(
@@ -144,12 +172,18 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
     {
         $prepared_values = $values;
 
-        if ( ! empty( $values[ 'include_urls' ] ) ) {
-            $prepared_values[ 'include_urls' ] = implode( "\n", $values[ 'include_urls' ] );
+        if ( $prepared_values[ 'include_urls' ] ) {
+            $include_urls = str_replace( "\n", ',', $values[ 'include_urls' ] );
+            $prepared_values[ 'include_urls' ] = array_map( 'trim', explode( ',', $include_urls ) );
+        } else {
+            $prepared_values[ 'include_urls' ] = array();
         }
 
-        if ( ! empty( $values[ 'exclude_urls' ] ) ) {
-            $prepared_values[ 'exclude_urls' ] = implode( "\n", $values[ 'exclude_urls' ] );
+        if ( $prepared_values[ 'exclude_urls' ] ) {
+            $exclude_urls = str_replace( "\n", ',', $values[ 'exclude_urls' ] );
+            $prepared_values[ 'exclude_urls' ] = array_map( 'trim', explode( ',', $exclude_urls ) );
+        } else {
+            $prepared_values[ 'exclude_urls' ] = array();
         }
 
         return $prepared_values;
@@ -164,33 +198,29 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
     protected function before_update( array $new_values, array $old_values )
     {
         $update_values = $new_values;
+        $is_valid = true;
 
-        $is_valid_check = function ( $value ) {
-            $valid_vals = array( '', '1' );
-            return in_array( $value, $valid_vals );
-        };
+        $is_valid = $is_valid && in_array( $new_values[ 'apply_post_content' ], array( '', '1' ) );
+        $is_valid = $is_valid && in_array( $new_values[ 'apply_comments' ], array( '', '1' ) );
+        $is_valid = $is_valid && in_array( $new_values[ 'apply_widgets' ], array( '', '1' ) );
+        $is_valid = $is_valid && in_array( $new_values[ 'apply_all' ], array( '', '1' ) );
+        $is_valid = $is_valid && in_array( $new_values[ 'ignore_script_tags' ], array( '', '1' ) );
+        $is_valid = $is_valid && in_array( $new_values[ 'subdomains_as_internal_links' ], array( '', '1' ) );
+        $is_valid = $is_valid && in_array( $new_values[ 'excludes_as_internal_links' ], array( '', '1' ) );
 
-        if ( ! $is_valid_check( $new_values[ 'apply_post_content' ] )
-                || ! $is_valid_check( $new_values[ 'apply_comments' ] )
-                || ! $is_valid_check( $new_values[ 'apply_widgets' ] )
-                || ! $is_valid_check( $new_values[ 'apply_all' ] ) ) {
-            $update_values = $old_values;
-            $this->add_error( __( 'Wrong values!', 'wprun-demo' ) );
+        if ( false === $is_valid ) {
+            $this->add_error( __( 'Invalid value', 'wpel' ) );
+            return $old_values;
         }
 
         if ( '' !== trim( $new_values[ 'include_urls' ] ) ) {
-            $urls = explode( "\n", $new_values[ 'include_urls' ] );
-            $update_values[ 'include_urls' ] = $urls;
+//            $update_values[ 'include_urls' ] = sanitize_text_field( $new_values[ 'include_urls' ] );
+            $update_values[ 'include_urls' ] = implode( "\n", array_map( 'sanitize_text_field', explode( "\n", $new_values[ 'include_urls' ] ) ) );
         }
 
         if ( '' !== trim( $new_values[ 'exclude_urls' ] ) ) {
-            $urls = explode( "\n", $new_values[ 'exclude_urls' ] );
-            $update_values[ 'exclude_urls' ] = $urls;
-        }
-
-        if ( ! in_array( $new_values[ 'excludes_as_internal_links' ], array( '', '1' ) ) ) {
-            $update_values = $old_values;
-            $this->add_error( __( '"Exclude as internal links" contains wrong value.', 'wprun-demo' ) );
+//            $update_values[ 'exclude_urls' ] = sanitize_text_field( $new_values[ 'exclude_urls' ] );
+            $update_values[ 'exclude_urls' ] = implode( "\n", array_map( 'sanitize_text_field', explode( "\n", $new_values[ 'exclude_urls' ] ) ) );
         }
 
         return $update_values;
