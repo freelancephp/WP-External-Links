@@ -195,8 +195,7 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
 
         echo '<p class="description">'
                 . __( 'Use this <code>{title}</code> for the original title value '
-                .'and <code>{text}</code> for the link text as shown on the page'
-                .'<br>Leave empty to unchange the title attributes', 'wpel' )
+                .'and <code>{text}</code> for the link text as shown on the page', 'wpel' )
                 .'</p>';
     }
 
