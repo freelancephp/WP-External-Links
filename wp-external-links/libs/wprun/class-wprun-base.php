@@ -17,6 +17,8 @@
 abstract class WPRun_Base_1x0x0
 {
 
+    const RETURN_VOID = '__VOID__';
+
     /**
      * Page hook
      * If page hook isset, will only apply hook methods when page hook is the current screen id
@@ -224,20 +226,34 @@ abstract class WPRun_Base_1x0x0
      * @param string $method_name
      * @param array  $arguments
      * @return mixed|void
+     * @triggers E_USER_NOTICE Method name not exists/callable
      */
     public function __call( $method_name, $arguments )
     {
-        return self::magic_call( $method_name, $arguments );
+        $return_value = self::magic_call( $method_name, $arguments );
+
+        if ( self::RETURN_VOID === $return_value ) {
+            trigger_error( 'Method name "'. $method_name .'" does not exists or cannot be called.' );
+        }
+
+        return $return_value;
     }
 
     /**
      * @param string $method_name
      * @param array  $arguments
      * @return mixed|void
+     * @triggers E_USER_NOTICE Method name not exists/callable
      */
     public static function __callStatic( $method_name, $arguments )
     {
-        return self::magic_call( $method_name, $arguments );
+        $return_value = self::magic_call( $method_name, $arguments );
+
+        if ( self::RETURN_VOID === $return_value ) {
+            trigger_error( 'Method name "'. $method_name .'" does not exists or cannot be called.' );
+        }
+
+        return $return_value;
     }
 
     /**
@@ -266,6 +282,8 @@ abstract class WPRun_Base_1x0x0
                 return call_user_func_array( $callable, $real_args );
             }
         }
+
+        return self::RETURN_VOID;
     }
 
     /**
@@ -288,6 +306,27 @@ abstract class WPRun_Base_1x0x0
                 continue;
             }
         }
+    }
+
+    /**
+     * Must be public but for internal use only
+     * to support PHP 5.3 which doesn't recognize being used within class scope
+     * @param string $method_name
+     * @return array
+     */
+    final public function _get_callback( $method_name )
+    {
+        return $this->get_callback( $method_name );
+    }
+
+    /**
+     * Must be public but for internal use only
+     * to support PHP 5.3 which doesn't recognize being used within class scope
+     * @return string
+     */
+    final public function _get_page_hook()
+    {
+        return $this->page_hook;
     }
 
     /**
@@ -317,13 +356,19 @@ abstract class WPRun_Base_1x0x0
 
         // check if actions and filters are applied for page hook
         $callback = function () use ( $self, $method_name ) {
-            if ( function_exists( 'get_current_screen' ) && null !== $self->page_hook ) {
-                if ( get_current_screen()->id !== $self->page_hook ) {
+            if ( function_exists( 'get_current_screen' ) && null !== $self->_get_page_hook() ) {
+                if ( is_network_admin() ) {
+                    $page_hook = $self->_get_page_hook() .'-network';
+                } else {
+                    $page_hook = $self->_get_page_hook();
+                }
+
+                if ( get_current_screen()->id !== $page_hook ) {
                     return;
                 }
             }
 
-            return call_user_func_array( array( $self, $method_name), func_get_args() );
+            return call_user_func_array( $self->_get_callback( $method_name ), func_get_args() );
         };
 
         if ( 'action' === $hook_type ) {
