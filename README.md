@@ -3,7 +3,7 @@ WP External Links
 
 Configure settings for all internal and external links on your site.
 
-> <strong>=== NEW: Version 2 ===</strong><br>
+> **NEW: Version 2 **
 > WPEL plugin was rebuilt completely and has lots of new features, like "noopener", font icons, internal links options and WPMU settings.
 
 
@@ -58,5 +58,7 @@ Sources
  - [Github](https://github.com/freelancephp/WP-External-Links)
 
 
-> <strong>Like this plugin?</strong><br>
-> [Rate it](http://wordpress.org/support/view/plugin-reviews/wp-external-links-plugin) to support the development of this plugin.
+Like this plugin?
+-----------------
+
+[Rate it](http://wordpress.org/support/view/plugin-reviews/wp-external-links-plugin) to support the development of this plugin.
