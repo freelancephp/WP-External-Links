@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Fonts in JSON</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel='stylesheet' id='dashicons-css'  href='../dashicons.css' type='text/css' media='all'>
+    <script type='text/javascript' src='https://code.jquery.com/jquery-1.11.3.min.js'></script>
+<style>
+    textarea { width:50%; height:200px; }
+    .result { display: none; }
+    .select-fa-icon {font-family:'FontAwesome'; font-size:1.5em; padding:0.5em; }
+    .select-dash-icon { font-family:'dashicons'; font-size:1.5em; padding:0.5em; }
+</style>
+<script>
+jQuery(function ($) {
+
+    /**
+     * Class JsonMaker
+     * @param string containerName
+     * @param array  titleNames
+     */
+    var JsonMaker = function (containerName, titleNames) {
+        var obj = {};
+        obj[containerName] = [];
+
+        /**
+         * Add a record
+         */
+        this.addItem = function () {
+            var item = {};
+
+            for (var index in arguments) {
+                var title = titleNames[index];
+                item[title] = arguments[index];
+            }
+
+            obj[containerName].push(item);
+        }
+
+        /**
+         * Get JSON string
+         * @returns string
+         */
+        this.toString = function () {
+            return JSON.stringify(obj);
+        }
+    };
+
+    /**
+     * Factory
+     * @returns #JsonMaker
+     */
+    var jsonMakerForIcons = function () {
+        return new JsonMaker('icons', ['unicode', 'className']);
+    }
+
+    /**
+     * Fetch JSON of Font Awesome from documentation page
+     * @link https://fortawesome.github.io/Font-Awesome/icons/
+     */
+    $('.ajax-result-fa').load('fontawesome.html', null, function (data) {
+        var $select = $('.select-fa-icon');
+        var json = jsonMakerForIcons();
+
+        $(this).find('i.fa').each(function () {
+            // unicode
+            var unincode = $(this).text();
+
+            // className
+            var $parent = $(this).parent();
+            $parent.children().remove();
+            var className = $parent.text();
+
+            $('<option value="'+ className +'">&#x'+ unincode +'</option>').appendTo($select);
+
+            json.addItem($.trim(unincode), $.trim(className));
+        });
+
+        $('.output-fa').html(json.toString());
+    });
+
+    /**
+     * Fetch JSON of Dashicons from documentation page
+     * @link https://developer.wordpress.org/resource/dashicons/
+     */
+    $('.ajax-result-dash').load('dashicons.html', null, function (data) {
+        var $select = $('.select-dash-icon');
+        var json = jsonMakerForIcons();
+
+        $(this).find('div.dashicons').each(function () {
+            // unicode
+            var unincode = $(this).attr('alt');
+
+            // class
+            $(this).removeClass('dashicons');
+            var className = $(this).attr('class');
+
+            $('<option value="'+ className +'">&#x'+ unincode +'</option>').appendTo($select);
+
+            json.addItem($.trim(unincode), $.trim(className));
+        });
+
+        $('.output-dash').html(json.toString());
+    });
+
+});
+</script>
+</head>
+<body>
+    <h1>Fonts in JSON</h1>
+
+    <h2><a href="https://fortawesome.github.io/Font-Awesome/icons/" target="_blank">Font Awesome Font</a></h2>
+    <div class="result ajax-result-fa"></div>
+    <p>
+        <textarea class="output-fa"></textarea>
+    </p>
+    <p>
+        <select class="select-fa-icon"></select>
+    </p>
+
+    <h2><a href="https://developer.wordpress.org/resource/dashicons/" target="_blank">Dashicons Font</a></h2>
+    <div class="result ajax-result-dash"></div>
+    <p>
+        <textarea class="output-dash"></textarea>
+    </p>
+    <p>
+        <select class="select-dash-icon"></select>
+    </p>
+
+    <h2>Use Fonts</h2>
+    <p>My post <a href="mailto:test@test.nl" class=""><i class="fa fa-fort-awesome"></i> email</a> content goes here.</p>
+    <p>My post <a href="mailto:test@test.nl" class=""><i class="dashicons-before dashicons-testimonial"></i> email</a> content goes here.</p>
+</body>
+</html>

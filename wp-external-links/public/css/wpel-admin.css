@@ -1,0 +1,79 @@
+/**
+ * WP External Links Plugin
+ * Admin Style
+ */
+
+.wpel-no-label,
+.wpel-no-label th,
+.wpel-no-label td {
+    padding-top: 0;
+}
+.wpel-no-label th:after {
+    content: '\00a0';
+}
+.wpel-hidden {
+    display: none;
+}
+
+a.toplevel_page_wpel-settings-page .wp-menu-image:before {
+    font-family: FontAwesome;
+    content:  '\f14c';
+}
+
+a.toplevel_page_wpel-network-settings-page .wp-menu-image:before {
+    font-family: FontAwesome;
+    content:  '\f14c';
+}
+
+.wpel-admin-settings .nav-tab i {
+    margin-right: 5px;
+}
+
+.wpel-admin-settings .nav-tab-support {
+    float: right;
+}
+
+.wpel-admin-settings form {
+    position: relative;
+}
+
+.wpel-admin-settings form:before {
+    content: "\f14c";
+    font-family: FontAwesome;
+    opacity: 0.2;
+    color: #aaa;
+    font-size: 200pt;
+    position: absolute;
+    top: 120px;
+    right: 40px;
+    z-index: -1;
+}
+
+.js-wpel-apply-child td {
+    padding-left: 30px;
+}
+
+.wpel-icon-type-image-column {
+    min-width: 10em;
+    float: left;
+}
+.wpel-icon-type-image-column:after {
+    clear: both;
+}
+
+::-webkit-input-placeholder {
+   color: #ccc;
+   font-style: italic;
+}
+:-moz-placeholder { /* Firefox 18- */
+   color: #ccc;
+   font-style: italic;
+}
+::-moz-placeholder {  /* Firefox 19+ */
+   color: #ccc;
+   font-style: italic;
+}
+:-ms-input-placeholder {
+   color: #ccc;
+   font-style: italic;
+}
