@@ -7,7 +7,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.0.0
+ * @version  2.0.1
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links

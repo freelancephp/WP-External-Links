@@ -3,7 +3,7 @@ Contributors: freelancephp
 Tags: links, new window, new tab, external links, nofollow, follow, seo, noopener, noreferrer, internal links, link icon, link target, _blank, wpmu
 Requires at least: 4.2.0
 Tested up to: 4.5.2
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 
 Open external links in a new tab / window, add "nofollow", "noopener" and font icons, SEO and more. Also for internal links.
 
@@ -208,6 +208,10 @@ See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more info.
 
 
 == Changelog ==
+
+= 2.0.1 =
+* Fixed mark mailto links as excluded
+* Fixed include / exclude url's
 
 = 2.0.0 =
 * REQUIREMENTS: PHP 5.3+
