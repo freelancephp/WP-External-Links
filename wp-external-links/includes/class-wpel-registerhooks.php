@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.0.0
+ * @version  2.0.1
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -35,7 +35,7 @@ final class WPEL_Registerhooks extends WPRun_Base_1x0x0
     protected function activate( $networkwide )
     {
         global $wpdb;
-        
+
         if ( is_multisite() && $networkwide ) {
             // network activation
             $sites = wp_get_sites();
@@ -94,18 +94,16 @@ final class WPEL_Registerhooks extends WPRun_Base_1x0x0
         $exceptions_link_values = WPEL_Exceptions_Fields::get_instance()->get_default_values();
         $admin_link_values = WPEL_Admin_Fields::get_instance()->get_default_values();
 
+        // Upgrade to version 2
         // check for old option values version < 2.0.0
         $old_main = get_option( 'wp_external_links-main' );
+        $old_seo = get_option( 'wp_external_links-seo' );
+        $old_style = get_option( 'wp_external_links-style' );
+        $old_extra = get_option( 'wp_external_links-extra' );
+        $old_screen = get_option( 'wp_external_links-screen' );
 
         // convert old to new db option values
-        if ( ! empty( $old_main ) ) {
-            // get other old values
-            $old_meta = get_option( 'wp_external_links-meta' );
-            $old_seo = get_option( 'wp_external_links-seo' );
-            $old_style = get_option( 'wp_external_links-style' );
-            $old_extra = get_option( 'wp_external_links-extra' );
-            $old_screen = get_option( 'wp_external_links-screen' );
-
+        if ( ! empty( $old_main ) || ! empty( $old_seo ) || ! empty( $old_style ) || ! empty( $old_extra ) || ! empty( $old_screen ) ) {
             // helper function
             $val = function ( $arr, $key, $default = '' ) {
                 if ( ! isset( $arr[ $key ] ) ) {
@@ -195,7 +193,7 @@ final class WPEL_Registerhooks extends WPRun_Base_1x0x0
             delete_site_option( 'wpel-network-admin-settings' );
         } else {
             // single site activation
-            $this->activate_site();
+            $this->uninstall_site();
         }
     }
 

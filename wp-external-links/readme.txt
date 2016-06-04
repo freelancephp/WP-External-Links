@@ -1,19 +1,19 @@
-=== WP External Links (nofollow new window seo) ===
+=== WP External Links (nofollow new tab seo) ===
 Contributors: freelancephp
 Tags: links, new window, new tab, external links, nofollow, follow, seo, noopener, noreferrer, internal links, link icon, link target, _blank, wpmu
 Requires at least: 4.2.0
 Tested up to: 4.5.2
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 
-Open external links in a new tab or window, adding "nofollow" and "noopener", set font icon, SEO friendly options and more. Easy install and go.
+Open external links in a new tab / window, add "nofollow", "noopener" and font icons, SEO and more. Also for internal links.
 
 
 == Description ==
 
 Configure settings for all internal and external links on your site.
 
-> <strong>Version 2</strong><br>
-> WPEL plugin was rebuilt completely and has lots of new features, like "noopener", font icons and WPMU settings.
+> <strong>=== NEW: Version 2 ===</strong><br>
+> WPEL plugin was rebuilt completely and has lots of new features, like "noopener", font icons, internal links options and WPMU settings.
 
 = Features =
 * Open links in new window or tab
@@ -25,7 +25,7 @@ Configure settings for all internal and external links on your site.
 * Better SEO
 
 = And more... =
-* WPMU Settings (Multi Site)
+* Network Settings (WPMU support)
 * Use template tag to apply plugin settings on specific contents
 * Set data-attribute to change how individual links will be treated
 * Use action and filters to implement your specific needs
@@ -34,16 +34,22 @@ Configure settings for all internal and external links on your site.
 After activating you can set all options for external and internal links on the plugins admin page.
 
 = On the fly =
-The plugin filters the output of links on the fly. This means the real content of posts, pages etcetera will not be changed.
+The plugin filters the output and changes the links on the fly. The real contents (posts, pages, widget etcetera) will not be changed in the database.
 When deactivating the plugin, all contents will be the same as it was before.
+
+= Requirements =
+* PHP version 5.3 or up
+* WordPress version 4.2 or up
+
+If you want support for older versions of PHP or WordPress then download and install [version 1.81](https://downloads.wordpress.org/plugin/wp-external-links.1.81.zip) of this plugin.
 
 = Sources =
 * [Documentation](http://wordpress.org/extend/plugins/wp-external-links/other_notes/)
 * [FAQ](http://wordpress.org/extend/plugins/wp-external-links/faq/)
 * [Github](https://github.com/freelancephp/WP-External-Links)
 
-= Like this plugin? =
-[Rate it](http://wordpress.org/support/view/plugin-reviews/wp-external-links-plugin) to support the development of this plugin.
+> <strong>Like this plugin?</strong><br>
+> [Rate it](http://wordpress.org/support/view/plugin-reviews/wp-external-links-plugin) to support the development of this plugin.
 
 
 == Installation ==
@@ -55,10 +61,6 @@ When deactivating the plugin, all contents will be the same as it was before.
 
 
 == Frequently Asked Questions ==
-
-= Links to subdomains should also be treated as internal links. How? =
-
-Add your main domain to the option "Exclude external links by URL:" and also enable the option "Treat excluded links as internal links".
 
 = I want certain posts or pages to be ignored by the plugin. How? =
 
@@ -129,8 +131,9 @@ Add this JavaScript code to your site:
 
 == Screenshots ==
 
-1. Link Icon on the Site
+1. Link Icons
 1. Admin Settings Page
+1. WPMU Network Settings Page
 
 
 == Documentation ==
@@ -206,13 +209,17 @@ See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more info.
 
 == Changelog ==
 
+= 2.0.1 =
+* Fixed mark mailto links as excluded
+* Fixed include / exclude url's
+
 = 2.0.0 =
 * REQUIREMENTS: PHP 5.3+
 * Complete rebuilt
 * Added `noopener` and `noreferrer`
 * Added font icons (font awesome and dashicons)
 * Added options for internal links
-* Added Multi Site settings (WPMU support)
+* Added Network settings (WPMU support)
 * Contribution: David Page solving bug `home_url()`
 
 = 1.81 =

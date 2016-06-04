@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.0.0
+ * @version  2.0.1
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -110,26 +110,26 @@ final class WPEL_Front extends WPRun_Base_1x0x0
             return $content;
         }
 
-       /**
-        * Filters before scanning content
-        * @param string $content
-        */
+        /**
+         * Filters before scanning content
+         * @param string $content
+         */
         $content = apply_filters( 'wpel_before_filter', $content );
 
         $regexp_link = '/<a[^A-Za-z](.*?)>(.*?)<\/a[\s+]*>/is';
 
-       /**
-        * Filters for changing regular expression for getting html links
-        * @param string $regexp_link
-        */
+        /**
+         * Filters for changing regular expression for getting html links
+         * @param string $regexp_link
+         */
         $regexp_link = apply_filters( 'wpel_regexp_link', $regexp_link );
 
-		$content = preg_replace_callback( $regexp_link, $this->get_callback( 'match_link' ), $content );
+        $content = preg_replace_callback( $regexp_link, $this->get_callback( 'match_link' ), $content );
 
-       /**
-        * Filters after scanning content
-        * @param string $content
-        */
+        /**
+         * Filters after scanning content
+         * @param string $content
+         */
         $content = apply_filters( 'wpel_after_filter', $content );
 
         return $content;
@@ -206,13 +206,10 @@ final class WPEL_Front extends WPRun_Base_1x0x0
 
         $excludes_as_internal_links = $this->opt( 'excludes_as_internal_links' );
 
-        // exceptions
-        $is_included = $link->isExternal() || $this->is_included_url( $url );
+        // internal, external or excluded
         $is_excluded = $link->isExclude() || $this->is_excluded_url( $url );
-
-        // is internal or external
-        $is_internal = ( $link->isInternal() || $this->is_internal_url( $url ) ) || ( $is_excluded && $excludes_as_internal_links );
-        $is_external = ( $link->isExternal() || $is_included ) || ( ! $is_internal && ! $is_excluded );
+        $is_internal = $link->isInternal() || ( $this->is_internal_url( $url ) && ! $this->is_included_url( $url ) ) || ( $is_excluded && $excludes_as_internal_links );
+        $is_external = $link->isExternal() || ( ! $is_internal && ! $is_excluded );
 
         if ( $is_external ) {
             $link->setExternal();
@@ -348,11 +345,16 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         if ( null === $include_urls_arr ) {
             $include_urls = $this->opt( 'include_urls' );
             $include_urls = str_replace( "\n", ',', $include_urls );
-            $include_urls_arr = array_map( 'trim', explode( ',', $include_urls ) );
+
+            if ( '' === trim( $include_urls ) ) {
+                $include_urls_arr = array();
+            } else {
+                $include_urls_arr = array_map( 'trim', explode( ',', $include_urls ) );
+            }
         }
 
         foreach ( $include_urls_arr as $include_url ) {
-			if ( false !== strrpos( $url, $include_url ) ) {
+			if ( false !== strpos( $url, $include_url ) ) {
 				return true;
             }
         }
@@ -373,11 +375,16 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         if ( null === $exclude_urls_arr ) {
             $exclude_urls = $this->opt( 'exclude_urls' );
             $exclude_urls = str_replace( "\n", ',', $exclude_urls );
-            $exclude_urls_arr = array_map( 'trim', explode( ',', $exclude_urls ) );
+
+            if ( '' === trim( $exclude_urls ) ) {
+                $exclude_urls_arr = array();
+            } else {
+                $exclude_urls_arr = array_map( 'trim', explode( ',', $exclude_urls ) );
+            }
         }
 
         foreach ( $exclude_urls_arr as $exclude_url ) {
-			if ( false !== strrpos( $url, $exclude_url ) ) {
+		if ( false !== strpos( $url, $exclude_url ) ) {
 				return true;
             }
         }
@@ -396,7 +403,8 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         if ( substr( $url, 0, 7 ) !== 'http://'
                 && substr( $url, 0, 8 ) !== 'https://'
                 && substr( $url, 0, 6 ) !== 'ftp://'
-                && substr( $url, 0, 2 ) !== '//' ) {
+                && substr( $url, 0, 2 ) !== '//'
+                && substr( $url, 0, 7 ) !== 'mailto:' ) {
             return true;
         }
 
