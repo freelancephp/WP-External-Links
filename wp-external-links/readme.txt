@@ -1,11 +1,18 @@
 === WP External Links (nofollow new window seo) ===
 Contributors: freelancephp
+<<<<<<< HEAD:wp-external-links/readme.txt
 Tags: links, new window, new tab, external links, nofollow, follow, seo, noopener, noreferrer, internal links, link icon, link target, _blank, wpmu
 Requires at least: 4.2.0
 Tested up to: 4.5.2
 Stable tag: 2.0.0
 
 Open external links in a new tab or window, adding "nofollow" and "noopener", set font icon, SEO friendly options and more. Easy install and go.
+=======
+Tags: links, external, icon, target, _blank, _new, _none, rel, nofollow, new window, new tab, javascript, xhtml, seo
+Requires at least: 3.6.0
+Tested up to: 4.5.2
+Stable tag: 1.81
+>>>>>>> master:readme.txt
 
 
 == Description ==
