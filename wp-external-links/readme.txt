@@ -1,7 +1,7 @@
 === WP External Links (nofollow new window seo) ===
 Contributors: freelancephp
 Tags: links, new window, new tab, external links, nofollow, follow, seo, noopener, noreferrer, internal links, link icon, link target, _blank, wpmu
-Requires at least: 3.6.0
+Requires at least: 4.2.0
 Tested up to: 4.5.2
 Stable tag: 2.0.0
 
@@ -12,12 +12,16 @@ Open external links in a new tab or window, adding "nofollow" and "noopener", se
 
 Configure settings for all internal and external links on your site.
 
+> <strong>Version 2</strong><br>
+> WPEL plugin was rebuilt completely and has lots of new features, like "noopener", font icons and WPMU settings.
+
 = Features =
 * Open links in new window or tab
 * Add "follow" or "nofollow"
 * Add "noopener" and "noreferrer" (for security)
+* Add link icons (font icons: font awesome, dashicons)
+* Set other attributes like title and CSS classes
 * Scan posts, comments, widgets or the whole page
-* Add font icons (font awesome and dashicons) and CSS classes
 * Better SEO
 
 = And more... =
@@ -39,7 +43,7 @@ When deactivating the plugin, all contents will be the same as it was before.
 * [Github](https://github.com/freelancephp/WP-External-Links)
 
 = Like this plugin? =
-[Share it](http://wordpress.org/support/view/plugin-reviews/wp-external-links-plugin) to support the development of this plugin.
+[Rate it](http://wordpress.org/support/view/plugin-reviews/wp-external-links-plugin) to support the development of this plugin.
 
 
 == Installation ==
@@ -205,10 +209,10 @@ See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more info.
 = 2.0.0 =
 * REQUIREMENTS: PHP 5.3+
 * Complete rebuilt
-* Adding `noopener` and `noreferrer`
-* Use font icons (font awesome and dashicons)
-* Also options for internal links
-* Multi Site settings
+* Added `noopener` and `noreferrer`
+* Added font icons (font awesome and dashicons)
+* Added options for internal links
+* Added Multi Site settings (WPMU support)
 * Contribution: David Page solving bug `home_url()`
 
 = 1.81 =
