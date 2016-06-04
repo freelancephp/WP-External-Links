@@ -3,5 +3,4 @@ RewriteEngine On
 RewriteRule images/(.*)$ http://localhost/git/WP-External-Links/wp-external-links/public/images/$1
 RewriteRule js/(.*)$ http://localhost/git/WP-External-Links/wp-external-links/public/js/$1
 RewriteRule css/(.*)$ http://localhost/git/WP-External-Links/wp-external-links/public/css/$1
-RewriteRule data/(.*)$ http://localhost/git/WP-External-Links/wp-external-links/public/data/$1
 </IfModule>
