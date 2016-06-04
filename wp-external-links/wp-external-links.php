@@ -14,7 +14,7 @@
  * Plugin Name:    WP External Links
  * Version:        2.0.0
  * Plugin URI:     https://wordpress.org/plugins/wp-external-links/
- * Description:    Open external links in a new window/tab, add "external" / "nofollow" to rel-attribute, set icon, XHTML strict, SEO friendly...
+ * Description:    Open external links in a new tab or window, adding "nofollow" and "noopener", set font icon, SEO friendly options and more.
  * Author:         Victor Villaverde Laan
  * Author URI:     http://www.finewebdev.com
  * License:        Dual licensed under the MIT and GPLv2+ licenses
