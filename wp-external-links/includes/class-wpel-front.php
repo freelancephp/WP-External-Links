@@ -143,7 +143,7 @@ final class WPEL_Front extends WPRun_Base_1x0x0
     protected function match_link( $matches )
     {
         $original_link = $matches[ 0 ];
-        $atts = shortcode_parse_atts( $matches[ 1 ] );
+        $atts = $this->parse_atts( $matches[ 1 ] ) ?: array();
         $label = $matches[ 2 ];
 
         $created_link = $this->get_created_link( $label, $atts );
@@ -153,6 +153,28 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         }
 
         return $created_link;
+    }
+
+    /**
+     * Parse html attributes
+     * @param string $atts
+     * @return array
+     */
+    protected function parse_atts( $atts )
+    {
+        $regexp_atts = '/([\w\-]+)=([^"\'> ]+|([\'"]?)(?:[^\3]|\3+)+?\3)/';
+        preg_match_all( $regexp_atts, $atts, $matches );
+
+        $atts_arr = array();
+
+        for ( $x = 0, $count = count( $matches[ 0 ] ); $x < $count; $x += 1 ) {
+            $attr_name = $matches[ 1 ][ $x ];
+            $attr_value = str_replace( $matches[ 3 ][ $x ], '', $matches[ 2 ][ $x ] );
+
+            $atts_arr[ $attr_name ] = $attr_value;
+        }
+
+        return $atts_arr;
     }
 
     /**
