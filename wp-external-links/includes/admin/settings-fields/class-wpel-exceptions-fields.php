@@ -129,28 +129,28 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
 
     protected function show_include_urls( array $args )
     {
-        $this->get_html_fields()->text_area( $args[ 'key' ], array(
-            'class' => 'large-text',
-            'rows'  => 6,
-            'placeholder' => __( 'Put each url on a separate row. Be as specific as you want, for example:'. "\n". "\n"
-                            .'sub.domain.com'. "\n"
-                            .'somedomain.org'. "\n"
-                            .'//otherdomain.net/some-slug'
-                            . "\n" .'http://otherdomain.net', 'wpel' ),
-        ) );
+        $this->show_urls_field( $args[ 'key' ] );
     }
 
     protected function show_exclude_urls( array $args )
     {
-        $this->get_html_fields()->text_area( $args[ 'key' ], array(
+        $this->show_urls_field( $args[ 'key' ] );
+    }
+
+    protected function show_urls_field( $key )
+    {
+        $this->get_html_fields()->text_area( $key, array(
             'class' => 'large-text',
-            'rows'  => 6,
-            'placeholder' => __( 'Put each url on a separate row. Be as specific as you want, for example:'. "\n". "\n"
-                            .'sub.domain.com'. "\n"
-                            .'somedomain.org'. "\n"
-                            .'//otherdomain.net/some-slug'
-                            . "\n" .'http://otherdomain.net', 'wpel' ),
+            'rows'  => 4,
+            'placeholder' => __( 'For example:'. "\n"
+                        .'somedomain.org, sub.domain.net/some-slug'. "\n"
+                        .'http://sub.moredomain.net, http://www.domain.com/other-slug', 'wpel' ),
         ) );
+
+        echo '<p class="description">'
+                . __( 'Separate url\'s by comma and/or a line break. '
+                .'Write the url\'s as specific as you want them to match.', 'wpel' )
+                .'</p>';
     }
 
     protected function show_excludes_as_internal_links( array $args )
