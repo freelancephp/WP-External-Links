@@ -186,7 +186,7 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         $space = ' ';   // a single space
 
         foreach ( $atts as $j => $curr ) {
-            if ( $mode < 0 ) {# name
+            if ( $mode < 0 ) { // name
                 if ( '=' === $curr ) {
                     $mode = 1;
                     $stop = false;
@@ -448,7 +448,7 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         }
 
         foreach ( $exclude_urls_arr as $exclude_url ) {
-		if ( false !== strpos( $url, $exclude_url ) ) {
+            if ( false !== strpos( $url, $exclude_url ) ) {
 				return true;
             }
         }
