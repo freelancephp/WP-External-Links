@@ -3,7 +3,7 @@ Contributors: freelancephp
 Tags: links, new window, new tab, external links, nofollow, follow, seo, noopener, noreferrer, internal links, link icon, link target, _blank, wpmu
 Requires at least: 4.2.0
 Tested up to: 4.5.2
-Stable tag: 2.0.1
+Stable tag: 2.0.2
 
 Open external links in a new tab / window, add "nofollow", "noopener" and font icons, SEO and more. Also for internal links.
 
@@ -49,7 +49,7 @@ If you want support for older versions of PHP or WordPress then download and ins
 * [Github](https://github.com/freelancephp/WP-External-Links)
 
 > <strong>Like this plugin?</strong><br>
-> [Rate it](http://wordpress.org/support/view/plugin-reviews/wp-external-links-plugin) to support the development of this plugin.
+> [Rate it](http://wordpress.org/support/view/plugin-reviews/wp-external-links) to support the development of this plugin.
 
 
 == Installation ==
@@ -208,6 +208,10 @@ See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more info.
 
 
 == Changelog ==
+
+= 2.0.2 =
+* Fixed bug parsing empty attributess
+* Changed mailto links wil be completely ignored
 
 = 2.0.1 =
 * Fixed mark mailto links as excluded

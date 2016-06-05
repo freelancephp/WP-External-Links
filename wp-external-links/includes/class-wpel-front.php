@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.0.1
+ * @version  2.0.2
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -156,25 +156,84 @@ final class WPEL_Front extends WPRun_Base_1x0x0
     }
 
     /**
-     * Parse html attributes
-     * @param string $atts
-     * @return array
+     * Parse an attributes string into an array. If the string starts with a tag,
+     * then the attributes on the first tag are parsed. This parses via a manual
+     * loop and is designed to be safer than using DOMDocument.
+     *
+     * @param    string   $atts
+     * @return   array
+     *
+     * @example  parse_attrs( 'src="example.jpg" alt="example"' )
+     * @example  parse_attrs( '<img src="example.jpg" alt="example">' )
+     * @example  parse_attrs( '<a href="example"></a>' )
+     *
+     * @link http://dev.airve.com/demo/speed_tests/php/parse_attrs.php
      */
-    protected function parse_atts( $atts )
-    {
-        $regexp_atts = '/([\w\-]+)=([^"\'> ]+|([\'"]?)(?:[^\3]|\3+)+?\3)/';
-        preg_match_all( $regexp_atts, $atts, $matches );
+    protected function parse_atts( $atts ) {
+        $atts = str_split( trim( $atts ) );
 
-        $atts_arr = array();
-
-        for ( $x = 0, $count = count( $matches[ 0 ] ); $x < $count; $x += 1 ) {
-            $attr_name = $matches[ 1 ][ $x ];
-            $attr_value = str_replace( $matches[ 3 ][ $x ], '', $matches[ 2 ][ $x ] );
-
-            $atts_arr[ $attr_name ] = $attr_value;
+        if ( '<' === $atts[0] ) { // looks like a tag so strip the tagname
+            while ( $atts && ! ctype_space( $atts[0] ) && $atts[0] !== '>' ) {
+                array_shift($atts);
+            }
         }
 
-        return $atts_arr;
+        $arr = array(); // output
+        $name = '';     // for the current attr being parsed
+        $value = '';    // for the current attr being parsed
+        $mode = 0;      // whether current char is part of the name (-), the value (+), or neither (0)
+        $stop = false;  // delimiter for the current $value being parsed
+        $space = ' ';   // a single space
+
+        foreach ( $atts as $j => $curr ) {
+            if ( $mode < 0 ) {# name
+                if ( '=' === $curr ) {
+                    $mode = 1;
+                    $stop = false;
+                } elseif ( '>' === $curr ) {
+                    '' === $name or $arr[ $name ] = $value;
+                    break;
+                } elseif ( ! ctype_space( $curr ) ) {
+                    if ( ctype_space( $atts[ $j - 1 ] ) ) {     // previous char
+                        '' === $name or $arr[ $name ] = '';     // previous name
+                        $name = $curr;                          // initiate new
+                    } else {
+                        $name .= $curr;
+                    }
+                }
+            } elseif ( $mode > 0 ) { // value
+                if ( $stop === false ) {
+                    if ( ! ctype_space( $curr ) ) {
+                        if ( '"' === $curr || "'" === $curr ) {
+                            $value = '';
+                            $stop = $curr;
+                        } else {
+                            $value = $curr;
+                            $stop = $space;
+                        }
+                    }
+                } elseif ( $stop === $space ? ctype_space( $curr ) : $curr === $stop ) {
+                    $arr[ $name ] = $value;
+                    $mode = 0;
+                    $name = $value = '';
+                } else {
+                    $value .= $curr;
+                }
+            } else { // neither
+                if ( '>' === $curr )
+                    break;
+                if ( ! ctype_space( $curr ) ) {
+                    // initiate
+                    $name = $curr;
+                    $mode = -1;
+                }
+            }
+        }
+
+        // incl the final pair if it was quoteless
+        '' === $name or $arr[ $name ] = $value;
+
+        return $arr;
     }
 
     /**
@@ -188,6 +247,11 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         $link = WPEL_Link::create( 'a', $label, $atts );
 
         if ( $link->isIgnore() ) {
+            return false;
+        }
+
+        // ignore mailto links
+        if ( $this->is_mailto( $link->getAttribute( 'href' ) ) ) {
             return false;
         }
 
@@ -403,8 +467,7 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         if ( substr( $url, 0, 7 ) !== 'http://'
                 && substr( $url, 0, 8 ) !== 'https://'
                 && substr( $url, 0, 6 ) !== 'ftp://'
-                && substr( $url, 0, 2 ) !== '//'
-                && substr( $url, 0, 7 ) !== 'mailto:' ) {
+                && substr( $url, 0, 2 ) !== '//' ) {
             return true;
         }
 
@@ -415,6 +478,20 @@ final class WPEL_Front extends WPRun_Base_1x0x0
 
         // check subdomains
         if ( $this->opt( 'subdomains_as_internal_links' ) && false !== strpos( $url, $this->get_domain() ) ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check url is mailto link
+     * @param string $url
+     * @return boolean
+     */
+    protected function is_mailto( $url )
+    {
+        if ( substr( trim( $url ), 0, 7 ) === 'mailto:' ) {
             return true;
         }
 
