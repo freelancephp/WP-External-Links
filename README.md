@@ -60,4 +60,4 @@ If you want support for older versions of PHP or WordPress then download and ins
 
 ### Like this plugin?
 
-[Rate it](http://wordpress.org/support/view/plugin-reviews/wp-external-links-plugin) to support the development of this plugin.
+[Rate it](http://wordpress.org/support/view/plugin-reviews/wp-external-links) to support the development of this plugin.
