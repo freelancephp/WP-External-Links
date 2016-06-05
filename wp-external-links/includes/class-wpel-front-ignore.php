@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.0.2
+ * @version  2.0.3
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -69,13 +69,12 @@ final class WPEL_Front_Ignore extends WPRun_Base_1x0x0
     }
 
     /**
-     *
      * @param type $tag_name
      * @return type
      */
     protected function get_tag_regexp( $tag_name )
     {
-        return '/<'. $tag_name .'([^>]*)>(.*?)<\/'. $tag_name .'[^>]*>/is';
+        return '/<'. $tag_name .'[^A-Za-z](.*?)>(.*?)<\/'. $tag_name .'[\s+]*>/is';
     }
 
     /**
