@@ -20,8 +20,7 @@ Features
  - Better SEO
 
 
-And more...
------------
+### And more...
 
  - Network Settings (WPMU support)
  - Use template tag to apply plugin settings on specific contents
@@ -35,11 +34,11 @@ Easy to use
 After activating you can set all options for external and internal links on the plugins admin page.
 
 
-On the fly
-----------
+### On the fly
 
 The plugin filters the output and changes the links on the fly. The real contents (posts, pages, widget etcetera) will not be changed in the database.
 When deactivating the plugin, all contents will be the same as it was before.
+
 
 Support
 -------
