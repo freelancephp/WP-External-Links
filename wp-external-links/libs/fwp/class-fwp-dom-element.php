@@ -57,7 +57,8 @@ class FWP_DOM_Element_1x0x0 extends DOMElement
      */
     public function setContent( $content )
     {
-        $this->nodeValue = $content;
+        $clean_content = str_replace( '&', '&amp;', $content );
+        $this->nodeValue = $clean_content;
     }
 
     /**
