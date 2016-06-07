@@ -74,9 +74,7 @@ final class WPEL_Front_Ignore extends WPRun_Base_1x0x0
      */
     protected function get_tag_regexp( $tag_name )
     {
-        // @todo Fix problem <script> without attributes (and be careful for f.e. <head> <header>
-        // [^>]*
-        return '/<'. $tag_name .'[^A-Za-z](.*?)>(.*?)<\/'. $tag_name .'[\s+]*>/is';
+        return '/<'. $tag_name .'[\s.*>|>](.*?)<\/'. $tag_name .'[\s+]*>/is';
     }
 
     /**
