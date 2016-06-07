@@ -15,10 +15,9 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
 
     /**
      * Get general fields
-     * @param string $option_name
      * @return array
      */
-    final protected function get_general_fields( $option_name )
+    final protected function get_general_fields()
     {
         return array(
             'apply_settings' => array(
@@ -43,14 +42,9 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
                 'label'             => '',
                 'class'             => 'wpel-no-label wpel-hidden',
             ),
-            'rel_external' => array(
+            'rel_noopener' => array(
                 'label'             => __( 'Also add to <code>rel</code> attribute:', 'wpel' ),
                 'class'             => 'wpel-hidden',
-                'default_value'     => '1',
-            ),
-            'rel_noopener' => array(
-                'label'             => '',
-                'class'             => 'wpel-no-label wpel-hidden',
                 'default_value'     => '1',
             ),
             'rel_noreferrer' => array(
@@ -152,16 +146,6 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
         $this->get_html_fields()->check_with_label(
             $args[ 'key' ]
             , __( 'Overwrite existing values.', 'wpel' )
-            , '1'
-            , ''
-        );
-    }
-
-    protected function show_rel_external( array $args )
-    {
-        $this->get_html_fields()->check_with_label(
-            $args[ 'key' ]
-            , __( 'Add <code>"external"</code>', 'wpel' )
             , '1'
             , ''
         );
@@ -308,7 +292,6 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
         $is_valid = $is_valid && in_array( $new_values[ 'apply_settings' ], array( '', '1' ) );
         $is_valid = $is_valid && in_array( $new_values[ 'target_overwrite' ], array( '', '1' ) );
         $is_valid = $is_valid && in_array( $new_values[ 'rel_follow_overwrite' ], array( '', '1' ) );
-        $is_valid = $is_valid && in_array( $new_values[ 'rel_external' ], array( '', '1' ) );
         $is_valid = $is_valid && in_array( $new_values[ 'rel_noopener' ], array( '', '1' ) );
         $is_valid = $is_valid && in_array( $new_values[ 'rel_noreferrer' ], array( '', '1' ) );
         $is_valid = $is_valid && in_array( $new_values[ 'no_icon_for_img' ], array( '', '1' ) );
