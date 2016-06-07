@@ -43,7 +43,6 @@ final class WPEL_External_Link_Fields extends WPEL_Link_Fields_Base
             , $additional_fields
             , array_slice( $fields, $index_insert )
         );
-        debug($fields);
 
         $this->set_settings( array(
             'section_id'        => 'wpel-external-link-fields',
