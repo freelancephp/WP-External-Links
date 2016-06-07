@@ -246,12 +246,18 @@ final class WPEL_Front extends WPRun_Base_1x0x0
     {
         $link = WPEL_Link::create( 'a', $label, $atts );
 
+        // has ignore flag
         if ( $link->isIgnore() ) {
             return false;
         }
 
         // ignore mailto links
         if ( $this->is_mailto( $link->getAttribute( 'href' ) ) ) {
+            return false;
+        }
+
+        // ignore WP Admin Bar Links
+        if ( $link->hasAttributeValue( 'class', 'ab-item' ) ) {
             return false;
         }
 
