@@ -413,8 +413,12 @@ final class WPEL_Front extends WPRun_Base_1x0x0
             if ( '' === trim( $include_urls ) ) {
                 $include_urls_arr = array();
             } else {
-                $include_urls_arr = array_map( 'trim', explode( ',', $include_urls ) );
+                $include_urls_arr = explode( ',', $include_urls );
             }
+
+            $include_urls_arr = array_filter( $include_urls_arr, function ( $url ) {
+                return '' !== trim( $url );
+            } );
         }
 
         foreach ( $include_urls_arr as $include_url ) {
@@ -443,8 +447,12 @@ final class WPEL_Front extends WPRun_Base_1x0x0
             if ( '' === trim( $exclude_urls ) ) {
                 $exclude_urls_arr = array();
             } else {
-                $exclude_urls_arr = array_map( 'trim', explode( ',', $exclude_urls ) );
+                $exclude_urls_arr = explode( ',', $exclude_urls );
             }
+
+            $exclude_urls_arr = array_filter( $exclude_urls_arr, function ( $url ) {
+                return '' !== trim( $url );
+            } );
         }
 
         foreach ( $exclude_urls_arr as $exclude_url ) {
