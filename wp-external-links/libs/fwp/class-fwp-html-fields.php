@@ -1,6 +1,6 @@
 <?php
 /**
- * Class WP_Form_Fields_1x0x0
+ * Class FWP_HTML_Fields_1x0x0
  *
  * @package  FWP
  * @category WordPress Library
