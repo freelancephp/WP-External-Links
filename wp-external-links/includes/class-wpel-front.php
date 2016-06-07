@@ -372,7 +372,7 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         $no_icon_for_img = $this->opt( 'no_icon_for_img', $type );
         $has_img = preg_match( '/<img([^>]*)>/is', $link->getContent() );
 
-        if ( $icon_type && ! ( $has_img && $no_icon_for_img ) ) {
+        if ( $icon_type && ! ( $has_img && $no_icon_for_img ) && ! $link->hasAttributeValue( 'class', 'wpel-no-icon' ) ) {
             if ( 'dashicon' === $icon_type ) {
                 $dashicon = $this->opt( 'icon_dashicon', $type );
                 $icon = FWP_DOM_Element_1x0x0::create( 'i', '', array(
