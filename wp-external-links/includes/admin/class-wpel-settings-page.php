@@ -43,22 +43,27 @@ final class WPEL_Settings_Page extends WPRun_Base_1x0x0
         $this->tabs = array(
             'external-links' => array(
                 'title'     => __( 'External Links', 'wp-external-links' ),
-                'icon'      => '<i class="fa fa-external-link-square" aria-hidden="true"></i>',
+                'icon'      => '<i class="fa fa-external-link" aria-hidden="true"></i>',
                 'fields'    => $fields_objects[ 'external-links' ],
             ),
             'internal-links' => array(
                 'title'     => __( 'Internal Links', 'wp-external-links' ),
-                'icon'      => '<i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>',
+                'icon'      => '<i class="fa fa-square-o" aria-hidden="true"></i>',
                 'fields'    => $fields_objects[ 'internal-links' ],
+            ),
+            'excluded-links' => array(
+                'title'     => __( 'Excluded Links', 'wp-external-links' ),
+                'icon'      => '<i class="fa fa-share-square-o" aria-hidden="true"></i>',
+                'fields'    => $fields_objects[ 'excluded-links' ],
             ),
             'exceptions' => array(
                 'title'     => __( 'Exceptions', 'wp-external-links' ),
-                'icon'      => '<i class="fa fa-times-circle" aria-hidden="true"></i>',
+                'icon'      => '<i class="fa fa-th-large" aria-hidden="true"></i>',
                 'fields'    => $fields_objects[ 'exceptions' ],
             ),
             'admin' => array(
                 'title'     => __( 'Admin Settings', 'wp-external-links' ),
-                'icon'      => '<i class="fa fa-cog" aria-hidden="true"></i>',
+                'icon'      => '<i class="fa fa-cogs" aria-hidden="true"></i>',
                 'fields'    => $fields_objects[ 'admin' ],
             ),
             'support' => array(

@@ -91,6 +91,7 @@ final class WPEL_Registerhooks extends WPRun_Base_1x0x0
         // get default values
         $external_link_values = WPEL_External_Link_Fields::get_instance()->get_default_values();
         $internal_link_values = WPEL_Internal_Link_Fields::get_instance()->get_default_values();
+        $excluded_link_values = WPEL_Excluded_Link_Fields::get_instance()->get_default_values();
         $exceptions_link_values = WPEL_Exceptions_Fields::get_instance()->get_default_values();
         $admin_link_values = WPEL_Admin_Fields::get_instance()->get_default_values();
 
@@ -160,6 +161,7 @@ final class WPEL_Registerhooks extends WPRun_Base_1x0x0
         // update new values
         update_option( 'wpel-external-link-settings', $external_link_values );
         update_option( 'wpel-internal-link-settings', $internal_link_values );
+        update_option( 'wpel-excluded-link-settings', $excluded_link_values );
         update_option( 'wpel-exceptions-settings', $exceptions_link_values );
         update_option( 'wpel-admin-settings', $admin_link_values );
 
@@ -205,6 +207,7 @@ final class WPEL_Registerhooks extends WPRun_Base_1x0x0
         // delete options
         delete_option( 'wpel-external-link-settings' );
         delete_option( 'wpel-internal-link-settings' );
+        delete_option( 'wpel-excluded-link-settings' );
         delete_option( 'wpel-exceptions-settings' );
         delete_option( 'wpel-admin-settings' );
 

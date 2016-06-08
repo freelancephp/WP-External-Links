@@ -196,8 +196,9 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         } else if ( $is_internal ) {
             $link->set_internal();
             $this->apply_link_settings( $link, 'internal-links' );
-        } else {
+        } else if ( $is_excluded ) {
             $link->set_exclude();
+            $this->apply_link_settings( $link, 'excluded-links' );
         }
 
         /**

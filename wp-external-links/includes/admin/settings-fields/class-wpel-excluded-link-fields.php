@@ -1,6 +1,6 @@
 <?php
 /**
- * Class WPEL_Internal_Link_Fields
+ * Class WPEL_Excluded_Link_Fields
  *
  * @package  WPEL
  * @category WordPress Plugin
@@ -10,7 +10,7 @@
  * @link     https://github.com/freelancephp/WP-External-Links
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-final class WPEL_Internal_Link_Fields extends WPEL_Link_Fields_Base
+final class WPEL_Excluded_Link_Fields extends WPEL_Link_Fields_Base
 {
 
     /**
@@ -18,19 +18,19 @@ final class WPEL_Internal_Link_Fields extends WPEL_Link_Fields_Base
      */
     protected function init()
     {
-        $option_name = 'wpel-internal-link-settings';
+        $option_name = 'wpel-excluded-link-settings';
         $fields = $this->get_general_fields( $option_name );
 
         // change some specific field labels
-        $fields[ 'apply_settings' ][ 'label' ] = __( 'Settings for internal links:', 'wp-external-links' );
-        $fields[ 'target' ][ 'label' ] = __( 'Open internal links:', 'wp-external-links' );
+        $fields[ 'apply_settings' ][ 'label' ] = __( 'Settings for excluded links:', 'wp-external-links' );
+        $fields[ 'target' ][ 'label' ] = __( 'Open excluded links:', 'wp-external-links' );
 
         $this->set_settings( array(
-            'section_id'    => 'wpel-internal-link-fields',
-            'page_id'       => 'wpel-internal-link-fields',
+            'section_id'    => 'wpel-excluded-link-fields',
+            'page_id'       => 'wpel-excluded-link-fields',
             'option_name'   => $option_name,
             'option_group'  => $option_name,
-            'title'         => __( 'Internal Links', 'wp-external-links' ),
+            'title'         => __( 'Excluded Links', 'wp-external-links' ),
             'fields'        => $fields,
         ) );
     }
