@@ -118,12 +118,6 @@ final class WPEL_Front extends WPRun_Base_1x0x0
 
         $regexp_link = '/<a[^A-Za-z](.*?)>(.*?)<\/a[\s+]*>/is';
 
-        /**
-         * Filters for changing regular expression for getting html links
-         * @param string $regexp_link
-         */
-        $regexp_link = apply_filters( 'wpel_regexp_link', $regexp_link );
-
         $content = preg_replace_callback( $regexp_link, $this->get_callback( 'match_link' ), $content );
 
         /**
