@@ -137,7 +137,7 @@ final class WPEL_Front extends WPRun_Base_1x0x0
     protected function match_link( $matches )
     {
         $original_link = $matches[ 0 ];
-        $atts = $this->parse_atts( $matches[ 1 ] ) ? : array();
+        $atts = $matches[ 1 ];
         $label = $matches[ 2 ];
 
         $created_link = $this->get_created_link( $label, $atts );
@@ -150,95 +150,15 @@ final class WPEL_Front extends WPRun_Base_1x0x0
     }
 
     /**
-     * Parse an attributes string into an array. If the string starts with a tag,
-     * then the attributes on the first tag are parsed. This parses via a manual
-     * loop and is designed to be safer than using DOMDocument.
-     *
-     * @param    string   $atts
-     * @return   array
-     *
-     * @example  parse_attrs( 'src="example.jpg" alt="example"' )
-     * @example  parse_attrs( '<img src="example.jpg" alt="example">' )
-     * @example  parse_attrs( '<a href="example"></a>' )
-     *
-     * @link http://dev.airve.com/demo/speed_tests/php/parse_attrs.php
-     */
-    protected function parse_atts( $atts ) {
-        $atts = str_split( trim( $atts ) );
-
-        if ( '<' === $atts[0] ) { // looks like a tag so strip the tagname
-            while ( $atts && ! ctype_space( $atts[0] ) && $atts[0] !== '>' ) {
-                array_shift($atts);
-            }
-        }
-
-        $arr = array(); // output
-        $name = '';     // for the current attr being parsed
-        $value = '';    // for the current attr being parsed
-        $mode = 0;      // whether current char is part of the name (-), the value (+), or neither (0)
-        $stop = false;  // delimiter for the current $value being parsed
-        $space = ' ';   // a single space
-
-        foreach ( $atts as $j => $curr ) {
-            if ( $mode < 0 ) { // name
-                if ( '=' === $curr ) {
-                    $mode = 1;
-                    $stop = false;
-                } elseif ( '>' === $curr ) {
-                    '' === $name or $arr[ $name ] = $value;
-                    break;
-                } elseif ( ! ctype_space( $curr ) ) {
-                    if ( ctype_space( $atts[ $j - 1 ] ) ) {     // previous char
-                        '' === $name or $arr[ $name ] = '';     // previous name
-                        $name = $curr;                          // initiate new
-                    } else {
-                        $name .= $curr;
-                    }
-                }
-            } elseif ( $mode > 0 ) { // value
-                if ( $stop === false ) {
-                    if ( ! ctype_space( $curr ) ) {
-                        if ( '"' === $curr || "'" === $curr ) {
-                            $value = '';
-                            $stop = $curr;
-                        } else {
-                            $value = $curr;
-                            $stop = $space;
-                        }
-                    }
-                } elseif ( $stop === $space ? ctype_space( $curr ) : $curr === $stop ) {
-                    $arr[ $name ] = $value;
-                    $mode = 0;
-                    $name = $value = '';
-                } else {
-                    $value .= $curr;
-                }
-            } else { // neither
-                if ( '>' === $curr )
-                    break;
-                if ( ! ctype_space( $curr ) ) {
-                    // initiate
-                    $name = $curr;
-                    $mode = -1;
-                }
-            }
-        }
-
-        // incl the final pair if it was quoteless
-        '' === $name or $arr[ $name ] = $value;
-
-        return $arr;
-    }
-
-    /**
      * Create html link
      * @param string $label
-     * @param array $atts
+     * @param string $atts
      * @return string
      */
-    protected function get_created_link( $label, array $atts )
+    protected function get_created_link( $label, $atts )
     {
-        $link = WPEL_Link::create( 'a', $label, $atts );
+        $link = new WPEL_Link( 'a', $label );
+        $link->set_atts( $atts );
 
         /**
          * Filter whether settings will be applied on this links
@@ -252,7 +172,7 @@ final class WPEL_Front extends WPRun_Base_1x0x0
 
         $this->set_link( $link );
 
-        return $link->getHTML();
+        return $link->get_html( false );
     }
 
     /**
@@ -261,23 +181,23 @@ final class WPEL_Front extends WPRun_Base_1x0x0
      */
     protected function set_link( WPEL_Link $link )
     {
-        $url = $link->getAttribute( 'href' );
+        $url = $link->get_attr( 'href' );
 
         $excludes_as_internal_links = $this->opt( 'excludes_as_internal_links' );
 
         // internal, external or excluded
-        $is_excluded = $link->isExclude() || $this->is_excluded_url( $url );
-        $is_internal = $link->isInternal() || ( $this->is_internal_url( $url ) && ! $this->is_included_url( $url ) ) || ( $is_excluded && $excludes_as_internal_links );
-        $is_external = $link->isExternal() || ( ! $is_internal && ! $is_excluded );
+        $is_excluded = $link->is_exclude() || $this->is_excluded_url( $url );
+        $is_internal = $link->is_internal() || ( $this->is_internal_url( $url ) && ! $this->is_included_url( $url ) ) || ( $is_excluded && $excludes_as_internal_links );
+        $is_external = $link->is_external() || ( ! $is_internal && ! $is_excluded );
 
         if ( $is_external ) {
-            $link->setExternal();
+            $link->set_external();
             $this->apply_link_settings( $link, 'external-links' );
         } else if ( $is_internal ) {
-            $link->setInternal();
+            $link->set_internal();
             $this->apply_link_settings( $link, 'internal-links' );
         } else {
-            $link->setExclude();
+            $link->set_exclude();
         }
 
         /**
@@ -301,51 +221,51 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         // set target
         $target = $this->opt( 'target', $type );
         $target_overwrite = $this->opt( 'target_overwrite', $type );
-        $has_target = $link->hasAttribute( 'target' );
+        $has_target = $link->has_attr( 'target' );
 
         if ( $target && ( ! $has_target || $target_overwrite ) ) {
-            $link->setAttribute( 'target', $target );
+            $link->set_attr( 'target', $target );
         }
 
         // add "follow" / "nofollow"
         $follow = $this->opt( 'rel_follow', $type );
         $follow_overwrite = $this->opt( 'rel_follow_overwrite', $type );
-        $has_follow = $link->hasAttributeValue( 'rel', 'follow' ) || $link->hasAttributeValue( 'rel', 'nofollow' );
+        $has_follow = $link->has_attr_value( 'rel', 'follow' ) || $link->has_attr_value( 'rel', 'nofollow' );
 
         if ( $follow && ( ! $has_follow || $follow_overwrite ) ) {
             if ( $has_follow ) {
-                $link->removeFromAttribute( 'rel', 'follow' );
-                $link->removeFromAttribute( 'rel', 'nofollow' );
+                $link->remove_from_attr( 'rel', 'follow' );
+                $link->remove_from_attr( 'rel', 'nofollow' );
             }
 
-            $link->addToAttribute( 'rel', $follow );
+            $link->add_to_attr( 'rel', $follow );
         }
 
         // add "external"
         if ( 'external-links' === $type && $this->opt( 'rel_external', $type ) ) {
-            $link->addToAttribute( 'rel', 'external' );
+            $link->add_to_attr( 'rel', 'external' );
         }
 
         // add "noopener"
         if ( $this->opt( 'rel_noopener', $type ) ) {
-            $link->addToAttribute( 'rel', 'noopener' );
+            $link->add_to_attr( 'rel', 'noopener' );
         }
 
         // add "noreferrer"
         if ( $this->opt( 'rel_noreferrer', $type ) ) {
-            $link->addToAttribute( 'rel', 'noreferrer' );
+            $link->add_to_attr( 'rel', 'noreferrer' );
         }
 
         // set title
         $title_format = $this->opt( 'title', $type );
 
         if ( $title_format ) {
-            $title = $link->getAttribute( 'title' );
-            $text = esc_attr( $link->getContent() );
-            $new_title = str_replace( array( '{title}', '{text}' ), array( $title, $text ), $title_format );
+            $title = $link->get_attr( 'title' );
+            $text = $link->get_content();
+            $new_title = str_replace( array( '{title}', '{text}' ), array( esc_attr( $title ), esc_attr( $text ) ), $title_format );
 
             if ( $new_title ) {
-                $link->setAttribute( 'title', $new_title );
+                $link->set_attr( 'title', $new_title );
             }
         }
 
@@ -353,40 +273,34 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         $class = $this->opt( 'class', $type );
 
         if ( $class ) {
-            $link->addToAttribute( 'class', $class );
+            $link->add_to_attr( 'class', $class );
         }
 
         // add icon
         $icon_type = $this->opt( 'icon_type', $type );
         $no_icon_for_img = $this->opt( 'no_icon_for_img', $type );
-        $has_img = preg_match( '/<img([^>]*)>/is', $link->getContent() );
+        $has_img = preg_match( '/<img([^>]*)>/is', $link->get_content() );
 
-        if ( $icon_type && ! ( $has_img && $no_icon_for_img ) && ! $link->hasAttributeValue( 'class', 'wpel-no-icon' ) ) {
+        if ( $icon_type && ! ( $has_img && $no_icon_for_img ) && ! $link->has_attr_value( 'class', 'wpel-no-icon' ) ) {
             if ( 'dashicon' === $icon_type ) {
                 $dashicon = $this->opt( 'icon_dashicon', $type );
-                $icon = FWP_DOM_Element_1x0x0::create( 'i', '', array(
-                    'class'         => 'wpel-icon dashicons-before '. $dashicon,
-                    'aria-hidden'   => 'true',
-                ) );
+                $icon = '<i class="wpel-icon dashicons-before '. $dashicon .'" aria-hidden="true"></i>';
             } else if ( 'fontawesome' === $icon_type ) {
                 $fa = $this->opt( 'icon_fontawesome', $type );
-                $icon = FWP_DOM_Element_1x0x0::create( 'i', '', array( 
-                    'class'         => 'wpel-icon fa '. $fa,
-                    'aria-hidden'   => 'true',
-                ) );
+                $icon = '<i class="wpel-icon fa '. $fa .'" aria-hidden="true"></i>';
             } else if ( 'image' === $icon_type ) {
                 $image = $this->opt( 'icon_image', $type );
-                $icon = FWP_DOM_Element_1x0x0::create( 'span', null, array(
-                    'class' => 'wpel-icon wpel-image wpel-icon-'. $image,
-                ) );
+                $icon = '<span class="wpel-icon wpel-image wpel-icon-'. $image .'"></span>';
             }
 
             if ( 'left' === $this->opt( 'icon_position', $type ) ) {
-                $link->addToAttribute( 'class', 'wpel-icon-left' );
-                $link->prependChild( $icon );
+                $link->add_to_attr( 'class', 'wpel-icon-left' );
+                $link->set_content( $icon . $link->get_content() );
+//                $link->prependChild( $icon );
             } else if ( 'right' === $this->opt( 'icon_position', $type ) ) {
-                $link->addToAttribute( 'class', 'wpel-icon-right' );
-                $link->appendChild( $icon );
+                $link->add_to_attr( 'class', 'wpel-icon-right' );
+                $link->set_content( $link->get_content() . $icon );
+//                $link->appendChild( $icon );
             }
         }
     }

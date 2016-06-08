@@ -52,17 +52,17 @@ final class WPEL_Front_Ignore extends WPRun_Base_1x0x0
     protected function filter_wpel_apply_link_10000000000( WPEL_Link $link )
     {
         // has ignore flag
-        if ( $link->isIgnore() ) {
+        if ( $link->is_ignore() ) {
             return false;
         }
 
         // ignore mailto links
-        if ( $this->is_mailto( $link->getAttribute( 'href' ) ) ) {
+        if ( $link->is_mailto() ) {
             return false;
         }
 
         // ignore WP Admin Bar Links
-        if ( $link->hasAttributeValue( 'class', 'ab-item' ) ) {
+        if ( $link->has_attr_value( 'class', 'ab-item' ) ) {
             return false;
         }
 
@@ -147,20 +147,6 @@ final class WPEL_Front_Ignore extends WPRun_Base_1x0x0
         }
 
         return $content;
-    }
-
-    /**
-     * Check url is mailto link
-     * @param string $url
-     * @return boolean
-     */
-    protected function is_mailto( $url )
-    {
-        if ( substr( trim( $url ), 0, 7 ) === 'mailto:' ) {
-            return true;
-        }
-
-        return false;
     }
 
 }
