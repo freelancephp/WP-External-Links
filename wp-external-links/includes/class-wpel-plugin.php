@@ -34,7 +34,6 @@ final class WPEL_Plugin extends WPRun_Base_1x0x0
         self::$plugin_dir = untrailingslashit( $plugin_dir );
 
         WPEL_Registerhooks::create();
-        WPEL_Textdomain::create();
 
         // network admin page
         $network_page = WPEL_Network_Page::create( array(
