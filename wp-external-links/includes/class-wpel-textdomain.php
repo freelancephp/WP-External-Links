@@ -18,7 +18,7 @@ class WPEL_Textdomain extends WPRun_Base_1x0x0
      */
     protected function action_plugins_loaded()
     {
-        load_plugin_textdomain( 'wpel', false, WPEL_Plugin::get_plugin_dir( '/languages/' )  );
+        load_plugin_textdomain( 'wp-external-links', false, WPEL_Plugin::get_plugin_dir( '/languages/' )  );
     }
 
 }

@@ -22,9 +22,9 @@ final class WPEL_External_Link_Fields extends WPEL_Link_Fields_Base
         $fields = $this->get_general_fields( $option_name );
 
         // specific field settings
-        $fields[ 'apply_settings' ][ 'label' ] = __( 'Settings for external links:', 'wpel' );
+        $fields[ 'apply_settings' ][ 'label' ] = __( 'Settings for external links:', 'wp-external-links' );
         $fields[ 'apply_settings' ][ 'default_value' ] = '1';
-        $fields[ 'target' ][ 'label' ] = __( 'Open external links:', 'wpel' );
+        $fields[ 'target' ][ 'label' ] = __( 'Open external links:', 'wp-external-links' );
 
         //
         $index_prev = array_search( 'rel_noreferrer', array_keys( $fields ) );
@@ -49,7 +49,7 @@ final class WPEL_External_Link_Fields extends WPEL_Link_Fields_Base
             'page_id'           => 'wpel-external-link-fields',
             'option_name'       => $option_name,
             'option_group'      => $option_name,
-            'title'             => __( 'External Links', 'wpel' ),
+            'title'             => __( 'External Links', 'wp-external-links' ),
             'fields'            => $fields,
         ) );
     }
@@ -62,7 +62,7 @@ final class WPEL_External_Link_Fields extends WPEL_Link_Fields_Base
     {
         $this->get_html_fields()->check_with_label(
             $args[ 'key' ]
-            , __( 'Add <code>"external"</code>', 'wpel' )
+            , __( 'Add <code>"external"</code>', 'wp-external-links' )
             , '1'
             , ''
         );
@@ -82,7 +82,7 @@ final class WPEL_External_Link_Fields extends WPEL_Link_Fields_Base
 
         if ( false === $is_valid ) {
             // error when user input is not valid conform the UI, probably tried to "hack"
-            $this->add_error( __( 'Something went wrong. One or more values were invalid.', 'wpel' ) );
+            $this->add_error( __( 'Something went wrong. One or more values were invalid.', 'wp-external-links' ) );
             return $old_values;
         }
 

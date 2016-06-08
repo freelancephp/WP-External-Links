@@ -29,20 +29,6 @@ jQuery(function ($) {
     /**
      * Link Settings
      */
-    $wrapper.on('change', '.js-apply-settings input', function () {
-        var $items = $wrapper.find('.form-table tr').not('.js-apply-settings');
-
-        if ($(this).prop('checked')) {
-            $items.show();
-            $wrapper.find('.js-icon-type select').change();
-        } else {
-            $items.hide();
-        }
-    });
-
-    // trigger immediatly
-    $wrapper.find('.js-apply-settings input').change();
-
     $wrapper.on('change', '.js-icon-type select', function () {
         var iconType = $(this).val();
         var $itemsChild = $wrapper.find('.js-icon-type-child');
@@ -64,8 +50,20 @@ jQuery(function ($) {
         }
     });
 
+    $wrapper.on('change', '.js-apply-settings input', function () {
+        var $items = $wrapper.find('.form-table tr').not('.js-apply-settings');
+
+        if ($(this).prop('checked')) {
+            $items.show();
+            $wrapper.find('.js-icon-type select').change();
+        } else {
+            $items.hide();
+        }
+    });
+
     // trigger immediatly
-    $wrapper.find('.js-icon-type select').change();
+    $wrapper.find('.js-apply-settings input').change();
+
 
     /**
      * Support

@@ -16,7 +16,7 @@
         <?php _e('The plugin <strong>WP External Links</strong> requires'
                     .' PHP version 5.3 or up and WordPress version 3.6 or up.'
                     .'<br>Please upgrade your PHP and/or WordPress.'
-                    .' Deactivate the plugin to remove this message.', 'wpel' );
+                    .' Deactivate the plugin to remove this message.', 'wp-external-links' );
         ?>
     </p>
 </div>

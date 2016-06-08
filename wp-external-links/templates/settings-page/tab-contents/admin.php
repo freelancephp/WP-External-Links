@@ -1,6 +1,6 @@
 <?php
 /**
- * Tab Default Content
+ * Tab Admin
  *
  * @package  WPEL
  * @category WordPress Plugin
@@ -15,9 +15,7 @@
  *      @option string "current_tab"
  */
 
-$current_tab = $vars [ 'current_tab' ];
-$tab_values = $vars[ 'tabs' ][ $current_tab ];
-$fields = $tab_values[ 'fields' ];
+$default_fields_file = WPEL_Plugin::get_plugin_dir( '/templates/partials/tab-contents/fields-default.php' );
+WPEL_Plugin::show_template( $default_fields_file, $vars );
 
-settings_fields( $fields->get_setting( 'option_group' ) );
-do_settings_sections( $fields->get_setting( 'page_id' ) );
+submit_button();
