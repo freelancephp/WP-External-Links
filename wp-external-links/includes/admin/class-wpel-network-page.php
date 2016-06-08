@@ -41,7 +41,7 @@ final class WPEL_Network_Page extends WPRun_Base_1x0x0
             ),
             'network-admin-settings' => array(
                 'title'     => __( 'Admin Settings', 'wp-external-links' ),
-                'icon'      => '<i class="fa fa-cog" aria-hidden="true"></i>',
+                'icon'      => '<i class="fa fa-cogs" aria-hidden="true"></i>',
                 'fields'    => $fields_objects[ 'network-admin-settings' ],
             ),
             'support' => array(
