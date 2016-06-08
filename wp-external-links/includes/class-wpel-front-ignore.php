@@ -87,31 +87,6 @@ final class WPEL_Front_Ignore extends WPRun_Base_1x0x0
        return $this->restore_content_placeholders( $content );
     }
 
-//    protected function action_wp()
-//    {
-//        global $post;
-////        debug( gettype( $post->ID ) );
-////        add_filter( 'wpel_apply_settings', '__return_false' );
-//        add_filter( 'wpel_apply_settings', function () use ( $post ) {
-//            $excluded_posts = array( 1, 2, 4 );
-//
-//            if ( in_array( $post->ID, $excluded_posts ) ) {
-//                return false;
-//            }
-//
-//            return true;
-//        } );
-//    }
-
-//    protected function action_wpel_link( $link_object )
-//    {
-//        if ( $link_object->isExternal() ) {
-//            $url = $link_object->getAttribute( 'href' );
-//            $redirect_url = '//somedom.com?url='. urlencode( $url );
-//            $link_object->setAttribute( 'href', $redirect_url );
-//        }
-//    }
-
     /**
      * Pregmatch callback
      * @param array $matches
