@@ -45,6 +45,31 @@ final class WPEL_Front_Ignore extends WPRun_Base_1x0x0
     }
 
     /**
+     * Filter for "wpel_apply_link"
+     * @param WPEL_Link $link
+     * @return boolean
+     */
+    protected function filter_wpel_apply_link_10000000000( WPEL_Link $link )
+    {
+        // has ignore flag
+        if ( $link->isIgnore() ) {
+            return false;
+        }
+
+        // ignore mailto links
+        if ( $this->is_mailto( $link->getAttribute( 'href' ) ) ) {
+            return false;
+        }
+
+        // ignore WP Admin Bar Links
+        if ( $link->hasAttributeValue( 'class', 'ab-item' ) ) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Filter for "wpel_before_filter"
      * @param string $content
      * @return string
@@ -122,6 +147,20 @@ final class WPEL_Front_Ignore extends WPRun_Base_1x0x0
         }
 
         return $content;
+    }
+
+    /**
+     * Check url is mailto link
+     * @param string $url
+     * @return boolean
+     */
+    protected function is_mailto( $url )
+    {
+        if ( substr( trim( $url ), 0, 7 ) === 'mailto:' ) {
+            return true;
+        }
+
+        return false;
     }
 
 }

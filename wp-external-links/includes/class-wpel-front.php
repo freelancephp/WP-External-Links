@@ -137,7 +137,7 @@ final class WPEL_Front extends WPRun_Base_1x0x0
     protected function match_link( $matches )
     {
         $original_link = $matches[ 0 ];
-        $atts = $this->parse_atts( $matches[ 1 ] ) ?: array();
+        $atts = $this->parse_atts( $matches[ 1 ] ) ? : array();
         $label = $matches[ 2 ];
 
         $created_link = $this->get_created_link( $label, $atts );
@@ -240,18 +240,13 @@ final class WPEL_Front extends WPRun_Base_1x0x0
     {
         $link = WPEL_Link::create( 'a', $label, $atts );
 
-        // has ignore flag
-        if ( $link->isIgnore() ) {
-            return false;
-        }
+        /**
+         * Filter whether settings will be applied on this links
+         * @param boolean $apply_settings
+         */
+        $apply_link = apply_filters( 'wpel_apply_link', $link );
 
-        // ignore mailto links
-        if ( $this->is_mailto( $link->getAttribute( 'href' ) ) ) {
-            return false;
-        }
-
-        // ignore WP Admin Bar Links
-        if ( $link->hasAttributeValue( 'class', 'ab-item' ) ) {
+        if ( false === $apply_link ) {
             return false;
         }
 
@@ -486,20 +481,6 @@ final class WPEL_Front extends WPRun_Base_1x0x0
 
         // check subdomains
         if ( $this->opt( 'subdomains_as_internal_links' ) && false !== strpos( $url, $this->get_domain() ) ) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Check url is mailto link
-     * @param string $url
-     * @return boolean
-     */
-    protected function is_mailto( $url )
-    {
-        if ( substr( trim( $url ), 0, 7 ) === 'mailto:' ) {
             return true;
         }
 
