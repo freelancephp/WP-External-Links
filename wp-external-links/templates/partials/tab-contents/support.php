@@ -40,13 +40,17 @@
 
 <?php _e( 'PHP version:', 'wp-external-links' ); ?>  <?php echo phpversion(); ?>
 
-<?php _e( 'Installed Plugins:', 'wp-external-links' ); ?>
+<?php _e( 'Active Plugins:', 'wp-external-links' ); ?>
 
 <?php
 $plugins = get_plugins() ;
 
-foreach ( $plugins as $plugin ) {
-    echo ' - '. $plugin[ 'Name' ] .', version: '. $plugin[ 'Version' ] ."\n";
+foreach ( $plugins as $plugin => $plugin_values ) {
+    if ( ! is_plugin_active( $plugin ) ) {
+        continue;
+    }
+
+    echo ' - '. $plugin_values[ 'Name' ] .', version: '. $plugin_values[ 'Version' ] . "\n";
 }
 ?>
 
