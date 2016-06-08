@@ -333,7 +333,7 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         }
 
         // add "external"
-        if ( $this->opt( 'rel_external', $type ) && 'external-links' === $type ) {
+        if ( 'external-links' === $type && $this->opt( 'rel_external', $type ) ) {
             $link->addToAttribute( 'rel', 'external' );
         }
 
