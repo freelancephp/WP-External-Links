@@ -296,11 +296,9 @@ final class WPEL_Front extends WPRun_Base_1x0x0
             if ( 'left' === $this->opt( 'icon_position', $type ) ) {
                 $link->add_to_attr( 'class', 'wpel-icon-left' );
                 $link->set_content( $icon . $link->get_content() );
-//                $link->prependChild( $icon );
             } else if ( 'right' === $this->opt( 'icon_position', $type ) ) {
                 $link->add_to_attr( 'class', 'wpel-icon-right' );
                 $link->set_content( $link->get_content() . $icon );
-//                $link->appendChild( $icon );
             }
         }
     }
