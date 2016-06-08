@@ -51,15 +51,15 @@ final class WPEL_Front_Ignore extends WPRun_Base_1x0x0
      */
     protected function filter_wpel_before_filter_10000000000( $content )
     {
-        $content = preg_replace_callback(
-            $this->get_tag_regexp( 'head' )
-            , $this->get_callback( 'skip_tag' )
-            , $content
-        );
+        $ignore_tags = array( 'head' );
 
         if ( $this->opt( 'ignore_script_tags' ) ) {
+            $ignore_tags[] = 'script';
+        }
+
+        foreach ( $ignore_tags as $tag_name ) {
             $content = preg_replace_callback(
-                $this->get_tag_regexp( 'script' )
+                $this->get_tag_regexp( $tag_name )
                 , $this->get_callback( 'skip_tag' )
                 , $content
             );
