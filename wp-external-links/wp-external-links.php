@@ -18,7 +18,7 @@
  * Author:         Victor Villaverde Laan
  * Author URI:     http://www.finewebdev.com
  * License:        Dual licensed under the MIT and GPLv2+ licenses
- * Text Domain:    wpel
+ * Text Domain:    wp-external-links
  * Domain Path:    /languages
  */
 if ( ! function_exists( 'wpel_init' ) ):
