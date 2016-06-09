@@ -28,7 +28,7 @@ final class WPEL_Front extends WPRun_Base_1x0x0
 
         // apply page sections
         if ( $this->opt( 'apply_all' ) ) {
-            add_action( 'final_output', $this->get_callback( 'scan' ) );
+            add_action( 'final_output', $this->get_callback( 'scan' ), 10000000000 );
         } else {
             $filter_hooks = array();
 
@@ -45,7 +45,7 @@ final class WPEL_Front extends WPRun_Base_1x0x0
             }
 
             foreach ( $filter_hooks as $hook ) {
-               add_filter( $hook, $this->get_callback( 'scan' ) );
+               add_filter( $hook, $this->get_callback( 'scan' ), 10000000000 );
             }
         }
     }
@@ -159,16 +159,6 @@ final class WPEL_Front extends WPRun_Base_1x0x0
     {
         $link = new WPEL_Link( 'a', $label );
         $link->set_atts( $atts );
-
-//        /**
-//         * Filter whether settings will be applied on this links
-//         * @param WPEL_Link $link
-//         */
-//        $apply_link = apply_filters( 'wpel_apply_link', $link );
-//
-//        if ( false === $apply_link ) {
-//            return false;
-//        }
 
         /**
          * Action triggered before link settings will be applied
