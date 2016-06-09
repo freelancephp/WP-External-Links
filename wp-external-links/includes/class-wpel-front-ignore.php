@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.0.4
+ * @version  2.1.0
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -51,7 +51,7 @@ final class WPEL_Front_Ignore extends WPRun_Base_1x0x0
     protected function filter_wpel_before_apply_link_10000000000( WPEL_Link $link )
     {
         // ignore mailto links
-        if ( $link->is_mailto() ) {
+        if ( $this->opt( 'ignore_mailto_links' ) && $link->is_mailto() ) {
             $link->set_ignore();
         }
 

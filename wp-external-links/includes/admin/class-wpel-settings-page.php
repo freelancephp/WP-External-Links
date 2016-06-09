@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.0.4
+ * @version  2.1.0
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -53,7 +53,7 @@ final class WPEL_Settings_Page extends WPRun_Base_1x0x0
             ),
             'excluded-links' => array(
                 'title'     => __( 'Excluded Links', 'wp-external-links' ),
-                'icon'      => '<i class="fa fa-share-square-o" aria-hidden="true"></i>',
+                'icon'      => '<i class="fa fa-share-square" aria-hidden="true"></i>',
                 'fields'    => $fields_objects[ 'excluded-links' ],
             ),
             'exceptions' => array(
@@ -71,6 +71,11 @@ final class WPEL_Settings_Page extends WPRun_Base_1x0x0
                 'icon'      => '<i class="fa fa-question" aria-hidden="true"></i>',
             ),
         );
+
+        // check excluded links tab available
+        if ( $this->get_option_value( 'excludes_as_internal_links', 'exceptions' ) ) {
+            unset( $this->tabs[ 'excluded-links' ] );
+        }
 
         // get current tab
         $this->current_tab = filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_STRING );

@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.0.4
+ * @version  2.1.0
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -42,10 +42,6 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
                     'class'         => 'js-wpel-apply-child wpel-hidden wpel-no-label',
                     'default_value' => '1',
                 ),
-                'ignore_script_tags' => array(
-                    'label'         => __( 'Skip <code>&lt;script&gt;</code>:', 'wp-external-links' ),
-                    'default_value' => '1',
-                ),
                 'subdomains_as_internal_links' => array(
                     'label'         => __( 'Make subdomains internal:', 'wp-external-links' ),
                 ),
@@ -56,8 +52,15 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
                     'label' => __( 'Exclude external links by URL:', 'wp-external-links' ),
                 ),
                 'excludes_as_internal_links' => array(
-                    'label'         => '',
-                    'class'         => 'wpel-no-label',
+                    'label' => __( 'Own settings for excluded links:', 'wp-external-links' ),
+                ),
+                'ignore_script_tags' => array(
+                    'label'         => __( 'Skip <code>&lt;script&gt;</code>:', 'wp-external-links' ),
+                    'default_value' => '1',
+                ),
+                'ignore_mailto_links' => array(
+                    'label'         => __( 'Skip <code>mailto</code> links:', 'wp-external-links' ),
+                    'default_value' => '1',
                 ),
             ),
         ) );
@@ -107,16 +110,6 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
         );
     }
 
-    protected function show_ignore_script_tags( array $args )
-    {
-        $this->get_html_fields()->check_with_label(
-            $args[ 'key' ]
-            , __( 'Ignore all links in <code>&lt;script&gt;</code> blocks', 'wp-external-links' )
-            , '1'
-            , ''
-        );
-    }
-
     protected function show_subdomains_as_internal_links( array $args )
     {
         $this->get_html_fields()->check_with_label(
@@ -155,9 +148,40 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
 
     protected function show_excludes_as_internal_links( array $args )
     {
-        $this->get_html_fields()->check_with_label(
+        echo '<fieldset>';
+
+        $this->get_html_fields()->radio_with_label(
             $args[ 'key' ]
             , __( 'Treat excluded links as internal links', 'wp-external-links' )
+            , '1'
+        );
+
+        echo '<br>';
+
+        $this->get_html_fields()->radio_with_label(
+            $args[ 'key' ]
+            , __( 'Own settings for excluded links <span class="description">(extra tab)</span>', 'wp-external-links' )
+            , ''
+        );
+
+        echo '</fieldset>';
+    }
+
+    protected function show_ignore_script_tags( array $args )
+    {
+        $this->get_html_fields()->check_with_label(
+            $args[ 'key' ]
+            , __( 'Ignore all links in <code>&lt;script&gt;</code> blocks', 'wp-external-links' )
+            , '1'
+            , ''
+        );
+    }
+
+    protected function show_ignore_mailto_links( array $args )
+    {
+        $this->get_html_fields()->check_with_label(
+            $args[ 'key' ]
+            , __( 'Ignore all <code>mailto</code> links', 'wp-external-links' )
             , '1'
             , ''
         );
@@ -178,9 +202,10 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
         $is_valid = $is_valid && in_array( $new_values[ 'apply_comments' ], array( '', '1' ) );
         $is_valid = $is_valid && in_array( $new_values[ 'apply_widgets' ], array( '', '1' ) );
         $is_valid = $is_valid && in_array( $new_values[ 'apply_all' ], array( '', '1' ) );
-        $is_valid = $is_valid && in_array( $new_values[ 'ignore_script_tags' ], array( '', '1' ) );
         $is_valid = $is_valid && in_array( $new_values[ 'subdomains_as_internal_links' ], array( '', '1' ) );
         $is_valid = $is_valid && in_array( $new_values[ 'excludes_as_internal_links' ], array( '', '1' ) );
+        $is_valid = $is_valid && in_array( $new_values[ 'ignore_script_tags' ], array( '', '1' ) );
+        $is_valid = $is_valid && in_array( $new_values[ 'ignore_mailto_links' ], array( '', '1' ) );
 
         if ( false === $is_valid ) {
             // error when user input is not valid conform the UI, probably tried to "hack"
