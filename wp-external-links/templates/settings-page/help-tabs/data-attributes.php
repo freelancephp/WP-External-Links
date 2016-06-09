@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.0.4
+ * @version  2.1.0
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -18,6 +18,6 @@
 <ul>
     <li><?php _e( 'Links with <code>data-wpel-link="internal"</code> will be treated as internal links.', 'wp-external-links' ); ?></li>
     <li><?php _e( 'Links with <code>data-wpel-link="external"</code> will be treated as external links.', 'wp-external-links' ); ?></li>
-    <li><?php _e( 'Links with <code>data-wpel-link="exclude"</code> will be treated as excluded links (which optionally can be treated as internal links).', 'wp-external-links' ); ?></li>
+    <li><?php _e( 'Links with <code>data-wpel-link="exclude"</code> will be treated as excluded links (which have their own settings or will be treated as internal links).', 'wp-external-links' ); ?></li>
     <li><?php _e( 'Links with <code>data-wpel-link="ignore"</code> will be completely ignored by this plugin.', 'wp-external-links' ); ?></li>
 </ul>
