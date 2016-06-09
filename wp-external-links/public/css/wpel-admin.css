@@ -25,15 +25,18 @@ a.toplevel_page_wpel-network-settings-page .wp-menu-image:before {
     content:  '\f14c';
 }
 
-.wpel-settings-page .nav-tab i {
+.wpel-settings-page .nav-tab i,
+.wpel-network-page .nav-tab i {
     margin-right: 5px;
 }
 
-.wpel-settings-page .nav-tab-support {
+.wpel-settings-page .nav-tab-support,
+.wpel-network-page .nav-tab-support {
     float: right;
 }
 
-.wpel-settings-page form {
+.wpel-settings-page form,
+.wpel-network-page form {
     position: relative;
 }
 
@@ -70,7 +73,8 @@ a.toplevel_page_wpel-network-settings-page .wp-menu-image:before {
  * Background Icon
  */
 
-.wpel-settings-page form:before {
+.wpel-settings-page form:before,
+.wpel-network-page form:before {
     font-family: FontAwesome;
     opacity: 0.2;
     color: #aaa;
@@ -97,6 +101,16 @@ a.toplevel_page_wpel-network-settings-page .wp-menu-image:before {
     content: "\f085";
 }
 .wpel-settings-page-support form:before {
+    content: "\f128";
+}
+
+.wpel-network-page-network-settings form:before {
+    content: "\f0e8";
+}
+.wpel-network-page-network-admin-settings form:before {
+    content: "\f085";
+}
+.wpel-network-page-support form:before {
     content: "\f128";
 }
 

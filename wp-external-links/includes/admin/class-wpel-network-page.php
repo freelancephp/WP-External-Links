@@ -46,7 +46,7 @@ final class WPEL_Network_Page extends WPRun_Base_1x0x0
             ),
             'support' => array(
                 'title'     => __( 'Support', 'wp-external-links' ),
-                'icon'      => '<i class="fa fa-smile-o" aria-hidden="true"></i>',
+                'icon'      => '<i class="fa fa-question" aria-hidden="true"></i>',
             ),
         );
 
