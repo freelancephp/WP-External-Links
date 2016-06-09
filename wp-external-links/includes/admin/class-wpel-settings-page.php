@@ -180,7 +180,7 @@ final class WPEL_Settings_Page extends WPRun_Base_1x0x0
             'wpel-admin-style'
             , plugins_url( '/public/css/wpel-admin.css', WPEL_Plugin::get_plugin_file() )
             , array()
-            , null
+            , '2.1.0'
         );
 
         // set wpel admin script
@@ -188,7 +188,7 @@ final class WPEL_Settings_Page extends WPRun_Base_1x0x0
             'wpel-admin-settings'
             , plugins_url( '/public/js/wpel-admin.js', WPEL_Plugin::get_plugin_file() )
             , array('jquery')
-            , false
+            , '2.1.0'
             , true
         );
 
