@@ -111,20 +111,20 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         }
 
         /**
-         * Filters before scanning content
+         * Filters before scanning content (for internal use)
          * @param string $content
          */
-        $content = apply_filters( 'wpel_before_filter', $content );
+        $content = apply_filters( '_wpel_before_filter', $content );
 
         $regexp_link = '/<a[^A-Za-z](.*?)>(.*?)<\/a[\s+]*>/is';
 
         $content = preg_replace_callback( $regexp_link, $this->get_callback( 'match_link' ), $content );
 
         /**
-         * Filters after scanning content
+         * Filters after scanning content (for internal use)
          * @param string $content
          */
-        $content = apply_filters( 'wpel_after_filter', $content );
+        $content = apply_filters( '_wpel_after_filter', $content );
 
         return $content;
     }
@@ -160,13 +160,25 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         $link = new WPEL_Link( 'a', $label );
         $link->set_atts( $atts );
 
-        /**
-         * Filter whether settings will be applied on this links
-         * @param boolean $apply_settings
-         */
-        $apply_link = apply_filters( 'wpel_apply_link', $link );
+//        /**
+//         * Filter whether settings will be applied on this links
+//         * @param WPEL_Link $link
+//         */
+//        $apply_link = apply_filters( 'wpel_apply_link', $link );
+//
+//        if ( false === $apply_link ) {
+//            return false;
+//        }
 
-        if ( false === $apply_link ) {
+        /**
+         * Action triggered before link settings will be applied
+         * @param WPEL_Link $link
+         * @return void
+         */
+        do_action( 'wpel_before_apply_link', $link );
+
+        // has ignore flag
+        if ( $link->is_ignore() ) {
             return false;
         }
 

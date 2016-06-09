@@ -68,6 +68,14 @@ class WPEL_Link extends FWP_HTML_Element_1x0x0
     }
 
     /**
+     * Mark as ignored link (by setting data attribute)
+     */
+    public function set_ignore()
+    {
+        $this->set_attr( 'data-wpel-link', 'ignore' );
+    }
+
+    /**
      * Is marked as ignored link
      * @return boolean
      */

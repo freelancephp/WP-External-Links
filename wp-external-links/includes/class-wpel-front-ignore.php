@@ -45,36 +45,28 @@ final class WPEL_Front_Ignore extends WPRun_Base_1x0x0
     }
 
     /**
-     * Filter for "wpel_apply_link"
+     * Action for "wpel_before_apply_link"
      * @param WPEL_Link $link
-     * @return boolean
      */
-    protected function filter_wpel_apply_link_10000000000( WPEL_Link $link )
+    protected function filter_wpel_before_apply_link_10000000000( WPEL_Link $link )
     {
-        // has ignore flag
-        if ( $link->is_ignore() ) {
-            return false;
-        }
-
         // ignore mailto links
         if ( $link->is_mailto() ) {
-            return false;
+            $link->set_ignore();
         }
 
         // ignore WP Admin Bar Links
         if ( $link->has_attr_value( 'class', 'ab-item' ) ) {
-            return false;
+            $link->set_ignore();
         }
-
-        return true;
     }
 
     /**
-     * Filter for "wpel_before_filter"
+     * Filter for "_wpel_before_filter"
      * @param string $content
      * @return string
      */
-    protected function filter_wpel_before_filter_10000000000( $content )
+    protected function filter__wpel_before_filter_10000000000( $content )
     {
         $ignore_tags = array( 'head' );
 
@@ -94,22 +86,22 @@ final class WPEL_Front_Ignore extends WPRun_Base_1x0x0
     }
 
     /**
+     * Filter for "_wpel_after_filter"
+     * @param string $content
+     * @return string
+     */
+    protected function filter__wpel_after_filter_10000000000( $content )
+    {
+       return $this->restore_content_placeholders( $content );
+    }
+
+    /**
      * @param type $tag_name
      * @return type
      */
     protected function get_tag_regexp( $tag_name )
     {
         return '/<'. $tag_name .'[\s.*>|>](.*?)<\/'. $tag_name .'[\s+]*>/is';
-    }
-
-    /**
-     * Filter for "wpel_after_filter"
-     * @param string $content
-     * @return string
-     */
-    protected function filter_wpel_after_filter_10000000000( $content )
-    {
-       return $this->restore_content_placeholders( $content );
     }
 
     /**
