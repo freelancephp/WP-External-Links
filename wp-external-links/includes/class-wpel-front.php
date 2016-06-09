@@ -63,7 +63,7 @@ final class WPEL_Front extends WPRun_Base_1x0x0
     }
 
     /**
-     * Enqueue scripts and styles
+     * Action for "wp_enqueue_scripts"
      */
     protected function action_wp_enqueue_scripts()
     {
@@ -75,21 +75,11 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         }
 
         if ( 'fontawesome' === $icon_type_int || 'fontawesome' === $icon_type_ext ) {
-            wp_enqueue_style(
-                'font-awesome'
-                , 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'
-                , array()
-                , null
-            );
+            wp_enqueue_style( 'font-awesome' );
         }
 
         if ( $this->opt( 'icon_type', 'external-links' ) || $this->opt( 'icon_type', 'internal-links' ) ) {
-            wp_enqueue_style(
-                'wpel-style'
-                , plugins_url( '/public/css/wpel.css', WPEL_Plugin::get_plugin_file() )
-                , array()
-                , null
-            );
+            wp_enqueue_style( 'wpel-style' );
         }
     }
 
