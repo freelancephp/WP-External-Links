@@ -33,7 +33,8 @@ final class WPEL_Plugin extends WPRun_Base_1x0x0
         self::$plugin_file = $plugin_file;
         self::$plugin_dir = untrailingslashit( $plugin_dir );
 
-        WPEL_Registerhooks::create();
+        WPEL_Register_Hooks::create();
+        WPEL_Register_Scripts::create();
 
         // network admin page
         $network_page = WPEL_Network_Page::create( array(
@@ -65,6 +66,14 @@ final class WPEL_Plugin extends WPRun_Base_1x0x0
     }
 
     /**
+     * Action for "plugins_loaded"
+     */
+    protected function action_plugins_loaded()
+    {
+        load_plugin_textdomain( 'wp-external-links', false, WPEL_Plugin::get_plugin_dir( '/languages/' )  );
+    }
+
+    /**
      * @return string
      */
     public static function get_plugin_file()
@@ -79,63 +88,6 @@ final class WPEL_Plugin extends WPRun_Base_1x0x0
     public static function get_plugin_dir( $path = '' )
     {
         return self::$plugin_dir . $path;
-    }
-
-    /**
-     * Action for "wp_enqueue_scripts"
-     */
-    protected function action_wp_enqueue_scripts()
-    {
-        $this->register_scripts();
-    }
-
-    /**
-     * Action for "admin_enqueue_scripts"
-     */
-    protected function action_admin_enqueue_scripts()
-    {
-        $this->register_scripts();
-    }
-
-    /**
-     * Register styles and scripts
-     */
-    protected function register_scripts()
-    {
-        $plugin_version = get_option( 'wpel-version' );
-
-        // set style font awesome icons
-        wp_register_style(
-            'font-awesome'
-            , 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'
-            , array()
-            , $plugin_version
-        );
-
-        // front style
-        wp_register_style(
-            'wpel-style'
-            , plugins_url( '/public/css/wpel.css', WPEL_Plugin::get_plugin_file() )
-            , array()
-            , $plugin_version
-        );
-
-        // set admin style
-        wp_register_style(
-            'wpel-admin-style'
-            , plugins_url( '/public/css/wpel-admin.css', WPEL_Plugin::get_plugin_file() )
-            , array()
-            , $plugin_version
-        );
-
-        // set wpel admin script
-        wp_register_script(
-            'wpel-admin-script'
-            , plugins_url( '/public/js/wpel-admin.js', WPEL_Plugin::get_plugin_file() )
-            , array( 'jquery' )
-            , $plugin_version
-            , true
-        );
     }
 
 }
