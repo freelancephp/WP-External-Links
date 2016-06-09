@@ -1,6 +1,6 @@
 <?php
 /**
- * Class WPEL_RegisterHooks
+ * Class WPEL_Register_Hooks
  *
  * @package  WPEL
  * @category WordPress Plugin
@@ -10,7 +10,7 @@
  * @link     https://github.com/freelancephp/WP-External-Links
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-final class WPEL_Registerhooks extends WPRun_Base_1x0x0
+final class WPEL_Register_Hooks extends WPRun_Base_1x0x0
 {
 
     /**
