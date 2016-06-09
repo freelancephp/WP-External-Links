@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.0.4
+ * @version  2.1.0
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -15,18 +15,17 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
 
     /**
      * Get general fields
-     * @param string $option_name
      * @return array
      */
-    final protected function get_general_fields( $option_name )
+    final protected function get_general_fields()
     {
         return array(
             'apply_settings' => array(
-                'label'             => __( 'Settings for links:', 'wpel' ),
+                'label'             => __( 'Settings for links:', 'wp-external-links' ),
                 'class'             => 'js-apply-settings',
             ),
             'target' => array(
-                'label'             => __( 'Open links:', 'wpel' ),
+                'label'             => __( 'Open links:', 'wp-external-links' ),
                 'class'             => 'wpel-hidden',
                 'default_value'     => '',
             ),
@@ -35,7 +34,7 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
                 'class'             => 'wpel-no-label wpel-hidden',
             ),
             'rel_follow' => array(
-                'label'             => __( 'Set <code>follow</code> or <code>nofollow</code>:', 'wpel' ),
+                'label'             => __( 'Set <code>follow</code> or <code>nofollow</code>:', 'wp-external-links' ),
                 'class'             => 'wpel-hidden',
                 'default_value'     => '',
             ),
@@ -43,14 +42,9 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
                 'label'             => '',
                 'class'             => 'wpel-no-label wpel-hidden',
             ),
-            'rel_external' => array(
-                'label'             => __( 'Also add to <code>rel</code> attribute:', 'wpel' ),
-                'class'             => 'wpel-hidden',
-                'default_value'     => '1',
-            ),
             'rel_noopener' => array(
-                'label'             => '',
-                'class'             => 'wpel-no-label wpel-hidden',
+                'label'             => __( 'Also add to <code>rel</code> attribute:', 'wp-external-links' ),
+                'class'             => 'wpel-hidden',
                 'default_value'     => '1',
             ),
             'rel_noreferrer' => array(
@@ -59,38 +53,38 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
                 'default_value'     => '1',
             ),
             'title' => array(
-                'label'             => __( 'Set <code>title</code>:', 'wpel' ),
+                'label'             => __( 'Set <code>title</code>:', 'wp-external-links' ),
                 'class'             => 'wpel-hidden',
                 'default_value'     => '{title}',
             ),
             'class' => array(
-                'label'             => __( 'Add CSS class(es):', 'wpel' ),
+                'label'             => __( 'Add CSS class(es):', 'wp-external-links' ),
                 'class'             => 'wpel-hidden',
             ),
             'icon_type' => array(
-                'label'             => __( 'Choose icon type:', 'wpel' ),
+                'label'             => __( 'Choose icon type:', 'wp-external-links' ),
                 'class'             => 'js-icon-type wpel-hidden',
             ),
             'icon_image' => array(
-                'label'             => __( 'Choose icon image:', 'wpel' ),
+                'label'             => __( 'Choose icon image:', 'wp-external-links' ),
                 'class'             => 'js-icon-type-child js-icon-type-image wpel-hidden',
                 'default_value'     => '1',
             ),
             'icon_dashicon' => array(
-                'label'             => __( 'Choose dashicon:', 'wpel' ),
+                'label'             => __( 'Choose dashicon:', 'wp-external-links' ),
                 'class'             => 'js-icon-type-child js-icon-type-dashicon wpel-hidden',
             ),
             'icon_fontawesome' => array(
-                'label'             => __( 'Choose FA icon:', 'wpel' ),
+                'label'             => __( 'Choose FA icon:', 'wp-external-links' ),
                 'class'             => 'js-icon-type-child js-icon-type-fontawesome wpel-hidden',
             ),
             'icon_position' => array(
-                'label'             => __( 'Icon position:', 'wpel' ),
+                'label'             => __( 'Icon position:', 'wp-external-links' ),
                 'class'             => 'js-icon-type-depend wpel-hidden',
                 'default_value'     => 'right',
             ),
             'no_icon_for_img' => array(
-                'label'             => __( 'Skip icon with <code>&lt;img&gt;</code>:', 'wpel' ),
+                'label'             => __( 'Skip icon with <code>&lt;img&gt;</code>:', 'wp-external-links' ),
                 'class'             => 'js-icon-type-depend wpel-hidden',
                 'default_value'     => '1',
             ),
@@ -105,7 +99,7 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
     {
         $this->get_html_fields()->check_with_label(
             $args[ 'key' ]
-            , __( 'Apply these settings', 'wpel' )
+            , __( 'Apply these settings', 'wp-external-links' )
             , '1'
             , ''
         );
@@ -116,11 +110,11 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
         $this->get_html_fields()->select(
             $args[ 'key' ]
             , array(
-                ''          => __( '- keep as is -', 'wpel' ),
-                '_self'     => __( 'in the same window, tab or frame', 'wpel' ),
-                '_blank'    => __( 'each in a separate new window or tab', 'wpel' ),
-                '_new'      => __( 'all in the same new window or tab', 'wpel' ),
-                '_top'      => __( 'in the topmost frame', 'wpel' ),
+                ''          => __( '- keep as is -', 'wp-external-links' ),
+                '_self'     => __( 'in the same window, tab or frame', 'wp-external-links' ),
+                '_blank'    => __( 'each in a separate new window or tab', 'wp-external-links' ),
+                '_new'      => __( 'all in the same new window or tab', 'wp-external-links' ),
+                '_top'      => __( 'in the topmost frame', 'wp-external-links' ),
             )
         );
     }
@@ -129,7 +123,7 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
     {
         $this->get_html_fields()->check_with_label(
             $args[ 'key' ]
-            , __( 'Overwrite existing values.', 'wpel' )
+            , __( 'Overwrite existing values.', 'wp-external-links' )
             , '1'
             , ''
         );
@@ -140,9 +134,9 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
         $this->get_html_fields()->select(
             $args[ 'key' ]
             , array(
-                ''          => __( '- keep as is -', 'wpel' ),
-                'follow'    => __( 'follow', 'wpel' ),
-                'nofollow'  => __( 'nofollow', 'wpel' ),
+                ''          => __( '- keep as is -', 'wp-external-links' ),
+                'follow'    => __( 'follow', 'wp-external-links' ),
+                'nofollow'  => __( 'nofollow', 'wp-external-links' ),
             )
         );
     }
@@ -151,17 +145,7 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
     {
         $this->get_html_fields()->check_with_label(
             $args[ 'key' ]
-            , __( 'Overwrite existing values.', 'wpel' )
-            , '1'
-            , ''
-        );
-    }
-
-    protected function show_rel_external( array $args )
-    {
-        $this->get_html_fields()->check_with_label(
-            $args[ 'key' ]
-            , __( 'Add <code>"external"</code>', 'wpel' )
+            , __( 'Overwrite existing values.', 'wp-external-links' )
             , '1'
             , ''
         );
@@ -171,7 +155,7 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
     {
         $this->get_html_fields()->check_with_label(
             $args[ 'key' ]
-            , __( 'Add <code>"noopener"</code>', 'wpel' )
+            , __( 'Add <code>"noopener"</code>', 'wp-external-links' )
             , '1'
             , ''
         );
@@ -181,7 +165,7 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
     {
         $this->get_html_fields()->check_with_label(
             $args[ 'key' ]
-            , __( 'Add <code>"noreferrer"</code>', 'wpel' )
+            , __( 'Add <code>"noreferrer"</code>', 'wp-external-links' )
             , '1'
             , ''
         );
@@ -195,7 +179,7 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
 
         echo '<p class="description">'
                 . __( 'Use this <code>{title}</code> for the original title value '
-                .'and <code>{text}</code> for the link text as shown on the page', 'wpel' )
+                .'and <code>{text}</code> for the link text as shown on the page', 'wp-external-links' )
                 .'</p>';
     }
 
@@ -211,10 +195,10 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
         $this->get_html_fields()->select(
             $args[ 'key' ]
             , array(
-                ''              => __( '- no icon -', 'wpel' ),
-                'image'         => __( 'Image', 'wpel' ),
-                'dashicon'      => __( 'Dashicon', 'wpel' ),
-                'fontawesome'   => __( 'Font Awesome', 'wpel' ),
+                ''              => __( '- no icon -', 'wp-external-links' ),
+                'image'         => __( 'Image', 'wp-external-links' ),
+                'dashicon'      => __( 'Dashicon', 'wp-external-links' ),
+                'fontawesome'   => __( 'Font Awesome', 'wp-external-links' ),
             )
         );
     }
@@ -278,8 +262,8 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
         $this->get_html_fields()->select(
             $args[ 'key' ]
             , array(
-                'left'  => __( 'Left side of the link', 'wpel' ),
-                'right' => __( 'Right side of the link', 'wpel' ),
+                'left'  => __( 'Left side of the link', 'wp-external-links' ),
+                'right' => __( 'Right side of the link', 'wp-external-links' ),
             )
         );
     }
@@ -288,7 +272,7 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
     {
         $this->get_html_fields()->check_with_label(
             $args[ 'key' ]
-            , __( 'No icon for links already containing an <code>&lt;img&gt;</code>-tag.', 'wpel' )
+            , __( 'No icon for links already containing an <code>&lt;img&gt;</code>-tag.', 'wp-external-links' )
             , '1'
             , ''
         );
@@ -308,14 +292,13 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
         $is_valid = $is_valid && in_array( $new_values[ 'apply_settings' ], array( '', '1' ) );
         $is_valid = $is_valid && in_array( $new_values[ 'target_overwrite' ], array( '', '1' ) );
         $is_valid = $is_valid && in_array( $new_values[ 'rel_follow_overwrite' ], array( '', '1' ) );
-        $is_valid = $is_valid && in_array( $new_values[ 'rel_external' ], array( '', '1' ) );
         $is_valid = $is_valid && in_array( $new_values[ 'rel_noopener' ], array( '', '1' ) );
         $is_valid = $is_valid && in_array( $new_values[ 'rel_noreferrer' ], array( '', '1' ) );
         $is_valid = $is_valid && in_array( $new_values[ 'no_icon_for_img' ], array( '', '1' ) );
 
         if ( false === $is_valid ) {
             // error when user input is not valid conform the UI, probably tried to "hack"
-            $this->add_error( __( 'Something went wrong. One or more values were invalid.', 'wpel' ) );
+            $this->add_error( __( 'Something went wrong. One or more values were invalid.', 'wp-external-links' ) );
             return $old_values;
         }
 

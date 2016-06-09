@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.0.4
+ * @version  2.1.0
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -23,10 +23,10 @@ final class WPEL_Network_Admin_Fields extends FWP_Settings_Section_Fields_1x0x0
             'page_id'           => 'wpel-network-admin-fields',
             'option_name'       => 'wpel-network-admin-settings',
             'option_group'      => 'wpel-network-admin-settings',
-            'title'             => __( 'Network Admin Settings', 'wpel' ),
+            'title'             => __( 'Network Admin Settings', 'wp-external-links' ),
             'fields'            => array(
                 'own_admin_menu' => array(
-                    'label'         => __( 'Main Network Admin Menu:', 'wpel' ),
+                    'label'         => __( 'Main Network Admin Menu:', 'wp-external-links' ),
                     'default_value' => '1',
                 ),
             ),
@@ -77,13 +77,13 @@ final class WPEL_Network_Admin_Fields extends FWP_Settings_Section_Fields_1x0x0
     {
         $this->get_html_fields()->check_with_label(
             $args[ 'key' ]
-            , __( 'Create own network admin menu for this plugin', 'wpel' )
+            , __( 'Create own network admin menu for this plugin', 'wp-external-links' )
             , '1'
             , ''
         );
 
         echo ' <p class="description">'
-                . __( 'Or else it will be added to the "Settings" menu', 'wpel' )
+                . __( 'Or else it will be added to the "Settings" menu', 'wp-external-links' )
                 .'</p>';
     }
 
@@ -102,7 +102,7 @@ final class WPEL_Network_Admin_Fields extends FWP_Settings_Section_Fields_1x0x0
 
         if ( false === $is_valid ) {
             // error when user input is not valid conform the UI, probably tried to "hack"
-            $this->add_error( __( 'Something went wrong. One or more values were invalid.', 'wpel' ) );
+            $this->add_error( __( 'Something went wrong. One or more values were invalid.', 'wp-external-links' ) );
             return $old_values;
         }
 

@@ -3,7 +3,7 @@ Contributors: freelancephp
 Tags: links, new window, new tab, external links, nofollow, follow, seo, noopener, noreferrer, internal links, link icon, link target, _blank, wpmu
 Requires at least: 4.2.0
 Tested up to: 4.5.2
-Stable tag: 2.0.4
+Stable tag: 2.1.0
 
 Open external links in a new tab / window, add "nofollow", "noopener" and font icons, SEO and more. Also for internal links.
 
@@ -64,30 +64,46 @@ If you want support for older versions of PHP or WordPress then download and ins
 
 = I want certain posts or pages to be ignored by the plugin. How? =
 
+By using the `wpel_apply_settings` filter you can stop the plugin from processing that page, f.e.:
+
 `add_action( 'wpel_apply_settings', function () {
     global $post;
-    $excluded_post_ids = array( 1, 2, 4 );
+    $ignored_post_ids = array( 1, 2, 4 );
 
-    if ( in_array( $post->ID, $excluded_post_ids ) ) {
+    if ( in_array( $post->ID, $ignored_post_ids ) ) {
         return false;
     }
 
     return true;
 }, 10 );`
 
+Using this filter you can ignore any request, like certain category, archive etcetera.
+
+= I want specific links to be ignored by the plugin. How? =
+
+By using the `wpel_before_apply_link` filter you can skip specific links from being processed by WPEL plugin, f.e.:
+
+`add_action( 'wpel_before_apply_link', function ( $link ) {
+    // ignore links with class "some-cls"
+    if ( $link->has_attr_value( 'class', 'some-cls' ) ) {
+        $link->set_ignore();
+    }
+}, 10 );`
+
+
 = How to create a redirect for external links? (f.e. affiliate links) =
 
 Create redirect by using the `wpel_link` action. Add some code to functions.php of your theme, like:
 
-`add_action( 'wpel_link', function ( $link_object ) {
+`add_action( 'wpel_link', function ( $link ) {
     // check if link is an external links
-    if ( $link_object->isExternal() ) {
+    if ( $link->is_external() ) {
         // get current url
-        $url = $link_object->getAttribute( 'href' );
+        $url = $link->get_attr( 'href' );
 
         // set redirect url
         $redirect_url = '//somedom.com?url='. urlencode( $url );
-        $link_object->setAttribute( 'href', $redirect_url );
+        $link->set_attr( 'href', $redirect_url );
     }
 }, 10, 1 );`
 
@@ -126,6 +142,16 @@ Add this JavaScript code to your site:
 
 });`
 
+= I am a plugin developer and my plugin conflicts with WPEL. How can I solve the problem? =
+
+If your plugin contains links it might be filtered by the WPEL plugin as well, causing a conflict.
+Here are some suggestions on solving the problem:
+
+1. Add `data-wpel-link="ignore"` to links that need to be ignored by WPEL plugin
+1. Use `wpel_before_apply_link`-action to ignore your links (f.e. containing certain class or data-attribute)
+1. Use `wpel_apply_settings`-filter to ignore complete post, pages, categories etc
+
+
 [Do you have a question? Please ask me](http://www.finewebdev.comcontact/)
 
 
@@ -155,7 +181,7 @@ by the plugin will contain this data attribute and the value on how they were tr
 Use this action to change the link object after all plugin settings have been applied.
 
 `add_action( 'wpel_link', ( $link_object ) {
-    if ( $link_object->isExternal() ) {
+    if ( $link_object->is_external() ) {
         // get current url
         $url = $link_object->getAttribute( 'href' );
 
@@ -163,10 +189,27 @@ Use this action to change the link object after all plugin settings have been ap
         $redirect_url = '//somedom.com?url='. urlencode( $url );
         $link_object->setAttribute( 'href', $redirect_url );
     }
-}, 10, 1 )`
+}, 10, 1 );`
 
-The link object is an instance of WPEL_Link class (a subclass of [DOMElement](http://php.net/manual/en/class.domelement.php)).
+The link object is an instance of WPEL_Link class.
 
+= Action hook "wpel_before_apply_link" =
+
+Use this action to change the link object before the plugin settings have been applied on that link.
+You can use this filter to ignore individual links from being processed. Or change how they will be treated
+by the WPEL plugin, f.e. make an internal link external.
+
+`add_action( 'wpel_before_apply_link', function ( $link ) {
+    // ignore links with class "some-cls"
+    if ( $link->has_attr_value( 'class', 'some-cls' ) ) {
+        $link->set_ignore();
+    }
+
+    // mark and treat links with class "ext-cls" as external link
+    if ( $link->has_attr_value( 'class', 'ext-cls' ) ) {
+        $link->set_external();
+    }
+}, 10 );`
 
 = Filter hook "wpel_apply_settings" =
 
@@ -174,40 +217,24 @@ When filter returns false the plugin settings will not be applied. Can be used w
 
 `add_filter( 'wpel_apply_settings', '__return_false' );`
 
-= Filter hook "wpel_before_filter" =
-
-Filter the content before searching for links and apply setttings.
-
-`add_filter( 'wpel_before_filter', function ( $content ) {
-    // some code..
-
-    return $changed_content;
-}, 10 );`
-
-= Filter hook "wpel_after_filter" =
-
-Filter the content after applying link setttings.
-
-`add_filter( 'wpel_after_filter', function ( $content ) {
-    // some code..
-
-    return $changed_content;
-}, 10 );`
-
-= Filter hook "wpel_regexp_link" =
-
-A filter for changing the regular expression for links. Should only be used to solve bugs on your site.
-
-`add_filter( 'wpel_regexp_link', function ( $regexp_link ) {
-    $custom_regexp_link = '/<a (.*?)>(.*?)<\/a>/is';
-    return $custom_regexp_link;
-}, 10 );`
-
 
 See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more info.
 
 
 == Changelog ==
+
+= 2.1.0 =
+* Added tab with options for excluded links
+* Added `wpel-no-icon` class to set on links
+* Added action `wpel_before_apply_link`
+* Added option ignore mailto links
+* Fixed ignore links of admin bar
+* Fixed regexp for ignoring tags
+* Fixed text domain to text slug
+* Made filters `wpel_before_filter` and `wpel_after_filter` "private"
+* Removed DOMElement dependency
+* Removed rel="external" option for internal links
+* Removed filter `wpel_regexp_link` (this should not be changed)
 
 = 2.0.4 =
 * Fixed DOMElement breaks of text containing `&`

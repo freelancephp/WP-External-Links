@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.0.4
+ * @version  2.1.0
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -34,7 +34,6 @@ final class WPEL_Plugin extends WPRun_Base_1x0x0
         self::$plugin_dir = untrailingslashit( $plugin_dir );
 
         WPEL_Registerhooks::create();
-        WPEL_Textdomain::create();
 
         // network admin page
         $network_page = WPEL_Network_Page::create( array(
@@ -46,6 +45,7 @@ final class WPEL_Plugin extends WPRun_Base_1x0x0
         $settings_page = WPEL_Settings_Page::create( $network_page, array(
             'external-links'    => WPEL_External_Link_Fields::create(),
             'internal-links'    => WPEL_Internal_Link_Fields::create(),
+            'excluded-links'    => WPEL_Excluded_Link_Fields::create(),
             'admin'             => WPEL_Admin_Fields::create(),
             'exceptions'        => WPEL_Exceptions_Fields::create(),
         ) );

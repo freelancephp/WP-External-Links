@@ -4,14 +4,14 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.0.4
+ * @version  2.1.0
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
 ?>
-<h3><?php _e( 'Under Construction', 'wpel' ) ?></h3>
+<h3><?php _e( 'Under Construction', 'wp-external-links' ) ?></h3>
 <p>
-    <?php _e( 'Still working on the documentation...', 'wpel' ); ?>
+    <?php _e( 'Still working on the documentation...', 'wp-external-links' ); ?>
 </p>

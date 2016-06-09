@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.0.4
+ * @version  2.1.0
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -35,18 +35,18 @@ final class WPEL_Network_Page extends WPRun_Base_1x0x0
     {
         $this->tabs = array(
             'network-settings' => array(
-                'title'     => __( 'Multi Site Settings', 'wpel' ),
+                'title'     => __( 'Multi Site Settings', 'wp-external-links' ),
                 'icon'      => '<i class="fa fa-sitemap" aria-hidden="true"></i>',
                 'fields'    => $fields_objects[ 'network-settings' ],
             ),
             'network-admin-settings' => array(
-                'title'     => __( 'Admin Settings', 'wpel' ),
-                'icon'      => '<i class="fa fa-cog" aria-hidden="true"></i>',
+                'title'     => __( 'Admin Settings', 'wp-external-links' ),
+                'icon'      => '<i class="fa fa-cogs" aria-hidden="true"></i>',
                 'fields'    => $fields_objects[ 'network-admin-settings' ],
             ),
             'support' => array(
-                'title'     => __( 'Support', 'wpel' ),
-                'icon'      => '<i class="fa fa-smile-o" aria-hidden="true"></i>',
+                'title'     => __( 'Support', 'wp-external-links' ),
+                'icon'      => '<i class="fa fa-question" aria-hidden="true"></i>',
             ),
         );
 
@@ -100,8 +100,8 @@ final class WPEL_Network_Page extends WPRun_Base_1x0x0
 
         if ( '1' === $own_admin_menu ) {
             $this->page_hook = add_menu_page(
-                __( 'WP External Links' , 'wpel' )                  // page title
-                , __( 'External Links' , 'wpel' )                   // menu title
+                __( 'WP External Links' , 'wp-external-links' )                  // page title
+                , __( 'External Links' , 'wp-external-links' )                   // menu title
                 , 'manage_network'                                  // capability
                 , $this->menu_slug                                  // menu slug
                 , $this->get_callback( 'show_network_page' )        // callback
@@ -111,8 +111,8 @@ final class WPEL_Network_Page extends WPRun_Base_1x0x0
         } else {
             $this->page_hook = add_submenu_page(
                 'settings.php'                                      // parent slug
-                , __( 'WP External Links' , 'wpel' )                // page title
-                , __( 'External Links' , 'wpel' )                   // menu title
+                , __( 'WP External Links' , 'wp-external-links' )                // page title
+                , __( 'External Links' , 'wp-external-links' )                   // menu title
                 , 'manage_options'                                  // capability
                 , $this->menu_slug                                  // menu slug
                 , $this->get_callback( 'show_network_page' )        // callback
@@ -182,7 +182,7 @@ final class WPEL_Network_Page extends WPRun_Base_1x0x0
 
         $screen->add_help_tab( array(
             'id'        => 'under-construction',
-            'title'     => __( 'Under Construction', 'wpel' ),
+            'title'     => __( 'Under Construction', 'wp-external-links' ),
             'callback'  => $this->get_callback( 'show_help_tab' ),
         ) );
     }

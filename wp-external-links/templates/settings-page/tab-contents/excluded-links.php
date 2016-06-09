@@ -1,6 +1,6 @@
 <?php
 /**
- * Tab Exception
+ * Tab Excluded Links
  *
  * @package  WPEL
  * @category WordPress Plugin
@@ -17,8 +17,5 @@
 
 $default_fields_file = WPEL_Plugin::get_plugin_dir( '/templates/partials/tab-contents/fields-default.php' );
 WPEL_Plugin::show_template( $default_fields_file, $vars );
-?>
 
-<p class="description"><?php _e( 'The data-attribute <a href="#" data-wpel-help="data-attributes"><code>data-wpel-link</code></a> can be set on individual links to treat them as internal, external or excluded, or to completely ignore links form being processed by this plugin.' ); ?></p>
-
-<?php submit_button(); ?>
+submit_button();

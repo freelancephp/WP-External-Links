@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.0.4
+ * @version  2.1.0
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -23,10 +23,10 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
             'page_id'           => 'wpel-exceptions-fields',
             'option_name'       => 'wpel-exceptions-settings',
             'option_group'      => 'wpel-exceptions-settings',
-            'title'             => __( 'Exceptions', 'wpel' ),
+            'title'             => __( 'Exceptions', 'wp-external-links' ),
             'fields'            => array(
                 'apply_all' => array(
-                    'label'         => __( 'Apply settings on:', 'wpel' ),
+                    'label'         => __( 'Apply settings on:', 'wp-external-links' ),
                     'class'         => 'js-wpel-apply',
                     'default_value' => '1',
                 ),
@@ -42,22 +42,25 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
                     'class'         => 'js-wpel-apply-child wpel-hidden wpel-no-label',
                     'default_value' => '1',
                 ),
-                'ignore_script_tags' => array(
-                    'label'         => __( 'Skip <code>&lt;script&gt;</code>:', 'wpel' ),
-                    'default_value' => '1',
-                ),
                 'subdomains_as_internal_links' => array(
-                    'label'         => __( 'Make subdomains internal:', 'wpel' ),
+                    'label'         => __( 'Make subdomains internal:', 'wp-external-links' ),
                 ),
                 'include_urls' => array(
-                    'label' => __( 'Include external links by URL:', 'wpel' ),
+                    'label' => __( 'Include external links by URL:', 'wp-external-links' ),
                 ),
                 'exclude_urls' => array(
-                    'label' => __( 'Exclude external links by URL:', 'wpel' ),
+                    'label' => __( 'Exclude external links by URL:', 'wp-external-links' ),
                 ),
                 'excludes_as_internal_links' => array(
-                    'label'         => '',
-                    'class'         => 'wpel-no-label',
+                    'label' => __( 'Own settings for excluded links:', 'wp-external-links' ),
+                ),
+                'ignore_script_tags' => array(
+                    'label'         => __( 'Skip <code>&lt;script&gt;</code>:', 'wp-external-links' ),
+                    'default_value' => '1',
+                ),
+                'ignore_mailto_links' => array(
+                    'label'         => __( 'Skip <code>mailto</code> links:', 'wp-external-links' ),
+                    'default_value' => '1',
                 ),
             ),
         ) );
@@ -71,7 +74,7 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
     {
         $this->get_html_fields()->check_with_label(
             $args[ 'key' ]
-            , __( 'All contents (the whole page)', 'wpel' )
+            , __( 'All contents (the whole page)', 'wp-external-links' )
             , '1'
             , ''
         );
@@ -81,7 +84,7 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
     {
         $this->get_html_fields()->check_with_label(
             $args[ 'key' ]
-            , __( 'Post content', 'wpel' )
+            , __( 'Post content', 'wp-external-links' )
             , '1'
             , ''
         );
@@ -91,7 +94,7 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
     {
         $this->get_html_fields()->check_with_label(
             $args[ 'key' ]
-            , __( 'Comments', 'wpel' )
+            , __( 'Comments', 'wp-external-links' )
             , '1'
             , ''
         );
@@ -101,17 +104,7 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
     {
         $this->get_html_fields()->check_with_label(
             $args[ 'key' ]
-            , __( 'All widgets', 'wpel' )
-            , '1'
-            , ''
-        );
-    }
-
-    protected function show_ignore_script_tags( array $args )
-    {
-        $this->get_html_fields()->check_with_label(
-            $args[ 'key' ]
-            , __( 'Ignore all links in <code>&lt;script&gt;</code> blocks', 'wpel' )
+            , __( 'All widgets', 'wp-external-links' )
             , '1'
             , ''
         );
@@ -121,7 +114,7 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
     {
         $this->get_html_fields()->check_with_label(
             $args[ 'key' ]
-            , __( 'Threat all links to the site\'s domain and subdomains as internal links', 'wpel' )
+            , __( 'Threat all links to the site\'s domain and subdomains as internal links', 'wp-external-links' )
             , '1'
             , ''
         );
@@ -144,20 +137,51 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
             'rows'  => 4,
             'placeholder' => __( 'For example:'. "\n"
                         .'somedomain.org, sub.domain.net/some-slug'. "\n"
-                        .'http://sub.moredomain.net, http://www.domain.com/other-slug', 'wpel' ),
+                        .'http://sub.moredomain.net, http://www.domain.com/other-slug', 'wp-external-links' ),
         ) );
 
         echo '<p class="description">'
                 . __( 'Separate url\'s by comma and/or a line break. '
-                .'Write the url\'s as specific as you want them to match.', 'wpel' )
+                .'Write the url\'s as specific as you want them to match.', 'wp-external-links' )
                 .'</p>';
     }
 
     protected function show_excludes_as_internal_links( array $args )
     {
+        echo '<fieldset>';
+
+        $this->get_html_fields()->radio_with_label(
+            $args[ 'key' ]
+            , __( 'Treat excluded links as internal links', 'wp-external-links' )
+            , '1'
+        );
+
+        echo '<br>';
+
+        $this->get_html_fields()->radio_with_label(
+            $args[ 'key' ]
+            , __( 'Own settings for excluded links <span class="description">(extra tab)</span>', 'wp-external-links' )
+            , ''
+        );
+
+        echo '</fieldset>';
+    }
+
+    protected function show_ignore_script_tags( array $args )
+    {
         $this->get_html_fields()->check_with_label(
             $args[ 'key' ]
-            , __( 'Treat excluded links as internal links', 'wpel' )
+            , __( 'Ignore all links in <code>&lt;script&gt;</code> blocks', 'wp-external-links' )
+            , '1'
+            , ''
+        );
+    }
+
+    protected function show_ignore_mailto_links( array $args )
+    {
+        $this->get_html_fields()->check_with_label(
+            $args[ 'key' ]
+            , __( 'Ignore all <code>mailto</code> links', 'wp-external-links' )
             , '1'
             , ''
         );
@@ -178,13 +202,14 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
         $is_valid = $is_valid && in_array( $new_values[ 'apply_comments' ], array( '', '1' ) );
         $is_valid = $is_valid && in_array( $new_values[ 'apply_widgets' ], array( '', '1' ) );
         $is_valid = $is_valid && in_array( $new_values[ 'apply_all' ], array( '', '1' ) );
-        $is_valid = $is_valid && in_array( $new_values[ 'ignore_script_tags' ], array( '', '1' ) );
         $is_valid = $is_valid && in_array( $new_values[ 'subdomains_as_internal_links' ], array( '', '1' ) );
         $is_valid = $is_valid && in_array( $new_values[ 'excludes_as_internal_links' ], array( '', '1' ) );
+        $is_valid = $is_valid && in_array( $new_values[ 'ignore_script_tags' ], array( '', '1' ) );
+        $is_valid = $is_valid && in_array( $new_values[ 'ignore_mailto_links' ], array( '', '1' ) );
 
         if ( false === $is_valid ) {
             // error when user input is not valid conform the UI, probably tried to "hack"
-            $this->add_error( __( 'Something went wrong. One or more values were invalid.', 'wpel' ) );
+            $this->add_error( __( 'Something went wrong. One or more values were invalid.', 'wp-external-links' ) );
             return $old_values;
         }
 

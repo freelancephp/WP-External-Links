@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.0.4
+ * @version  2.1.0
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -23,14 +23,14 @@ final class WPEL_Network_Fields extends FWP_Settings_Section_Fields_1x0x0
             'page_id'           => 'wpel-network-fields',
             'option_name'       => 'wpel-network-settings',
             'option_group'      => 'wpel-network-settings',
-            'title'             => __( 'Multi Site Settings', 'wpel' ),
+            'title'             => __( 'Multi Site Settings', 'wp-external-links' ),
             'fields'            => array(
                 'capability' => array(
-                    'label'         => __( 'Capability for individual sites:', 'wpel' ),
+                    'label'         => __( 'Capability for individual sites:', 'wp-external-links' ),
                     'default_value' => 'manage_options',
                 ),
                 'default_settings_site' => array(
-                    'label'         => __( 'Use the settings of this site as default for new sites:', 'wpel' ),
+                    'label'         => __( 'Use the settings of this site as default for new sites:', 'wp-external-links' ),
                     'default_value' => '',
                 ),
             ),
@@ -86,8 +86,8 @@ final class WPEL_Network_Fields extends FWP_Settings_Section_Fields_1x0x0
         $this->get_html_fields()->select(
             $args[ 'key' ]
             , array(
-                'manage_options'    => __( 'Site Admins and Super Admins', 'wpel' ),
-                'manage_network'    => __( 'Only Super Admins', 'wpel' ),
+                'manage_options'    => __( 'Site Admins and Super Admins', 'wp-external-links' ),
+                'manage_network'    => __( 'Only Super Admins', 'wp-external-links' ),
             )
         );
     }
@@ -97,7 +97,7 @@ final class WPEL_Network_Fields extends FWP_Settings_Section_Fields_1x0x0
         $sites = wp_get_sites();
 
         $values = array();
-        $values[ '' ] = __( '- none -', 'wpel' );
+        $values[ '' ] = __( '- none -', 'wp-external-links' );
 
         foreach ( $sites as $site ) {
             $values[ $site[ 'blog_id' ] ] = 'blog_id: '. $site[ 'blog_id' ] .' - '. $site[ 'path' ];

@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.0.4
+ * @version  2.1.0
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -42,30 +42,40 @@ final class WPEL_Settings_Page extends WPRun_Base_1x0x0
 
         $this->tabs = array(
             'external-links' => array(
-                'title'     => __( 'External Links', 'wpel' ),
+                'title'     => __( 'External Links', 'wp-external-links' ),
                 'icon'      => '<i class="fa fa-external-link-square" aria-hidden="true"></i>',
                 'fields'    => $fields_objects[ 'external-links' ],
             ),
             'internal-links' => array(
-                'title'     => __( 'Internal Links', 'wpel' ),
-                'icon'      => '<i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>',
+                'title'     => __( 'Internal Links', 'wp-external-links' ),
+                'icon'      => '<i class="fa fa-square-o" aria-hidden="true"></i>',
                 'fields'    => $fields_objects[ 'internal-links' ],
             ),
+            'excluded-links' => array(
+                'title'     => __( 'Excluded Links', 'wp-external-links' ),
+                'icon'      => '<i class="fa fa-share-square" aria-hidden="true"></i>',
+                'fields'    => $fields_objects[ 'excluded-links' ],
+            ),
             'exceptions' => array(
-                'title'     => __( 'Exceptions', 'wpel' ),
-                'icon'      => '<i class="fa fa-times-circle" aria-hidden="true"></i>',
+                'title'     => __( 'Exceptions', 'wp-external-links' ),
+                'icon'      => '<i class="fa fa-th-large" aria-hidden="true"></i>',
                 'fields'    => $fields_objects[ 'exceptions' ],
             ),
             'admin' => array(
-                'title'     => __( 'Admin Settings', 'wpel' ),
-                'icon'      => '<i class="fa fa-cog" aria-hidden="true"></i>',
+                'title'     => __( 'Admin Settings', 'wp-external-links' ),
+                'icon'      => '<i class="fa fa-cogs" aria-hidden="true"></i>',
                 'fields'    => $fields_objects[ 'admin' ],
             ),
             'support' => array(
-                'title'     => __( 'Support', 'wpel' ),
+                'title'     => __( 'Support', 'wp-external-links' ),
                 'icon'      => '<i class="fa fa-question" aria-hidden="true"></i>',
             ),
         );
+
+        // check excluded links tab available
+        if ( $this->get_option_value( 'excludes_as_internal_links', 'exceptions' ) ) {
+            unset( $this->tabs[ 'excluded-links' ] );
+        }
 
         // get current tab
         $this->current_tab = filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_STRING );
@@ -119,8 +129,8 @@ final class WPEL_Settings_Page extends WPRun_Base_1x0x0
 
         if ( '1' === $own_admin_menu ) {
             $this->page_hook = add_menu_page(
-                __( 'WP External Links' , 'wpel' )          // page title
-                , __( 'External Links' , 'wpel' )           // menu title
+                __( 'WP External Links' , 'wp-external-links' )          // page title
+                , __( 'External Links' , 'wp-external-links' )           // menu title
                 , $capability                               // capability
                 , $this->menu_slug                          // id
                 , $this->get_callback( 'show_admin_page' )  // callback
@@ -129,8 +139,8 @@ final class WPEL_Settings_Page extends WPRun_Base_1x0x0
             );
         } else {
             $this->page_hook = add_options_page(
-                __( 'WP External Links' , 'wpel' )          // page title
-                , __( 'External Links' , 'wpel' )           // menu title
+                __( 'WP External Links' , 'wp-external-links' )          // page title
+                , __( 'External Links' , 'wp-external-links' )           // menu title
                 , $capability                               // capability
                 , $this->menu_slug                          // id
                 , $this->get_callback( 'show_admin_page' )  // callback
@@ -220,12 +230,12 @@ final class WPEL_Settings_Page extends WPRun_Base_1x0x0
 
         $screen->add_help_tab( array(
             'id'        => 'under-construction',
-            'title'     => __( 'Under Construction', 'wpel' ),
+            'title'     => __( 'Under Construction', 'wp-external-links' ),
             'callback'  => $this->get_callback( 'show_help_tab' ),
         ) );
         $screen->add_help_tab( array(
             'id'        => 'data-attributes',
-            'title'     => __( 'Data Attributes', 'wpel' ),
+            'title'     => __( 'Data Attributes', 'wp-external-links' ),
             'callback'  => $this->get_callback( 'show_help_tab' ),
         ) );
     }

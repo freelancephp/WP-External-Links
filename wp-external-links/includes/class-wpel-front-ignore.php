@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.0.4
+ * @version  2.1.0
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -45,21 +45,38 @@ final class WPEL_Front_Ignore extends WPRun_Base_1x0x0
     }
 
     /**
-     * Filter for "wpel_before_filter"
+     * Action for "wpel_before_apply_link"
+     * @param WPEL_Link $link
+     */
+    protected function filter_wpel_before_apply_link_10000000000( WPEL_Link $link )
+    {
+        // ignore mailto links
+        if ( $this->opt( 'ignore_mailto_links' ) && $link->is_mailto() ) {
+            $link->set_ignore();
+        }
+
+        // ignore WP Admin Bar Links
+        if ( $link->has_attr_value( 'class', 'ab-item' ) ) {
+            $link->set_ignore();
+        }
+    }
+
+    /**
+     * Filter for "_wpel_before_filter"
      * @param string $content
      * @return string
      */
-    protected function filter_wpel_before_filter_10000000000( $content )
+    protected function filter__wpel_before_filter_10000000000( $content )
     {
-        $content = preg_replace_callback(
-            $this->get_tag_regexp( 'head' )
-            , $this->get_callback( 'skip_tag' )
-            , $content
-        );
+        $ignore_tags = array( 'head' );
 
         if ( $this->opt( 'ignore_script_tags' ) ) {
+            $ignore_tags[] = 'script';
+        }
+
+        foreach ( $ignore_tags as $tag_name ) {
             $content = preg_replace_callback(
-                $this->get_tag_regexp( 'script' )
+                $this->get_tag_regexp( $tag_name )
                 , $this->get_callback( 'skip_tag' )
                 , $content
             );
@@ -69,48 +86,23 @@ final class WPEL_Front_Ignore extends WPRun_Base_1x0x0
     }
 
     /**
+     * Filter for "_wpel_after_filter"
+     * @param string $content
+     * @return string
+     */
+    protected function filter__wpel_after_filter_10000000000( $content )
+    {
+       return $this->restore_content_placeholders( $content );
+    }
+
+    /**
      * @param type $tag_name
      * @return type
      */
     protected function get_tag_regexp( $tag_name )
     {
-        return '/<'. $tag_name .'[^A-Za-z](.*?)>(.*?)<\/'. $tag_name .'[\s+]*>/is';
+        return '/<'. $tag_name .'[\s.*>|>](.*?)<\/'. $tag_name .'[\s+]*>/is';
     }
-
-    /**
-     * Filter for "wpel_after_filter"
-     * @param string $content
-     * @return string
-     */
-    protected function filter_wpel_after_filter_10000000000( $content )
-    {
-       return $this->restore_content_placeholders( $content );
-    }
-
-//    protected function action_wp()
-//    {
-//        global $post;
-////        debug( gettype( $post->ID ) );
-////        add_filter( 'wpel_apply_settings', '__return_false' );
-//        add_filter( 'wpel_apply_settings', function () use ( $post ) {
-//            $excluded_posts = array( 1, 2, 4 );
-//
-//            if ( in_array( $post->ID, $excluded_posts ) ) {
-//                return false;
-//            }
-//
-//            return true;
-//        } );
-//    }
-
-//    protected function action_wpel_link( $link_object )
-//    {
-//        if ( $link_object->isExternal() ) {
-//            $url = $link_object->getAttribute( 'href' );
-//            $redirect_url = '//somedom.com?url='. urlencode( $url );
-//            $link_object->setAttribute( 'href', $redirect_url );
-//        }
-//    }
 
     /**
      * Pregmatch callback
