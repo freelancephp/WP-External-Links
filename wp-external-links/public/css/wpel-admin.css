@@ -25,28 +25,16 @@ a.toplevel_page_wpel-network-settings-page .wp-menu-image:before {
     content:  '\f14c';
 }
 
-.wpel-admin-settings .nav-tab i {
+.wpel-settings-page .nav-tab i {
     margin-right: 5px;
 }
 
-.wpel-admin-settings .nav-tab-support {
+.wpel-settings-page .nav-tab-support {
     float: right;
 }
 
-.wpel-admin-settings form {
+.wpel-settings-page form {
     position: relative;
-}
-
-.wpel-admin-settings form:before {
-    content: "\f14c";
-    font-family: FontAwesome;
-    opacity: 0.2;
-    color: #aaa;
-    font-size: 200pt;
-    position: absolute;
-    top: 120px;
-    right: 40px;
-    z-index: -1;
 }
 
 .js-wpel-apply-child td {
@@ -77,3 +65,39 @@ a.toplevel_page_wpel-network-settings-page .wp-menu-image:before {
    color: #ccc;
    font-style: italic;
 }
+
+/**
+ * Background Icon
+ */
+
+.wpel-settings-page form:before {
+    font-family: FontAwesome;
+    opacity: 0.2;
+    color: #aaa;
+    font-size: 200pt;
+    position: absolute;
+    top: 140px;
+    right: 40px;
+    z-index: -1;
+}
+
+.wpel-settings-page-external-links form:before {
+    content: "\f14c";
+}
+.wpel-settings-page-internal-links form:before {
+    content: "\f096";
+}
+.wpel-settings-page-excluded-links form:before {
+    content: "\f045";
+}
+.wpel-settings-page-exceptions form:before {
+    content: "\f009";
+}
+.wpel-settings-page-admin form:before {
+    content: "\f085";
+}
+.wpel-settings-page-support form:before {
+    content: "\f128";
+}
+
+

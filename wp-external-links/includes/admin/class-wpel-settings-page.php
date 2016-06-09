@@ -43,7 +43,7 @@ final class WPEL_Settings_Page extends WPRun_Base_1x0x0
         $this->tabs = array(
             'external-links' => array(
                 'title'     => __( 'External Links', 'wp-external-links' ),
-                'icon'      => '<i class="fa fa-external-link" aria-hidden="true"></i>',
+                'icon'      => '<i class="fa fa-external-link-square" aria-hidden="true"></i>',
                 'fields'    => $fields_objects[ 'external-links' ],
             ),
             'internal-links' => array(

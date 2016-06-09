@@ -18,7 +18,7 @@
  *      @option string "own_admin_menu"
  */
 ?>
-<div class="wrap wpel-admin-settings">
+<div class="wrap wpel-settings-page wpel-settings-page-<?php echo $vars[ 'current_tab' ]; ?>">
     <h1><?php echo get_admin_page_title(); ?></h1>
     <?php
         if ( $vars[ 'own_admin_menu' ] ):

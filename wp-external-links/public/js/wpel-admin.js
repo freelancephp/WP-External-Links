@@ -6,7 +6,7 @@
 jQuery(function ($) {
     'use strict';
 
-    var $wrapper = $('.wpel-admin-settings');
+    var $wrapper = $('.wpel-settings-page');
 
     /**
      * Apply Sections Settings
