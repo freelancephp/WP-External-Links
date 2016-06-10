@@ -37,7 +37,8 @@ if ( ! function_exists( 'wpel_init' ) ):
             if ( ! function_exists( 'wpel_requirements_notice' ) ) {
                 function wpel_requirements_notice()
                 {
-                    include __DIR__ .'/templates/requirements-notice.php';
+                    // php 5.2 doesn't yet support __DIR__
+                    include dirname( __FILE__ ) .'/templates/requirements-notice.php';
                 }
 
                 add_action( 'admin_notices', 'wpel_requirements_notice' );
