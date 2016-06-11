@@ -63,6 +63,9 @@ final class WPEL_Plugin extends WPRun_Base_1x0x0
 
             WPEL_Template_Tags::create();
         }
+
+        // update procedures
+        WPEL_Update::create();
     }
 
     /**
