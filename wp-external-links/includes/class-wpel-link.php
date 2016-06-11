@@ -30,7 +30,7 @@ class WPEL_Link extends FWP_HTML_Element_1x0x0
      */
     public function is_external()
     {
-        return 'external' === $this->get_attr( 'data-wpel-link' );
+        return 'external' === $this->get_attr( 'data-wpel-link' ) || $this->has_attr_value( 'rel', 'external' );
     }
 
     /**
