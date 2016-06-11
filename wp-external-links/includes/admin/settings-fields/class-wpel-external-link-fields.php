@@ -52,6 +52,8 @@ final class WPEL_External_Link_Fields extends WPEL_Link_Fields_Base
             'title'             => __( 'External Links', 'wp-external-links' ),
             'fields'            => $fields,
         ) );
+
+        parent::init();
     }
 
     /**

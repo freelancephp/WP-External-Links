@@ -109,18 +109,16 @@ abstract class WPRun_Base_1x0x0
             $this->set_hook_methods();
         }
 
-        $init_methods = array( 'before_init', 'init', 'after_init' );
+        // call init method
+        $method_name = 'init';
 
-        // call init methods
-        foreach ( $init_methods as $method_name ) {
-            if ( method_exists( $this, $method_name ) ) {
-                $method_reflection = new ReflectionMethod( get_called_class(), $method_name );
+        if ( method_exists( $this, $method_name ) ) {
+            $method_reflection = new ReflectionMethod( get_called_class(), $method_name );
 
-                if ( $method_reflection->isProtected() ) {
-                    call_user_func_array( array( $this, $method_name ), $this->arguments );
-                } else {
-                    trigger_error( 'Method "'. $method_name .'" should be made protected in class "'. get_called_class() .'".' );
-                }
+            if ( $method_reflection->isProtected() ) {
+                call_user_func_array( array( $this, $method_name ), $this->arguments );
+            } else {
+                trigger_error( 'Method "'. $method_name .'" should be made protected in class "'. get_called_class() .'".' );
             }
         }
     }

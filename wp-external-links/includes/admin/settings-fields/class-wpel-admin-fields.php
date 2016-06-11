@@ -31,6 +31,8 @@ final class WPEL_Admin_Fields extends FWP_Settings_Section_Fields_1x0x0
                 ),
             ),
         ) );
+
+        parent::init();
     }
 
     /**

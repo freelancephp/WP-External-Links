@@ -49,9 +49,9 @@ abstract class FWP_Settings_Section_Fields_1x0x0 extends WPRun_Base_1x0x0
     private $option_values = array();
 
     /**
-     * After init
+     * Init
      */
-    protected function after_init()
+    protected function init()
     {
         $this->set_option_values();
         $this->set_html_fields();
@@ -231,7 +231,7 @@ abstract class FWP_Settings_Section_Fields_1x0x0 extends WPRun_Base_1x0x0
     {
         $field_method = 'show_'. $args[ 'key' ];
 
-        if (is_callable( array( $this, $field_method ) ) ) {
+        if ( is_callable( array( $this, $field_method ) ) ) {
             $this->{ $field_method }( $args );
         }
     }

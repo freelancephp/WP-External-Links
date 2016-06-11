@@ -89,6 +89,8 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
                 'default_value'     => '1',
             ),
         );
+
+        parent::init();
     }
 
     /**

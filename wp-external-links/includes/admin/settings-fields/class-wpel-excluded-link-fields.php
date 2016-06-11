@@ -33,6 +33,8 @@ final class WPEL_Excluded_Link_Fields extends WPEL_Link_Fields_Base
             'title'         => __( 'Excluded Links', 'wp-external-links' ),
             'fields'        => $fields,
         ) );
+
+        parent::init();
     }
 
 }

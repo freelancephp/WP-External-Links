@@ -39,6 +39,8 @@ final class WPEL_Network_Fields extends FWP_Settings_Section_Fields_1x0x0
         if ( is_network_admin() ) {
             add_action( 'network_admin_edit_'. $this->get_setting( 'option_group' ) , $this->get_callback( 'save_network_settings' ) );
         }
+
+        parent::init();
     }
 
     /**

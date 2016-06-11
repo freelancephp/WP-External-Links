@@ -2,10 +2,8 @@
 /**
  * Class Widget_Output_1x0x0
  *
- * This component was inspired by:
- *   @todo
- *
- * @todo multiple versions - multiple filter applies
+ * This component was inspired by the 'widget_content' filter of
+ * Widget Logic Plugin by Alan Trewartha (http://freakytrigger.co.uk/author/alan/)
  *
  * @package  FWP
  * @category WordPress Library
@@ -65,7 +63,7 @@ class FWP_Widget_Output_1x0x0 extends WPRun_Base_1x0x0
 
         $widget_id_base = $wp_registered_widgets[ $widget_id ][ 'callback' ][ 0 ]->id_base;
 
-        if ( !is_callable( $original_callback ) ) {
+        if ( ! is_callable( $original_callback ) ) {
             return;
         }
 
