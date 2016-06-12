@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.1.0
+ * @version  2.1.1
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -35,6 +35,8 @@ final class WPEL_Network_Admin_Fields extends FWP_Settings_Section_Fields_1x0x0
         if ( is_network_admin() ) {
             add_action( 'network_admin_edit_'. $this->get_setting( 'option_group' ) , $this->get_callback( 'save_network_settings' ) );
         }
+
+        parent::init();
     }
 
     protected function save_network_settings()

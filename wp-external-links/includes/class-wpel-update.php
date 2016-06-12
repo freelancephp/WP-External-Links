@@ -1,16 +1,16 @@
 <?php
 /**
- * Class WPEL_RegisterHooks
+ * Class WPEL_Update
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.1.0
+ * @version  2.1.1
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-final class WPEL_Registerhooks extends WPRun_Base_1x0x0
+final class WPEL_Update extends WPRun_Base_1x0x0
 {
 
     /**
@@ -18,69 +18,38 @@ final class WPEL_Registerhooks extends WPRun_Base_1x0x0
      */
     protected function init()
     {
-        register_activation_hook(
-            WPEL_Plugin::get_plugin_file()
-            , $this->get_callback( 'activate' )
-        );
-
-        register_uninstall_hook(
-            WPEL_Plugin::get_plugin_file()
-            , $this->get_callback( 'uninstall' )
-        );
+        $this->update_to_v2();
     }
 
     /**
-     * Plugin activation procedure
+     * Action for "admin_init"
      */
-    protected function activate( $networkwide )
+    protected function action_admin_init()
     {
-        global $wpdb;
+        $this->update_version();
+    }
 
-        if ( is_multisite() && $networkwide ) {
-            // network activation
-            $sites = wp_get_sites();
-            $active_blog = $wpdb->blogid;
+    /**
+     * Update version
+     * @return void
+     */
+    private function update_version()
+    {
+        $plugin_data = get_plugin_data( WPEL_Plugin::get_plugin_file() );
 
-            foreach ( $sites as $site ) {
-                switch_to_blog( $site[ 'blog_id' ] );
-                $this->activate_site();
-            }
+        $current_version = $plugin_data[ 'Version' ];
+        $saved_version = get_option( 'wpel-version' );
 
-            // switch back to active blog
-            switch_to_blog( $active_blog );
-
-            $this->activate_network();
-        } else {
-            // single site activation
-            $this->activate_site();
+        if ( $current_version !== $saved_version ) {
+            update_option( 'wpel-version', $current_version );
         }
     }
 
     /**
-     * Activate network
+     * Update procedure to v2.x
      * @return void
      */
-    private function activate_network()
-    {
-        $network_already_set = get_site_option( 'wpel-network-settings' );
-
-        if ( $network_already_set ) {
-            return;
-        }
-
-        // network default settings
-        $network_values = WPEL_Network_Fields::get_instance()->get_default_values();
-        $network_admin_values = WPEL_Network_Admin_Fields::get_instance()->get_default_values();
-
-        update_site_option( 'wpel-network-settings', $network_values );
-        update_site_option( 'wpel-network-admin-settings', $network_admin_values );
-    }
-
-    /**
-     * Activate site
-     * @return void
-     */
-    private function activate_site()
+    private function update_to_v2()
     {
         $site_already_set = get_option( 'wpel-external-link-settings' );
 
@@ -164,55 +133,6 @@ final class WPEL_Registerhooks extends WPRun_Base_1x0x0
         update_option( 'wpel-excluded-link-settings', $excluded_link_values );
         update_option( 'wpel-exceptions-settings', $exceptions_link_values );
         update_option( 'wpel-admin-settings', $admin_link_values );
-
-        // update meta data
-        $plugin_data = get_plugin_data( WPEL_Plugin::get_plugin_file() );
-        update_option( 'wpel-version', $plugin_data[ 'Version' ] );
-        update_option( 'wpel-show-notice', true );
-    }
-
-    /**
-     * Uninstall site
-     */
-    protected function uninstall()
-    {
-        global $wpdb;
-
-        if ( is_multisite() ) {
-            // network activation
-            $sites = wp_get_sites();
-            $active_blog = $wpdb->blogid;
-            foreach ( $sites as $site ) {
-                switch_to_blog( $site[ 'blog_id' ] );
-                $this->uninstall_site();
-            }
-
-            // switch back to active blog
-            switch_to_blog( $active_blog );
-
-            // network settings
-            delete_site_option( 'wpel-network-settings' );
-            delete_site_option( 'wpel-network-admin-settings' );
-        } else {
-            // single site activation
-            $this->uninstall_site();
-        }
-    }
-
-    /**
-     * Plugin uninstall procedure
-     */
-    protected function uninstall_site()
-    {
-        // delete options
-        delete_option( 'wpel-external-link-settings' );
-        delete_option( 'wpel-internal-link-settings' );
-        delete_option( 'wpel-excluded-link-settings' );
-        delete_option( 'wpel-exceptions-settings' );
-        delete_option( 'wpel-admin-settings' );
-
-        delete_option( 'wpel-version' );
-        delete_option( 'wpel-show-notice' );
     }
 
 }

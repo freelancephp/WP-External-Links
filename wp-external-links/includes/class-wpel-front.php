@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.1.0
+ * @version  2.1.1
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -28,7 +28,7 @@ final class WPEL_Front extends WPRun_Base_1x0x0
 
         // apply page sections
         if ( $this->opt( 'apply_all' ) ) {
-            add_action( 'final_output', $this->get_callback( 'scan' ) );
+            add_action( 'final_output', $this->get_callback( 'scan' ), 10000000000 );
         } else {
             $filter_hooks = array();
 
@@ -45,7 +45,7 @@ final class WPEL_Front extends WPRun_Base_1x0x0
             }
 
             foreach ( $filter_hooks as $hook ) {
-               add_filter( $hook, $this->get_callback( 'scan' ) );
+               add_filter( $hook, $this->get_callback( 'scan' ), 10000000000 );
             }
         }
     }
@@ -63,7 +63,7 @@ final class WPEL_Front extends WPRun_Base_1x0x0
     }
 
     /**
-     * Enqueue scripts and styles
+     * Action for "wp_enqueue_scripts"
      */
     protected function action_wp_enqueue_scripts()
     {
@@ -75,21 +75,11 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         }
 
         if ( 'fontawesome' === $icon_type_int || 'fontawesome' === $icon_type_ext ) {
-            wp_enqueue_style(
-                'font-awesome'
-                , 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'
-                , array()
-                , null
-            );
+            wp_enqueue_style( 'font-awesome' );
         }
 
         if ( $this->opt( 'icon_type', 'external-links' ) || $this->opt( 'icon_type', 'internal-links' ) ) {
-            wp_enqueue_style(
-                'wpel-style'
-                , plugins_url( '/public/css/wpel.css', WPEL_Plugin::get_plugin_file() )
-                , array()
-                , null
-            );
+            wp_enqueue_style( 'wpel-style' );
         }
     }
 
@@ -159,16 +149,6 @@ final class WPEL_Front extends WPRun_Base_1x0x0
     {
         $link = new WPEL_Link( 'a', $label );
         $link->set_atts( $atts );
-
-//        /**
-//         * Filter whether settings will be applied on this links
-//         * @param WPEL_Link $link
-//         */
-//        $apply_link = apply_filters( 'wpel_apply_link', $link );
-//
-//        if ( false === $apply_link ) {
-//            return false;
-//        }
 
         /**
          * Action triggered before link settings will be applied

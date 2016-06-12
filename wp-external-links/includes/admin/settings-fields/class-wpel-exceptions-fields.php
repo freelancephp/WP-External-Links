@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.1.0
+ * @version  2.1.1
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -64,6 +64,8 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
                 ),
             ),
         ) );
+
+        parent::init();
     }
 
     /**

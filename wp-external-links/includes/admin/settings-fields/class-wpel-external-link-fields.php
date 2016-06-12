@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.1.0
+ * @version  2.1.1
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -52,6 +52,8 @@ final class WPEL_External_Link_Fields extends WPEL_Link_Fields_Base
             'title'             => __( 'External Links', 'wp-external-links' ),
             'fields'            => $fields,
         ) );
+
+        parent::init();
     }
 
     /**

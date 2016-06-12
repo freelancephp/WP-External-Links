@@ -2,8 +2,6 @@
 /**
  * Class FWP_Final_Output_1x0x0
  *
- * @todo multiple versions - multiple filter applies
- *
  * @package  FWP
  * @category WordPress Library
  * @version  1.0.0

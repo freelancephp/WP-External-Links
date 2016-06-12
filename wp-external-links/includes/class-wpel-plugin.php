@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.1.0
+ * @version  2.1.1
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -33,7 +33,8 @@ final class WPEL_Plugin extends WPRun_Base_1x0x0
         self::$plugin_file = $plugin_file;
         self::$plugin_dir = untrailingslashit( $plugin_dir );
 
-        WPEL_Registerhooks::create();
+        WPEL_Register_Hooks::create();
+        WPEL_Register_Scripts::create();
 
         // network admin page
         $network_page = WPEL_Network_Page::create( array(
@@ -62,6 +63,17 @@ final class WPEL_Plugin extends WPRun_Base_1x0x0
 
             WPEL_Template_Tags::create();
         }
+
+        // update procedures
+        WPEL_Update::create();
+    }
+
+    /**
+     * Action for "plugins_loaded"
+     */
+    protected function action_plugins_loaded()
+    {
+        load_plugin_textdomain( 'wp-external-links', false, WPEL_Plugin::get_plugin_dir( '/languages' )  );
     }
 
     /**

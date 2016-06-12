@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.1.0
+ * @version  2.1.1
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -175,30 +175,9 @@ final class WPEL_Settings_Page extends WPRun_Base_1x0x0
      */
     protected function action_admin_enqueue_scripts()
     {
-        // set admin style
-        wp_enqueue_style(
-            'wpel-admin-style'
-            , plugins_url( '/public/css/wpel-admin.css', WPEL_Plugin::get_plugin_file() )
-            , array()
-            , null
-        );
-
-        // set wpel admin script
-        wp_enqueue_script(
-            'wpel-admin-settings'
-            , plugins_url( '/public/js/wpel-admin.js', WPEL_Plugin::get_plugin_file() )
-            , array('jquery')
-            , false
-            , true
-        );
-
-        // set style
-        wp_enqueue_style(
-            'font-awesome'
-            , 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'
-            , array()
-            , null
-        );
+        wp_enqueue_style( 'font-awesome' );
+        wp_enqueue_style( 'wpel-admin-style' );
+        wp_enqueue_script( 'wpel-admin-script' );
     }
 
     /**

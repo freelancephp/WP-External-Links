@@ -3,7 +3,7 @@ Contributors: freelancephp
 Tags: links, new window, new tab, external links, nofollow, follow, seo, noopener, noreferrer, internal links, link icon, link target, _blank, wpmu
 Requires at least: 4.2.0
 Tested up to: 4.5.2
-Stable tag: 2.1.0
+Stable tag: 2.1.1
 
 Open external links in a new tab / window, add "nofollow", "noopener" and font icons, SEO and more. Also for internal links.
 
@@ -13,7 +13,7 @@ Open external links in a new tab / window, add "nofollow", "noopener" and font i
 Configure settings for all internal and external links on your site.
 
 > <strong>=== NEW: Version 2 ===</strong><br>
-> WPEL plugin was rebuilt completely and has lots of new features, like "noopener", font icons, internal links options and WPMU settings.
+> WPEL plugin was completely rebuilt and has lots of new features, like "noopener", font icons, internal links options and WPMU settings.
 
 = Features =
 * Open links in new window or tab
@@ -54,10 +54,22 @@ If you want support for older versions of PHP or WordPress then download and ins
 
 == Installation ==
 
-1. Go to `Plugins` in the Admin menu
-1. Click on the button `Add new`
-1. Search for `WP External Links` and click 'Install Now' OR click on the `upload` link to upload `wp-external-links.zip`
-1. Click on `Activate plugin`
+1. Go to **Plugins** in the Admin menu
+1. Click on the button **Add new**
+1. Search for **WP External Links** and click **Install Now**
+1. Click on the **Activate plugin** link
+
+= Install Older Version =
+
+When you have an older version of WordPress (version 4.1 or less) or PHP (version 5.2.x) you can only use an older
+version of this plugin.
+
+1. [Download version 1.81](https://plugins.svn.wordpress.org/wp-external-links/tags/1.81)
+1. Go to **Plugins** in admin
+1. Click **New Plugin**
+1. Click **Upload Plugin**
+1. Choose the downloaded file and click **Install Now**
+1. Click on the **Activate plugin** link
 
 
 == Frequently Asked Questions ==
@@ -168,13 +180,17 @@ After activating you can set all options for external and internal links.
 
 = Data attribute "data-wpel-link" =
 
-It's possible to add a special data attribute to individual links, so they will be marked (and treated)
-as external link, internal link, excluded link or completely ignored.
+Links being processed by this plugin will also contain the data-attribute `data-wpel-link`.
+The plugin could set the value to `external`, `internal` or `exclude`, meaning how the
+link was processed.
+
+You can also set the data-attribute yourself. This way you can force how the plugin will process
+certain links.
+
+When you add the value `ignore`, the link will be completely ignored by the plugin:
 
 `<a href="http://somedomain.com" data-wpel-link="ignore">Go to somedomain</a>`
 
-Possible values are `external`, `internal`, `exclude` or `ignore`. All links filtered
-by the plugin will contain this data attribute and the value on how they were treated.
 
 = Action "wpel_link" =
 
@@ -191,13 +207,13 @@ Use this action to change the link object after all plugin settings have been ap
     }
 }, 10, 1 );`
 
-The link object is an instance of WPEL_Link class.
+The link object is an instance of `WPEL_Link` class.
 
 = Action hook "wpel_before_apply_link" =
 
-Use this action to change the link object before the plugin settings have been applied on that link.
-You can use this filter to ignore individual links from being processed. Or change how they will be treated
-by the WPEL plugin, f.e. make an internal link external.
+Use this action to change the link object before the plugin settings will be applied on the link.
+You can use this filter f.e. to ignore individual links from being processed. Or change dynamically how
+they will be treated by this plugin.
 
 `add_action( 'wpel_before_apply_link', function ( $link ) {
     // ignore links with class "some-cls"
@@ -222,6 +238,11 @@ See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more info.
 
 
 == Changelog ==
+
+= 2.1.1 =
+* Fixed updating old plugin values
+* Fixed links containing rel="external" will also be treated as external
+* Fixed prevent caching old styles and scripts
 
 = 2.1.0 =
 * Added tab with options for excluded links

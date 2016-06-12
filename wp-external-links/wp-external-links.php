@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.1.0
+ * @version  2.1.1
  * @author   Victor Villaverde Laan
  * @link     https://wordpress.org/plugins/wp-external-links/
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -12,7 +12,7 @@
  *
  * @wordpress-plugin
  * Plugin Name:    WP External Links
- * Version:        2.1.0
+ * Version:        2.1.1
  * Plugin URI:     https://wordpress.org/plugins/wp-external-links/
  * Description:    Open external links in a new tab or window, adding "nofollow" and "noopener", set font icon, SEO friendly options and more.
  * Author:         Victor Villaverde Laan
@@ -37,7 +37,8 @@ if ( ! function_exists( 'wpel_init' ) ):
             if ( ! function_exists( 'wpel_requirements_notice' ) ) {
                 function wpel_requirements_notice()
                 {
-                    include __DIR__ .'/templates/requirements-notice.php';
+                    // php 5.2 doesn't yet support __DIR__
+                    include dirname( __FILE__ ) .'/templates/requirements-notice.php';
                 }
 
                 add_action( 'admin_notices', 'wpel_requirements_notice' );
