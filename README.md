@@ -56,6 +56,7 @@ If you want support for older versions of PHP or WordPress then download and ins
  - [Documentation](http://wordpress.org/extend/plugins/wp-external-links/other_notes/)
  - [FAQ](http://wordpress.org/extend/plugins/wp-external-links/faq/)
  - [Github](https://github.com/freelancephp/WP-External-Links)
+ - [All Releases](https://wordpress.org/plugins/wp-external-links/developers/)
 
 
 ### Like this plugin?
