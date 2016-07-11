@@ -14,6 +14,21 @@
 class WPTest_Unit_Base extends PHPUnit_Framework_TestCase
 {
 
+    /*
+    public static function setUpBeforeClass() {}
+    public static function tearDownAfterClass() {}
+
+    protected function setUp() {}
+    protected function tearDown() {}
+
+    public function testIncomplete ()
+    {
+        $this->markTestIncomplete(
+            'This test has not been implemented yet.'
+        );
+    }
+     */
+
     /**
      * Helper to get a clear mocked function
      * @param string $funcName
