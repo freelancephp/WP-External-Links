@@ -2,9 +2,9 @@
 /**
  * Class WPRun_Base_1x0x0
  *
- * Base class for concrete subclasses
- * All subclasses are singletons and can be instantiated with
- * the static "create()" factory method.
+ * Base abstract class can be extended for easy WP Plugin and Theme development.
+ * All subclasses are singletons and can be instantiated with the static
+ * "create()" factory method.
  *
  * @package  WPRun
  * @category WordPress Library
@@ -21,7 +21,8 @@ abstract class WPRun_Base_1x0x0
 
     /**
      * Page hook
-     * If page hook isset, will only apply hook methods when page hook is the current screen id
+     * Page hook can be set by subclasses, in that case filter and action methods
+     * will only be set if page hook is the current screen id
      * @var string
      */
     protected $page_hook = null;
@@ -43,17 +44,7 @@ abstract class WPRun_Base_1x0x0
     protected $filter_prefix = 'filter_';
 
     /**
-     * @var array
-     */
-    protected $default_settings = array();
-
-    /**
-     * @var array
-     */
-    private $settings = array();
-
-    /**
-     * Only for internal use
+     * Only for internal use (to recognize a callback call)
      * @var string
      */
     private $internal_callback_prefix = '_cb_';
@@ -105,10 +96,6 @@ abstract class WPRun_Base_1x0x0
 
         $this->arguments = $arguments;
 
-        if ( true === $this->autoset_hook_methods ) {
-            $this->set_hook_methods();
-        }
-
         // call init method
         $method_name = 'init';
 
@@ -121,36 +108,26 @@ abstract class WPRun_Base_1x0x0
                 trigger_error( 'Method "'. $method_name .'" should be made protected in class "'. get_called_class() .'".' );
             }
         }
+
+        // automatically set methods as callback for WP hooks
+        if ( true === $this->autoset_hook_methods ) {
+            $this->set_hook_methods();
+        }
     }
 
     /**
      * @return WPRun_Base_1x0x0
+     * @triggers E_USER_NOTICE Instance not yet created
      */
     final public static function get_instance()
     {
         $class_name = get_called_class();
-        return self::$instances[ $class_name ];
-    }
 
-    /**
-     * @param string $key
-     * @return mixed
-     */
-    final public function get_setting( $key )
-    {
-        return $this->settings[ $key ];
-    }
-
-    /**
-     * @param array $settings
-     */
-    final protected function set_settings( array $settings )
-    {
-        if ( empty( $this->settings ) ) {
-            $this->settings = wp_parse_args( $settings, $this->default_settings );
-        } else {
-            $this->settings = wp_parse_args( $settings, $this->settings );
+        if ( ! isset( self::$instances[ $class_name ] ) ) {
+            trigger_error( 'Instance of "'. $class_name .'" was not created.' );
         }
+
+        return self::$instances[ $class_name ];
     }
 
     /**
@@ -198,7 +175,7 @@ abstract class WPRun_Base_1x0x0
         ob_start();
 
         // output template
-        $this->show_template( $template_file_path, $vars );
+        self::show_template( $template_file_path, $vars );
 
         // get the view content
         $content = ob_get_contents();
