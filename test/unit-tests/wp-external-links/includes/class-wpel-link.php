@@ -7,18 +7,6 @@ include_once realpath(__DIR__ . '/../../../../wp-external-links/includes/class-w
 class WPEL_LinkTest extends WPTest_Unit_Base
 {
 
-    protected function setUp()
-    {
-    }
-
-    protected function tearDown()
-    {
-//        // Remove the following lines when you implement this test.
-//        $this->markTestIncomplete(
-//            'This test has not been implemented yet.'
-//        );
-    }
-
     public function testSetExternal_NonExternal_Set()
     {
         $link = new WPEL_Link( 'a', 'Some Text' );
