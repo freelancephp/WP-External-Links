@@ -1,5 +1,5 @@
 <?php
-include_once realpath(__DIR__ . '/../../../libs/class-wptest-unit-base.php');
+include_once realpath(__DIR__ . '/../../../libs/wptest/class-wptest-unit-base.php');
 include_once realpath(__DIR__ . '/../../../../wp-external-links/libs/fwp/class-fwp-html-element.php');
 include_once realpath(__DIR__ . '/../../../../wp-external-links/includes/class-wpel-link.php');
 

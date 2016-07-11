@@ -48,7 +48,7 @@ class WPTest_Mock_Function
     /**
      * Get the cleared mock of given function name (mock will be created if not yet exists)
      * Be carefull, using this method multiple times for same function, will return and clear same instance
-     * @param string $funcName
+     * @param string  $funcName
      * @return \WPTest_Mock_Function
      * @throws Exception
      */
