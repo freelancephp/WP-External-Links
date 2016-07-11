@@ -45,9 +45,9 @@ class WPRun_Autoloader_1x0x0
      */
     final public function add_path( $path, $include_subfolders = false )
     {
-        $absolute_path = $this->get_absolute_path( $path );
+        $absolute_path = self::get_absolute_path( $path );
 
-        if ( ! file_exists( $absolute_path ) ) {
+        if ( ! is_dir( $absolute_path ) ) {
             return;
         }
 
@@ -75,7 +75,7 @@ class WPRun_Autoloader_1x0x0
                 $this->add_path( $item, true );
             }
         }
-     }
+    }
 
     /**
      * Get all paths
@@ -123,10 +123,13 @@ class WPRun_Autoloader_1x0x0
      * @param string $path
      * @return string
      */
-    final protected function get_absolute_path( $path )
+    final static protected function get_absolute_path( $path )
     {
-        $path = str_replace( array( '/', '\\' ), DIRECTORY_SEPARATOR, $path );
-        $parts = array_filter( explode( DIRECTORY_SEPARATOR, $path ), 'strlen' );
+        // convert to OS directory separator
+        $clean_path = str_replace( array( '/', '\\' ), DIRECTORY_SEPARATOR, $path );
+
+        $parts = array_filter( explode( DIRECTORY_SEPARATOR, $clean_path ), 'strlen' );
+
         $absolutes = array();
 
         foreach ( $parts as $part ) {
@@ -141,7 +144,14 @@ class WPRun_Autoloader_1x0x0
             }
         }
 
-        return implode( DIRECTORY_SEPARATOR, $absolutes );
+        $absolute_path = implode( DIRECTORY_SEPARATOR, $absolutes );
+
+        // check if given path started with directory separator
+        if ( DIRECTORY_SEPARATOR === $clean_path[ 0 ] ) {
+            $absolute_path = DIRECTORY_SEPARATOR . $absolute_path;
+        }
+
+        return $absolute_path;
     }
 
 }

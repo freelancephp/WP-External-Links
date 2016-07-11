@@ -271,47 +271,25 @@ abstract class WPRun_Base_1x0x0
         foreach ( $methods as $method_name ) {
             $action_name = self::fetch_name_containing_prefix( $this->action_prefix, $method_name );
             if ( null !== $action_name ) {
-                self::add_to_hook( $this, 'action', $action_name, $method_name );
+                $this->add_to_hook( 'action', $action_name, $method_name );
                 continue;
             }
 
             $filter_name = self::fetch_name_containing_prefix( $this->filter_prefix, $method_name );
             if ( null !== $filter_name ) {
-                self::add_to_hook( $this, 'filter', $filter_name, $method_name );
+                $this->add_to_hook( 'filter', $filter_name, $method_name );
                 continue;
             }
         }
     }
 
     /**
-     * Must be public but for internal use only
-     * to support PHP 5.3 which doesn't recognize being used within class scope
-     * @param string $method_name
-     * @return array
-     */
-    final public function _get_callback( $method_name )
-    {
-        return $this->get_callback( $method_name );
-    }
-
-    /**
-     * Must be public but for internal use only
-     * to support PHP 5.3 which doesn't recognize being used within class scope
-     * @return string
-     */
-    final public function _get_page_hook()
-    {
-        return $this->page_hook;
-    }
-
-    /**
-     * @param WPRun_Base_1x0x0 $self
      * @param string $hook_type "action" or "filter"
      * @param string $hook_name
      * @param string $method_name
      * @triggers E_USER_NOTICE
      */
-    private static function add_to_hook( $self, $hook_type, $hook_name, $method_name )
+    private function add_to_hook( $hook_type, $hook_name, $method_name )
     {
         // fetch priority outof method name
         $split_method_Name = explode( '_', $method_name );
@@ -329,21 +307,18 @@ abstract class WPRun_Base_1x0x0
         $method_reflection = new ReflectionMethod( get_called_class(), $method_name );
         $accepted_args = $method_reflection->getNumberOfParameters();
 
-        // check if actions and filters are applied for page hook
-        $callback = function () use ( $self, $method_name ) {
-            if ( function_exists( 'get_current_screen' ) && null !== $self->_get_page_hook() ) {
-                if ( is_network_admin() ) {
-                    $page_hook = $self->_get_page_hook() .'-network';
-                } else {
-                    $page_hook = $self->_get_page_hook();
-                }
+        // set internal wp hook action or filter callback
+        $method_callback = $this->get_callback( $method_name );
+        $check_call_hook = $this->get_callback( 'check_call_hook' );
 
-                if ( get_current_screen()->id !== $page_hook ) {
-                    return;
-                }
+        $callback = function () use ( $method_callback, $check_call_hook ) {
+            $call_hook = call_user_func( $check_call_hook );
+            
+            if ( false === $call_hook ) {
+                return;
             }
 
-            return call_user_func_array( $self->_get_callback( $method_name ), func_get_args() );
+            return call_user_func_array( $method_callback, func_get_args() );
         };
 
         if ( 'action' === $hook_type ) {
@@ -353,6 +328,29 @@ abstract class WPRun_Base_1x0x0
         } else {
             trigger_error( '"' . $hook_type . '" is not a valid hookType.' );
         }
+    }
+
+    /**
+     * Check if an action or filter hook should be called (correct page hook)
+     * @return boolean
+     */
+    final protected function check_call_hook()
+    {
+        if ( null === $this->page_hook ) {
+            return true;
+        }
+
+        if ( is_network_admin() ) {
+            $page_hook = $this->page_hook .'-network';
+        } else {
+            $page_hook = $this->page_hook;
+        }
+
+        if ( get_current_screen()->id === $page_hook ) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
