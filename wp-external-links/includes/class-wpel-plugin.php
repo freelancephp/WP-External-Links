@@ -33,6 +33,14 @@ final class WPEL_Plugin extends WPRun_Base_1x0x0
         self::$plugin_file = $plugin_file;
         self::$plugin_dir = untrailingslashit( $plugin_dir );
 
+        $this->create_components();
+    }
+
+    /**
+     * Create components
+     */
+    protected function create_components()
+    {
         WPEL_Register_Hooks::create();
         WPEL_Register_Scripts::create();
 
@@ -73,7 +81,7 @@ final class WPEL_Plugin extends WPRun_Base_1x0x0
      */
     protected function action_plugins_loaded()
     {
-        load_plugin_textdomain( 'wp-external-links', false, WPEL_Plugin::get_plugin_dir( '/languages' )  );
+        load_plugin_textdomain( 'wp-external-links', false, self::get_plugin_dir( '/languages' ) );
     }
 
     /**
