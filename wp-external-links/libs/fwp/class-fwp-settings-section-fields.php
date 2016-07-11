@@ -36,6 +36,11 @@ abstract class FWP_Settings_Section_Fields_1x0x0 extends WPRun_Base_1x0x0
     /**
      * @var array
      */
+    private $settings = array();
+
+    /**
+     * @var array
+     */
     private $field_errors = array();
 
     /**
@@ -55,6 +60,27 @@ abstract class FWP_Settings_Section_Fields_1x0x0 extends WPRun_Base_1x0x0
     {
         $this->set_option_values();
         $this->set_html_fields();
+    }
+
+    /**
+     * @param string $key
+     * @return mixed
+     */
+    final public function get_setting( $key )
+    {
+        return $this->settings[ $key ];
+    }
+
+    /**
+     * @param array $settings
+     */
+    final protected function set_settings( array $settings )
+    {
+        if ( empty( $this->settings ) ) {
+            $this->settings = wp_parse_args( $settings, $this->default_settings );
+        } else {
+            $this->settings = wp_parse_args( $settings, $this->settings );
+        }
     }
 
     /**
