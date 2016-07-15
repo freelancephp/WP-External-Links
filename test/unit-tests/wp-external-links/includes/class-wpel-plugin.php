@@ -16,6 +16,7 @@ class WPEL_PluginTest extends WPTest_Unit_Base
             'is_admin'              => self::mockFunction('is_admin'),
             'add_action'            => self::mockFunction('add_action'),
             'load_plugin_textdomain' => self::mockFunction('load_plugin_textdomain'),
+            'get_file_data'         => self::mockFunction('get_file_data'),
         );
 
         self::$mockFuncs['untrailingslashit']->setReturnValue(__DIR__);
@@ -23,6 +24,10 @@ class WPEL_PluginTest extends WPTest_Unit_Base
         self::$mockFuncs['add_action']->setCallback(function ($key, $callback, $priority = 10, $accepted_args = 0) {
             call_user_func($callback);
         });
+        self::$mockFuncs['get_file_data']->setReturnValue(array(
+            'TextDomain'  => 'wp-external-links',
+            'DomainPath'  => '/languages',
+        ));
 
         WPEL_Plugin::create(__FILE__, __DIR__);
     }
