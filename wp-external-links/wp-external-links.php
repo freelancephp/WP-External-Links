@@ -50,7 +50,9 @@ if ( ! function_exists( 'wpel_init' ) ):
         /**
          * Autoloader
          */
-        require_once __DIR__ . '/libs/wprun/class-wprun-autoloader.php';
+        if ( ! class_exists( 'WPRun_Autoloader_1x0x0' ) ) {
+            require_once __DIR__ . '/libs/wprun/class-wprun-autoloader.php';
+        }
 
         $autoloader = new WPRun_Autoloader_1x0x0();
         $autoloader->add_path( __DIR__ . '/libs/', true );
