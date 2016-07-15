@@ -16,12 +16,12 @@ final class WPEL_Plugin extends WPRun_Base_1x0x0
     /**
      * @var string
      */
-    private static $plugin_file = null;
+    private $plugin_file = null;
 
     /**
      * @var string
      */
-    private static $plugin_dir = null;
+    private $plugin_dir = null;
 
     /**
      * Initialize plugin
@@ -30,8 +30,8 @@ final class WPEL_Plugin extends WPRun_Base_1x0x0
      */
     protected function init( $plugin_file, $plugin_dir )
     {
-        self::$plugin_file = $plugin_file;
-        self::$plugin_dir = untrailingslashit( $plugin_dir );
+        $this->plugin_file = $plugin_file;
+        $this->plugin_dir = untrailingslashit( $plugin_dir );
 
         $this->create_components();
     }
@@ -81,7 +81,20 @@ final class WPEL_Plugin extends WPRun_Base_1x0x0
      */
     protected function action_plugins_loaded()
     {
-        load_plugin_textdomain( 'wp-external-links', false, self::get_plugin_dir( '/languages' ) );
+        $plugin_data = get_file_data( $this->plugin_file, array(
+            'TextDomain'  => 'Text Domain',
+            'DomainPath'  => 'Domain Path',
+        ) );
+
+        if ( ! $plugin_data[ 'TextDomain' ] || ! $plugin_data[ 'DomainPath' ] ) {
+            return;
+        }
+
+        load_plugin_textdomain(
+            $plugin_data[ 'TextDomain' ]
+            , false
+            , $this->get_plugin_dir( $plugin_data[ 'DomainPath' ] )
+        );
     }
 
     /**
@@ -89,7 +102,7 @@ final class WPEL_Plugin extends WPRun_Base_1x0x0
      */
     public static function get_plugin_file()
     {
-        return self::$plugin_file;
+        return self::get_instance()->plugin_file;
     }
 
     /**
@@ -98,7 +111,7 @@ final class WPEL_Plugin extends WPRun_Base_1x0x0
      */
     public static function get_plugin_dir( $path = '' )
     {
-        return self::$plugin_dir . $path;
+        return self::get_instance()->plugin_dir . $path;
     }
 
 }
