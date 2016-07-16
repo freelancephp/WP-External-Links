@@ -1,6 +1,6 @@
 <?php
 /**
- * Class FWP_Settings_Section_Fields_1x0x0
+ * Class FWP_Settings_Section_Base_1x0x0
  *
  * @package  FWP
  * @category WordPress Library
@@ -10,7 +10,7 @@
  * @link     https://github.com/freelancephp/WPRun-WordPress-Development
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-abstract class FWP_Settings_Section_Fields_1x0x0 extends WPRun_Base_1x0x0
+abstract class FWP_Settings_Section_Base_1x0x0 extends WPRun_Base_1x0x0
 {
 
     /**
