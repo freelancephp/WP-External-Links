@@ -10,18 +10,8 @@
  * @link     https://github.com/freelancephp/WP-External-Links
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-final class WPEL_Plugin extends WPRun_Base_1x0x0
+final class WPEL_Plugin extends FWP_Plugin_Base_1x0x0
 {
-
-    /**
-     * @var string
-     */
-    private $plugin_file = null;
-
-    /**
-     * @var string
-     */
-    private $plugin_dir = null;
 
     /**
      * Initialize plugin
@@ -30,8 +20,7 @@ final class WPEL_Plugin extends WPRun_Base_1x0x0
      */
     protected function init( $plugin_file, $plugin_dir )
     {
-        $this->plugin_file = $plugin_file;
-        $this->plugin_dir = untrailingslashit( $plugin_dir );
+        parent::init( $plugin_file, $plugin_dir );
 
         $this->create_components();
     }
@@ -41,7 +30,6 @@ final class WPEL_Plugin extends WPRun_Base_1x0x0
      */
     protected function create_components()
     {
-        WPEL_Register_Hooks::create();
         WPEL_Register_Scripts::create();
 
         // network admin page
@@ -66,52 +54,14 @@ final class WPEL_Plugin extends WPRun_Base_1x0x0
             FWP_Widget_Output_1x0x0::create();
 
             // front site
-            WPEL_Front::create( $settings_page );
+            $front = WPEL_Front::create( $settings_page );
             WPEL_Front_Ignore::create( $settings_page );
 
-            WPEL_Template_Tags::create();
+            WPEL_Template_Tags::create( $front );
         }
 
         // update procedures
         WPEL_Update::create();
-    }
-
-    /**
-     * Action for "plugins_loaded"
-     */
-    protected function action_plugins_loaded()
-    {
-        $plugin_data = get_file_data( $this->plugin_file, array(
-            'TextDomain'  => 'Text Domain',
-            'DomainPath'  => 'Domain Path',
-        ) );
-
-        if ( ! $plugin_data[ 'TextDomain' ] || ! $plugin_data[ 'DomainPath' ] ) {
-            return;
-        }
-
-        load_plugin_textdomain(
-            $plugin_data[ 'TextDomain' ]
-            , false
-            , $this->get_plugin_dir( $plugin_data[ 'DomainPath' ] )
-        );
-    }
-
-    /**
-     * @return string
-     */
-    public static function get_plugin_file()
-    {
-        return self::get_instance()->plugin_file;
-    }
-
-    /**
-     * @param string $path Optional
-     * @return string
-     */
-    public static function get_plugin_dir( $path = '' )
-    {
-        return self::get_instance()->plugin_dir . $path;
     }
 
 }

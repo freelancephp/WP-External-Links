@@ -10,7 +10,7 @@
  * @link     https://github.com/freelancephp/WP-External-Links
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
+abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Base_1x0x0
 {
 
     /**

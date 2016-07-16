@@ -29,6 +29,9 @@ if ( ! function_exists( 'wpel_init' ) ):
             die();
         }
 
+        $plugin_file = defined( 'TEST_WPEL_PLUGIN_FILE' ) ? TEST_WPEL_PLUGIN_FILE : __FILE__;
+        $plugin_dir = dirname( __FILE__ );
+
         // check requirements
         $wp_version = get_bloginfo( 'version' );
         $php_version = phpversion();
@@ -37,8 +40,7 @@ if ( ! function_exists( 'wpel_init' ) ):
             if ( ! function_exists( 'wpel_requirements_notice' ) ) {
                 function wpel_requirements_notice()
                 {
-                    // php 5.2 doesn't yet support __DIR__
-                    include dirname( __FILE__ ) .'/templates/requirements-notice.php';
+                    include $plugin_dir .'/templates/requirements-notice.php';
                 }
 
                 add_action( 'admin_notices', 'wpel_requirements_notice' );
@@ -51,12 +53,12 @@ if ( ! function_exists( 'wpel_init' ) ):
          * Autoloader
          */
         if ( ! class_exists( 'WPRun_Autoloader_1x0x0' ) ) {
-            require_once __DIR__ . '/libs/wprun/class-wprun-autoloader.php';
+            require_once $plugin_dir . '/libs/wprun/class-wprun-autoloader.php';
         }
 
         $autoloader = new WPRun_Autoloader_1x0x0();
-        $autoloader->add_path( __DIR__ . '/libs/', true );
-        $autoloader->add_path( __DIR__ . '/includes/', true );
+        $autoloader->add_path( $plugin_dir . '/libs/', true );
+        $autoloader->add_path( $plugin_dir . '/includes/', true );
 
         /**
          * Load debugger
@@ -68,11 +70,18 @@ if ( ! function_exists( 'wpel_init' ) ):
         }
 
         /**
+         * Register Hooks
+         */
+        global $wpdb;
+        WPEL_Activation::create( $plugin_file, $wpdb );
+        WPEL_Uninstall::create( $plugin_file, $wpdb );
+
+        /**
          * Set plugin vars
          */
         WPEL_Plugin::create(
-            defined( 'TEST_WPEL_PLUGIN_FILE' ) ? TEST_WPEL_PLUGIN_FILE : __FILE__
-            , __DIR__
+            $plugin_file
+            , $plugin_dir
         );
     }
 

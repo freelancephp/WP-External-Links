@@ -10,35 +10,31 @@
  * @link     https://github.com/freelancephp/WP-External-Links
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-final class WPEL_Template_Tags extends WPRun_Base_1x0x0
+final class WPEL_Template_Tags extends FWP_Template_Tag_Base_1x0x0
 {
 
     /**
-     * Create template tag(s)
+     * @var WPEL_Front
      */
-    protected function init()
+    private $front = null;
+
+    /**
+     * Initialize
+     * @param WPEL_Front $front
+     */
+    protected function init( WPEL_Front $front )
     {
-        $this->create_templatetag();
+        $this->front = $front;
     }
 
     /**
-     * Create template tag
-     * @return void
+     * Template tag funtion
+     * @param string $content
+     * @return string
      */
-    protected function create_templatetag()
+    public function wpel_filter( $content )
     {
-        if ( function_exists( 'wpel_filter' ) ) {
-            return;
-        }
-
-        /**
-         * Template tag to apply plugin settings on given content
-         * @return string
-         */
-        function wpel_filter( $content ) {
-            // hidden dependency to WPEL_Front::scan()
-            return WPEL_Front::get_instance()->scan( $content );
-        }
+        return $this->front->scan( $content );
     }
 
 }
