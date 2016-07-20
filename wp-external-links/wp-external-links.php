@@ -79,10 +79,8 @@ if ( ! function_exists( 'wpel_init' ) ):
         /**
          * Set plugin vars
          */
-        WPEL_Plugin::create(
-            $plugin_file
-            , $plugin_dir
-        );
+        WPEL_Plugin::create( $plugin_file, $plugin_dir );
+
     }
 
     wpel_init();
