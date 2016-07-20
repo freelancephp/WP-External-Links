@@ -77,10 +77,10 @@ abstract class FWP_Settings_Section_Base_1x0x0 extends WPRun_Base_1x0x0
     final protected function set_settings( array $settings )
     {
         if ( empty( $this->settings ) ) {
-            $this->settings = wp_parse_args( $settings, $this->default_settings );
-        } else {
-            $this->settings = wp_parse_args( $settings, $this->settings );
+            $this->settings = $this->default_settings;
         }
+
+        $this->settings = wp_parse_args( $settings, $this->settings );
     }
 
     /**
