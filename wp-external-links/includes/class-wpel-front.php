@@ -380,7 +380,8 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         }
 
         // is internal
-        if ( false !== strpos( $url, home_url() ) ) {
+        if ( ( false !== strpos( $url, home_url( '', http ) ) ) ||
+             ( false !== strpos( $url, home_url( '', https ) ) ) ) {
             return true;
         }
 
