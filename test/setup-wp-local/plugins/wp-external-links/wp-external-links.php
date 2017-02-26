@@ -12,7 +12,7 @@ Domain Path:    /languages
 */
 define('TEST_WPEL_PLUGIN_FILE', __FILE__);
 
-// include plugin
-require_once($_SERVER['DOCUMENT_ROOT'] . 'git/WP-External-Links/wp-external-links/wp-external-links.php');
 
-/*?>*/
+// include plugin file (DEV version)
+require_once(dirname( __FILE__ ) . '/../../../../../wp-plugins/wpel/WP-External-Links/wp-external-links/wp-external-links.php');
+
