@@ -116,7 +116,7 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Base_1x0x0
     {
         $this->get_html_fields()->check_with_label(
             $args[ 'key' ]
-            , __( 'Threat all links to the site\'s domain and subdomains as internal links', 'wp-external-links' )
+            , __( 'Treat all links to the site\'s domain and subdomains as internal links', 'wp-external-links' )
             , '1'
             , ''
         );

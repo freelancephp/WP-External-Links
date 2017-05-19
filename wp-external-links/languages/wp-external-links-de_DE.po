@@ -428,7 +428,7 @@ msgid "Make subdomains internal:"
 msgstr "Behandle Subdomains als interne Links:"
 
 #: includes/admin/settings-fields/class-wpel-exceptions-fields.php:117
-msgid "Threat all links to the site's domain and subdomains as internal links"
+msgid "Treat all links to the site's domain and subdomains as internal links"
 msgstr "Behandle alle Links zur eigenen Domain und Subdomains wie interne Links"
 
 #: includes/admin/settings-fields/class-wpel-link-fields-base.php:46
