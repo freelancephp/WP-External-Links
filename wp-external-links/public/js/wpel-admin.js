@@ -103,6 +103,6 @@ jQuery(function ($) {
     });
 
     // show current tab
-    $wrapper.find('form').show();
+    $wrapper.find('form').addClass('wpel-show-content');
 
 });
