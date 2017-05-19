@@ -104,5 +104,7 @@ jQuery(function ($) {
 
     // show current tab
     $wrapper.find('form').addClass('wpel-show-content');
-
+    // for network pages
+    $('.wpel-network-page').find('form').addClass('wpel-show-content');
+    
 });
