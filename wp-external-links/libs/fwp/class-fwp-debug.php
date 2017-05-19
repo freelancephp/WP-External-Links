@@ -74,17 +74,18 @@ class FWP_Debug_1x0x0 extends WPRun_Base_1x0x0
 
     /**
      * Log all hooks being applied
-     * @global type $merged_filters
+     * @global array $wp_filter
      */
     protected function log_hooks()
     {
-        global $merged_filters;
+        global $wp_filter;
 
-        self::log( $merged_filters, 'WP Hooks' );
+        $hooks = array_keys( $wp_filter );
+        self::log( $hooks, 'WP Hooks' );
     }
 
     /**
-     * 
+     *
      */
     public static function start_benchmark( $label = 'benchmark' )
     {
@@ -92,7 +93,7 @@ class FWP_Debug_1x0x0 extends WPRun_Base_1x0x0
     }
 
     /**
-     * 
+     *
      */
     public static function end_benchmark( $label = 'benchmark' )
     {
