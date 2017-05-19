@@ -12,10 +12,10 @@ jQuery(function ($) {
      * Apply Sections Settings
      */
     $wrapper.on('change', '.js-wpel-apply input', function () {
-        var apply_all = $(this).is(':checked');
+        var applyAll = $(this).is(':checked');
         var $items = $wrapper.find('.js-wpel-apply-child');
 
-        if (apply_all) {
+        if (applyAll) {
             $items.hide();
         } else {
             $items.show();
@@ -102,5 +102,7 @@ jQuery(function ($) {
         $('#contextual-help-link[aria-expanded="false"]').click();
     });
 
+    // show current tab
+    $wrapper.find('form').show();
 
 });
