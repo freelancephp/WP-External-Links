@@ -22,7 +22,7 @@
  * Domain Path:    /languages
  */
 if ( ! function_exists( 'wpel_init' ) ):
-    function wpel_init()
+    function wpel_init( wpdb $wpdb )
     {
         // only load in WP environment
         if ( ! defined( 'ABSPATH' ) ) {
@@ -72,7 +72,6 @@ if ( ! function_exists( 'wpel_init' ) ):
         /**
          * Register Hooks
          */
-        global $wpdb;
         WPEL_Activation::create( $plugin_file, $wpdb );
         WPEL_Uninstall::create( $plugin_file, $wpdb );
 
@@ -83,7 +82,7 @@ if ( ! function_exists( 'wpel_init' ) ):
 
     }
 
-    wpel_init();
+    wpel_init( $wpdb );
 endif;
 
 
