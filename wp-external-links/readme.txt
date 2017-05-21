@@ -2,8 +2,8 @@
 Contributors: freelancephp
 Tags: links, new window, new tab, external links, nofollow, follow, seo, noopener, noreferrer, internal links, link icon, link target, _blank, wpmu
 Requires at least: 4.2.0
-Tested up to: 4.7.3
-Stable tag: 2.1.1
+Tested up to: 4.7.5
+Stable tag: 2.1.2
 
 Open external links in a new tab / window, add "nofollow", "noopener" and font icons, SEO and more. Also for internal links.
 
@@ -258,9 +258,9 @@ See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more info.
 == Changelog ==
 
 = 2.1.2 =
- * 
  * Fixed bug checking internal links with https
  * Fixed bug with REST API
+ * Fixed conflict Widget CSS Classes plugin (partially fixed)
 
 = 2.1.1 =
 * Fixed updating old plugin values
