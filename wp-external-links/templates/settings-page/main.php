@@ -30,7 +30,7 @@
         WPEL_Plugin::show_template( $nav_tabs_template, $vars );
     ?>
 
-    <form method="post" action="options.php">
+    <form method="post" action="options.php" class="wpel-hidden">
         <?php
             $content_tab_template = __DIR__ .'/tab-contents/'. $vars[ 'current_tab' ] .'.php';
             $default_tab_template = WPEL_Plugin::get_plugin_dir( '/templates/partials/tab-contents/'. $vars[ 'current_tab' ] .'.php' );
