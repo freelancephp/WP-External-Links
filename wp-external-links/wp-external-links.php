@@ -22,7 +22,8 @@
  * Domain Path:    /languages
  */
 if ( ! function_exists( 'wpel_init' ) ):
-    function wpel_init( wpdb $wpdb )
+
+    function wpel_init()
     {
         // only load in WP environment
         if ( ! defined( 'ABSPATH' ) ) {
@@ -40,7 +41,7 @@ if ( ! function_exists( 'wpel_init' ) ):
             if ( ! function_exists( 'wpel_requirements_notice' ) ) {
                 function wpel_requirements_notice()
                 {
-                    include $plugin_dir .'/templates/requirements-notice.php';
+                    include dirname( __FILE__ ) .'/templates/requirements-notice.php';
                 }
 
                 add_action( 'admin_notices', 'wpel_requirements_notice' );
@@ -72,6 +73,7 @@ if ( ! function_exists( 'wpel_init' ) ):
         /**
          * Register Hooks
          */
+        global $wpdb;
         WPEL_Activation::create( $plugin_file, $wpdb );
         WPEL_Uninstall::create( $plugin_file, $wpdb );
 
@@ -82,7 +84,8 @@ if ( ! function_exists( 'wpel_init' ) ):
 
     }
 
-    wpel_init( $wpdb );
+    wpel_init();
+
 endif;
 
 
