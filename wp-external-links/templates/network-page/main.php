@@ -40,7 +40,7 @@
         }
     ?>
 
-    <form method="post" action="<?php echo $action_url; ?>">
+    <form method="post" action="<?php echo $action_url; ?>" class="wpel-hidden">
         <?php
             wp_referer_field();
 
