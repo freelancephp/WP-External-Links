@@ -45,6 +45,29 @@ final class WPEL_Front_Ignore extends WPRun_Base_1x0x0
     }
 
     /**
+     * Skip complete pages
+     * @return boolean
+     */
+    protected function filter_wpel_apply_settings()
+    {
+        if ( ! is_single() && ! is_page() ) {
+            return true;
+        }
+
+        $current_post_id = get_queried_object_id();
+        $skip_post_ids = $this->opt( 'skip_post_ids', 'exceptions' );
+        $skip_post_ids_arr = explode( ',', $skip_post_ids );
+
+        foreach ( $skip_post_ids_arr as $post_id ) {
+            if ( intval( $post_id ) === $current_post_id ) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Action for "wpel_before_apply_link"
      * @param WPEL_Link $link
      */
