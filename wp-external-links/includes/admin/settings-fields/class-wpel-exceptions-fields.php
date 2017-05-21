@@ -45,6 +45,9 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Base_1x0x0
                 'skip_post_ids' => array(
                     'label'             => __( 'Skip pages or posts (id\'s):', 'wp-external-links' ),
                 ),
+                'ignore_classes' => array(
+                    'label'             => __( 'Ignore links by class:', 'wp-external-links' ),
+                ),
                 'subdomains_as_internal_links' => array(
                     'label'         => __( 'Make subdomains internal:', 'wp-external-links' ),
                 ),
@@ -123,6 +126,17 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Base_1x0x0
 
         echo '<p class="description">'
                 . __( 'Separate page- / post-id\'s by comma.', 'wp-external-links' )
+                .'</p>';
+    }
+
+    protected function show_ignore_classes( array $args )
+    {
+        $this->get_html_fields()->text( $args[ 'key' ], array(
+            'class' => 'regular-text',
+        ) );
+
+        echo '<p class="description">'
+                . __( 'Separate classes by comma.', 'wp-external-links' )
                 .'</p>';
     }
 

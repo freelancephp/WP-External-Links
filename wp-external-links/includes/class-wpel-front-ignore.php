@@ -71,7 +71,7 @@ final class WPEL_Front_Ignore extends WPRun_Base_1x0x0
      * Action for "wpel_before_apply_link"
      * @param WPEL_Link $link
      */
-    protected function filter_wpel_before_apply_link_10000000000( WPEL_Link $link )
+    protected function action_wpel_before_apply_link_10000000000( WPEL_Link $link )
     {
         // ignore mailto links
         if ( $this->opt( 'ignore_mailto_links' ) && $link->is_mailto() ) {
@@ -82,6 +82,25 @@ final class WPEL_Front_Ignore extends WPRun_Base_1x0x0
         if ( $link->has_attr_value( 'class', 'ab-item' ) ) {
             $link->set_ignore();
         }
+
+        // ignore links containing ignored classes
+        if ( $this->has_ignore_class( $link ) ) {
+            $link->set_ignore();
+        }
+    }
+
+    private function has_ignore_class( WPEL_Link $link )
+    {
+        $ignore_classes = $this->opt( 'ignore_classes', 'exceptions' );
+        $ignore_classes_arr = explode( ',', $ignore_classes );
+
+        foreach ( $ignore_classes_arr as $ignore_class ) {
+            if ( $link->has_attr_value( 'class', trim( $ignore_class ) ) ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
