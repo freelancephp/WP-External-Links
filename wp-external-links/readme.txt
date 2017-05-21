@@ -154,6 +154,24 @@ Add this JavaScript code to your site:
 
 });`
 
+= How to open f.e. PDF files in a new window? =
+
+Use some JavaScript code for opening PDF files in a new window:
+
+`jQuery(function ($) {
+    $('a[href$=".pdf"]').prop('target', '_blank');
+});`
+
+= How to set another icon for secure sites (using https)? =
+
+Use some CSS style to change the icon for secure sites using https:
+
+`a[href^="https"] .wpel-icon:before {
+  content: "\f023" !important;
+}`
+
+The code `\f023` refers to a dashicon or font awesome icon.
+
 = I am a plugin developer and my plugin conflicts with WPEL. How can I solve the problem? =
 
 If your plugin contains links it might be filtered by the WPEL plugin as well, causing a conflict.
@@ -238,6 +256,11 @@ See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more info.
 
 
 == Changelog ==
+
+= 2.1.2 =
+ * 
+ * Fixed bug checking internal links with https
+ * Fixed bug with REST API
 
 = 2.1.1 =
 * Fixed updating old plugin values
