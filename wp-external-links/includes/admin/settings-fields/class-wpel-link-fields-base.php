@@ -4,13 +4,13 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.1.1
+ * @version  2.1.2
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
+abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Base_1x0x0
 {
 
     /**
@@ -115,8 +115,8 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Fields_1x0x0
                 ''          => __( '- keep as is -', 'wp-external-links' ),
                 '_self'     => __( 'in the same window, tab or frame', 'wp-external-links' ),
                 '_blank'    => __( 'each in a separate new window or tab', 'wp-external-links' ),
-                '_new'      => __( 'all in the same new window or tab', 'wp-external-links' ),
-                '_top'      => __( 'in the topmost frame', 'wp-external-links' ),
+                '_new'      => __( 'all in the same new window or tab (NOT recommended)', 'wp-external-links' ),
+                '_top'      => __( 'in the topmost frame (NOT recommended)', 'wp-external-links' ),
             )
         );
     }

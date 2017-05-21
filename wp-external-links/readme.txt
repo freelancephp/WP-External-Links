@@ -2,8 +2,8 @@
 Contributors: freelancephp
 Tags: links, new window, new tab, external links, nofollow, follow, seo, noopener, noreferrer, internal links, link icon, link target, _blank, wpmu
 Requires at least: 4.2.0
-Tested up to: 4.7.3
-Stable tag: 2.1.1
+Tested up to: 4.7.5
+Stable tag: 2.1.2
 
 Open external links in a new tab / window, add "nofollow", "noopener" and font icons, SEO and more. Also for internal links.
 
@@ -154,6 +154,24 @@ Add this JavaScript code to your site:
 
 });`
 
+= How to open f.e. PDF files in a new window? =
+
+Use some JavaScript code for opening PDF files in a new window:
+
+`jQuery(function ($) {
+    $('a[href$=".pdf"]').prop('target', '_blank');
+});`
+
+= How to set another icon for secure sites (using https)? =
+
+Use some CSS style to change the icon for secure sites using https:
+
+`a[href^="https"] .wpel-icon:before {
+  content: "\f023" !important;
+}`
+
+The code `\f023` refers to a dashicon or font awesome icon.
+
 = I am a plugin developer and my plugin conflicts with WPEL. How can I solve the problem? =
 
 If your plugin contains links it might be filtered by the WPEL plugin as well, causing a conflict.
@@ -238,6 +256,11 @@ See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more info.
 
 
 == Changelog ==
+
+= 2.1.2 =
+ * Fixed bug checking internal links with https
+ * Fixed bug with REST API
+ * Fixed conflict Widget CSS Classes plugin (partially fixed)
 
 = 2.1.1 =
 * Fixed updating old plugin values

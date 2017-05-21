@@ -45,29 +45,37 @@ class WPRun_Autoloader_1x0x0
      */
     final public function add_path( $path, $include_subfolders = false )
     {
-        if ( in_array( $path, $this->paths ) ) {
+        $absolute_path = self::get_absolute_path( $path );
+
+        if ( ! is_dir( $absolute_path ) ) {
             return;
         }
 
-        $this->paths[] = $path;
+        if ( in_array( $absolute_path, $this->paths ) ) {
+            return;
+        }
+
+        $this->paths[] = $absolute_path;
 
         // include subfolders
         if ( true === $include_subfolders ) {
-            $entries = scandir( $path );
+            $entries = scandir( $absolute_path );
 
             foreach ( $entries as $entry ) {
                 if ( '.' === $entry || '..' === $entry ) {
                     continue;
                 }
 
-                $item = $path . DIRECTORY_SEPARATOR . $entry;
+                $item = $absolute_path . DIRECTORY_SEPARATOR . $entry;
 
-                if ( is_dir( $item ) ) {
-                    $this->add_path( $item, true );
+                if ( ! is_dir( $item ) ) {
+                    continue;
                 }
+
+                $this->add_path( $item, true );
             }
         }
-     }
+    }
 
     /**
      * Get all paths
@@ -89,8 +97,8 @@ class WPRun_Autoloader_1x0x0
         $pure_class_name = preg_replace( '/_\d+x\d+x\d+/', '', $class_name );
 
         $file_name = '';
-        $file_name .= $this->settings['file_name_prefix'];
-        $file_name .= str_replace( '_', $this->settings['replace_dashes_with'], $pure_class_name );
+        $file_name .= $this->settings[ 'file_name_prefix' ];
+        $file_name .= str_replace( '_', $this->settings[ 'replace_dashes_with' ], $pure_class_name );
         $file_name .= '.php';
 
         $lower_file_name = strtolower( $file_name );
@@ -108,6 +116,42 @@ class WPRun_Autoloader_1x0x0
                 }
             }
         }
+    }
+
+    /**
+     * Convert to clean absolute path
+     * @param string $path
+     * @return string
+     */
+    final static protected function get_absolute_path( $path )
+    {
+        // convert to OS directory separator
+        $clean_path = str_replace( array( '/', '\\' ), DIRECTORY_SEPARATOR, $path );
+
+        $parts = array_filter( explode( DIRECTORY_SEPARATOR, $clean_path ), 'strlen' );
+
+        $absolutes = array();
+
+        foreach ( $parts as $part ) {
+            if ( '.' === $part ) {
+                continue;
+            }
+
+            if ( '..' === $part ) {
+                array_pop( $absolutes );
+            } else {
+                $absolutes[] = $part;
+            }
+        }
+
+        $absolute_path = implode( DIRECTORY_SEPARATOR, $absolutes );
+
+        // check if given path started with directory separator
+        if ( DIRECTORY_SEPARATOR === $clean_path[ 0 ] ) {
+            $absolute_path = DIRECTORY_SEPARATOR . $absolute_path;
+        }
+
+        return $absolute_path;
     }
 
 }

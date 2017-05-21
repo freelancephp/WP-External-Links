@@ -5,6 +5,24 @@
 /*global jQuery, window*/
 jQuery(function ($) {
     'use strict';
+    
+    // add custom jQuery show/hide function
+    $.extend($.fn, {
+        wpelShow: function () {
+            var self = this;
+            this.stop({ clearQueue: true, jumpToEnd: true });
+            this.fadeIn({ duration: 500, queue: false, complete: function () {
+                self.removeClass('wpel-hidden'); 
+            }});
+        },
+        wpelHide: function () {
+            var self = this;
+            this.stop({ clearQueue: true, jumpToEnd: true });
+            this.fadeOut({ duration: 500, queue: false, complete: function () { 
+                self.addClass('wpel-hidden'); 
+            }});
+        }
+    });
 
     var $wrapper = $('.wpel-settings-page');
 
@@ -12,19 +30,18 @@ jQuery(function ($) {
      * Apply Sections Settings
      */
     $wrapper.on('change', '.js-wpel-apply input', function () {
-        var apply_all = $(this).is(':checked');
+        var applyAll = $(this).is(':checked');
         var $items = $wrapper.find('.js-wpel-apply-child');
 
-        if (apply_all) {
-            $items.hide();
+        if (applyAll) {
+            $items.wpelHide();
         } else {
-            $items.show();
+            $items.wpelShow();
         }
     });
 
     // trigger immediatly
-    $wrapper.find('.js-wpel-apply input').change();
-
+    $wrapper.find('.js-wpel-apply input[type="checkbox"]').change();
 
     /**
      * Link Settings
@@ -37,36 +54,37 @@ jQuery(function ($) {
         $itemsChild.hide();
 
         if (iconType === 'image') {
-            $itemsDepend.show();
-            $itemsChild.filter('.js-icon-type-image').show();
+            $itemsDepend.wpelShow();
+            $itemsChild.filter('.js-icon-type-image').wpelShow();
         } else if (iconType === 'dashicon') {
-            $itemsDepend.show();
-            $itemsChild.filter('.js-icon-type-dashicon').show();
+            $itemsDepend.wpelShow();
+            $itemsChild.filter('.js-icon-type-dashicon').wpelShow();
         } else if (iconType === 'fontawesome') {
-            $itemsDepend.show();
-            $itemsChild.filter('.js-icon-type-fontawesome').show();
+            $itemsDepend.wpelShow();
+            $itemsChild.filter('.js-icon-type-fontawesome').wpelShow();
         } else {
-            $itemsDepend.hide();
+            $itemsDepend.wpelHide();
         }
     });
 
-    $wrapper.on('change', '.js-apply-settings input', function () {
+    $wrapper.on('change', '.js-apply-settings input[type="checkbox"]', function () {
         var $items = $wrapper.find('.form-table tr').not('.js-apply-settings');
 
         if ($(this).prop('checked')) {
-            $items.show();
+            $items.wpelShow();
             $wrapper.find('.js-icon-type select').change();
         } else {
-            $items.hide();
+            $items.wpelHide();
         }
     });
 
     // trigger immediatly
-    $wrapper.find('.js-apply-settings input').change();
+    $wrapper.find('.js-apply-settings input[type="checkbox"]').change();
 
 
     /**
      * Support
+     * Copy to clipboard
      */
     $wrapper.on('click', '.js-wpel-copy', function (e) {
         e.preventDefault();
@@ -102,5 +120,9 @@ jQuery(function ($) {
         $('#contextual-help-link[aria-expanded="false"]').click();
     });
 
-
+    // show current tab
+    $wrapper.find('form').wpelShow();
+    // for network pages
+    $('.wpel-network-page').find('form').wpelShow();
+    
 });

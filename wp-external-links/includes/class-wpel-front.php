@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.1.1
+ * @version  2.1.2
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -26,8 +26,17 @@ final class WPEL_Front extends WPRun_Base_1x0x0
     {
         $this->settings_page = $settings_page;
 
+        // load front ignore
+        WPEL_Front_Ignore::create( $settings_page );
+
+        // load template tags
+        WPEL_Template_Tags::create( $this );
+
         // apply page sections
         if ( $this->opt( 'apply_all' ) ) {
+            // create final_output filterhook
+            FWP_Final_Output_1x0x0::create();
+
             add_action( 'final_output', $this->get_callback( 'scan' ), 10000000000 );
         } else {
             $filter_hooks = array();
@@ -41,6 +50,9 @@ final class WPEL_Front extends WPRun_Base_1x0x0
             }
 
             if ( $this->opt( 'apply_widgets' ) ) {
+                // create widget_output filterhook
+                FWP_Widget_Output_1x0x0::create();
+
                 array_push( $filter_hooks, 'widget_output' );
             }
 

@@ -4,13 +4,13 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.1.1
+ * @version  2.1.2
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
+final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Base_1x0x0
 {
 
     /**
@@ -116,7 +116,7 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Fields_1x0x0
     {
         $this->get_html_fields()->check_with_label(
             $args[ 'key' ]
-            , __( 'Threat all links to the site\'s domain and subdomains as internal links', 'wp-external-links' )
+            , __( 'Treat all links to the site\'s domain and subdomains as internal links', 'wp-external-links' )
             , '1'
             , ''
         );

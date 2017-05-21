@@ -1,12 +1,14 @@
 <?php
 /*
 Plugin Name:    WP External Links
-Plugin URI:     http://www.finewebdev.comwp-external-links-plugin
+Version:        1000
+Plugin URI:     https://wordpress.org/plugins/wp-external-links/
 Description:    DEV version
 Author:         Victor Villaverde Laan
-Version:        1000
-Author URI:     http://www.freelancephp.net
-License:        Dual licensed under the MIT and GPL licenses
+Author URI:     http://www.finewebdev.com
+License:        Dual licensed under the MIT and GPLv2+ licenses
+Text Domain:    wp-external-links
+Domain Path:    /languages
 */
 define('TEST_WPEL_PLUGIN_FILE', __FILE__);
 

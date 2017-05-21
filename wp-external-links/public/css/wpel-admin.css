@@ -11,9 +11,14 @@
 .wpel-no-label th:after {
     content: '\00a0';
 }
+
 .wpel-hidden {
     display: none;
 }
+
+/**
+ * Menu Icon 
+ */
 
 a.toplevel_page_wpel-settings-page .wp-menu-image:before {
     font-family: FontAwesome;
@@ -24,6 +29,10 @@ a.toplevel_page_wpel-network-settings-page .wp-menu-image:before {
     font-family: FontAwesome;
     content:  '\f14c';
 }
+
+/**
+ * Tabs 
+ */
 
 .wpel-settings-page .nav-tab i,
 .wpel-network-page .nav-tab i {
@@ -68,6 +77,7 @@ a.toplevel_page_wpel-network-settings-page .wp-menu-image:before {
    color: #ccc;
    font-style: italic;
 }
+
 
 /**
  * Background Icon
