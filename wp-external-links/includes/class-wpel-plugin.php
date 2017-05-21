@@ -49,15 +49,7 @@ final class WPEL_Plugin extends FWP_Plugin_Base_1x0x0
 
         // front site
         if ( ! is_admin() ) {
-            // filter hooks
-            FWP_Final_Output_1x0x0::create();
-            FWP_Widget_Output_1x0x0::create();
-
-            // front site
-            $front = WPEL_Front::create( $settings_page );
-            WPEL_Front_Ignore::create( $settings_page );
-
-            WPEL_Template_Tags::create( $front );
+            WPEL_Front::create( $settings_page );
         }
 
         // update procedures
