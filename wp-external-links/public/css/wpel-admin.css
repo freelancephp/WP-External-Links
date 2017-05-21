@@ -78,24 +78,6 @@ a.toplevel_page_wpel-network-settings-page .wp-menu-image:before {
    font-style: italic;
 }
 
-/**
- * Tab Content
- */
-
-.wpel-settings-page form,
-.wpel-network-page form {
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0s, opacity 0.5s;
-}
-
-.wpel-settings-page form.wpel-show-content,
-.wpel-network-page form.wpel-show-content {
-    visibility: visible;
-    opacity: 1;
-    transition: opacity 0.5s;
-}
-
 
 /**
  * Background Icon
