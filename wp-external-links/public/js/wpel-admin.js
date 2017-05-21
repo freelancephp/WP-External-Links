@@ -10,12 +10,14 @@ jQuery(function ($) {
     $.extend($.fn, {
         wpelShow: function () {
             var self = this;
+            this.stop({ clearQueue: true, jumpToEnd: true });
             this.fadeIn({ duration: 500, queue: false, complete: function () {
                 self.removeClass('wpel-hidden'); 
             }});
         },
         wpelHide: function () {
             var self = this;
+            this.stop({ clearQueue: true, jumpToEnd: true });
             this.fadeOut({ duration: 500, queue: false, complete: function () { 
                 self.addClass('wpel-hidden'); 
             }});
