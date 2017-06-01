@@ -29,6 +29,12 @@ class WPTest_Unit_Base extends PHPUnit_Framework_TestCase
     }
      */
 
+    public function testWPTestUnit_HasTest_True()
+    {
+        $this->assertTrue(true);
+    }
+
+
     /**
      * Helper to get a clear mocked function
      * @param string $funcName
