@@ -343,8 +343,8 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         }
 
         foreach ( $include_urls_arr as $include_url ) {
-			if ( false !== strpos( $url, $include_url ) ) {
-				return true;
+            if ( false !== strpos( $url, $include_url ) ) {
+                    return true;
             }
         }
 
@@ -378,7 +378,7 @@ final class WPEL_Front extends WPRun_Base_1x0x0
 
         foreach ( $exclude_urls_arr as $exclude_url ) {
             if ( false !== strpos( $url, $exclude_url ) ) {
-				return true;
+                return true;
             }
         }
 
