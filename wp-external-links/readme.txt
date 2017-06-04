@@ -1,6 +1,6 @@
 === WP External Links (nofollow new tab seo) ===
 Contributors: freelancephp
-Tags: links, new window, new tab, external links, nofollow, follow, seo, noopener, noreferrer, internal links, link icon, link target, _blank, wpmu
+Tags: links, new window, new tab, external links, nofollow, follow, seo, noopener, noreferrer, internal links, icon, target, _blank, wpmu
 Requires at least: 4.2.0
 Tested up to: 4.7.5
 Stable tag: 2.1.3
