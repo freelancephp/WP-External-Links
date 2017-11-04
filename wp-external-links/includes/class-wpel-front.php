@@ -156,7 +156,7 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         if ( false === $created_link ) {
             return $original_link;
         }
-error_log($original_link);
+
         return $created_link;
     }
 
