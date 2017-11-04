@@ -127,7 +127,8 @@ final class WPEL_Front extends WPRun_Base_1x0x0
          */
         $content = apply_filters( '_wpel_before_filter', $content );
 
-        $regexp_link = '/<a[^A-Za-z](.*?)>(.*?)<\/a[\s+]*>/is';
+//        $regexp_link = '/<a[^A-Za-z](.*?)>(.*?)<\/a[\s+]*>/is';
+        $regexp_link = '/<a(>|\s(.*?)>)(.*?)<\/a[\s+]*>/is';
 
         $content = preg_replace_callback( $regexp_link, $this->get_callback( 'match_link' ), $content );
 
@@ -148,15 +149,17 @@ final class WPEL_Front extends WPRun_Base_1x0x0
     protected function match_link( $matches )
     {
         $original_link = $matches[ 0 ];
-        $atts = $matches[ 1 ];
-        $label = $matches[ 2 ];
+//        $atts = $matches[ 1 ];
+//        $label = $matches[ 2 ];
+        $atts = $matches[ 2 ];
+        $label = $matches[ 3 ];
 
         $created_link = $this->get_created_link( $label, $atts );
 
         if ( false === $created_link ) {
             return $original_link;
         }
-
+error_log($original_link);
         return $created_link;
     }
 

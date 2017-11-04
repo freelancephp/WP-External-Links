@@ -256,6 +256,9 @@ See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more info.
 
 == Changelog ==
 
+= 2.2.1 =
+ * Fixed bug <a> without attributes
+
 = 2.2.0 =
  * Added option ignore links by classes
  * Added option skip pages and posts by id
