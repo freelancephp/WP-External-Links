@@ -5,30 +5,31 @@ Requires at least: 4.2.0
 Tested up to: 4.7.5
 Stable tag: 2.1.3
 
-Open external links in a new tab / window, add "nofollow", "noopener" and font icons, SEO and more. Also for internal links.
+Manage external and internal links: open in new window or tab, add "nofollow", "noopener", font icons and more. SEO friendly.
 
 
 == Description ==
 
-Configure settings for all internal and external links on your site.
+Manage external and internal links on your site.
 
 > <strong>=== NEW: Version 2 ===</strong><br>
 > WPEL plugin was completely rebuilt and has lots of new features, like "noopener", font icons, internal links options and WPMU settings.
 
 = Features =
+* Manage external and internal links 
 * Open links in new window or tab
 * Add "follow" or "nofollow"
 * Add "noopener" and "noreferrer" (for security)
 * Add link icons (font icons: font awesome, dashicons)
 * Set other attributes like title and CSS classes
-* Scan posts, comments, widgets or the whole page
-* Better SEO
+* Scan complete page (or just posts, comments, widgets)
+* SEO friendly
 
 = And more... =
 * Network Settings (WPMU support)
 * Use template tag to apply plugin settings on specific contents
 * Set data-attribute to change how individual links will be treated
-* Use action and filters to implement your specific needs
+* Use built-in actions and filters to implement your specific needs
 
 = Easy to use =
 After activating you can set all options for external and internal links on the plugins admin page.
