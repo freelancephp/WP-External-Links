@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.1.3
+ * @version  2.2.0
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -41,6 +41,12 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Base_1x0x0
                 'apply_widgets' => array(
                     'class'         => 'js-wpel-apply-child wpel-hidden wpel-no-label',
                     'default_value' => '1',
+                ),
+                'skip_post_ids' => array(
+                    'label'             => __( 'Skip pages or posts (id\'s):', 'wp-external-links' ),
+                ),
+                'ignore_classes' => array(
+                    'label'             => __( 'Ignore links by class:', 'wp-external-links' ),
                 ),
                 'subdomains_as_internal_links' => array(
                     'label'         => __( 'Make subdomains internal:', 'wp-external-links' ),
@@ -110,6 +116,28 @@ final class WPEL_Exceptions_Fields extends FWP_Settings_Section_Base_1x0x0
             , '1'
             , ''
         );
+    }
+
+    protected function show_skip_post_ids( array $args )
+    {
+        $this->get_html_fields()->text( $args[ 'key' ], array(
+            'class' => 'regular-text',
+        ) );
+
+        echo '<p class="description">'
+                . __( 'Separate page- / post-id\'s by comma.', 'wp-external-links' )
+                .'</p>';
+    }
+
+    protected function show_ignore_classes( array $args )
+    {
+        $this->get_html_fields()->text( $args[ 'key' ], array(
+            'class' => 'regular-text',
+        ) );
+
+        echo '<p class="description">'
+                . __( 'Separate classes by comma.', 'wp-external-links' )
+                .'</p>';
     }
 
     protected function show_subdomains_as_internal_links( array $args )

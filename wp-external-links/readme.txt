@@ -1,34 +1,35 @@
 === WP External Links (nofollow new tab seo) ===
 Contributors: freelancephp
-Tags: links, new window, new tab, external links, nofollow, follow, seo, noopener, noreferrer, internal links, link icon, link target, _blank, wpmu
+Tags: links, new window, new tab, external links, nofollow, follow, seo, noopener, noreferrer, internal links, icon, target, _blank, wpmu
 Requires at least: 4.2.0
-Tested up to: 4.7.5
-Stable tag: 2.1.3
+Tested up to: 4.8.3
+Stable tag: 2.2.0
 
-Open external links in a new tab / window, add "nofollow", "noopener" and font icons, SEO and more. Also for internal links.
+Manage external and internal links: open in new window or tab, add "nofollow", "noopener", font icons and more. SEO friendly.
 
 
 == Description ==
 
-Configure settings for all internal and external links on your site.
+Manage external and internal links on your site.
 
 > <strong>=== NEW: Version 2 ===</strong><br>
 > WPEL plugin was completely rebuilt and has lots of new features, like "noopener", font icons, internal links options and WPMU settings.
 
 = Features =
+* Manage external and internal links 
 * Open links in new window or tab
 * Add "follow" or "nofollow"
 * Add "noopener" and "noreferrer" (for security)
 * Add link icons (font icons: font awesome, dashicons)
 * Set other attributes like title and CSS classes
-* Scan posts, comments, widgets or the whole page
-* Better SEO
+* Scan complete page (or just posts, comments, widgets)
+* SEO friendly
 
 = And more... =
 * Network Settings (WPMU support)
 * Use template tag to apply plugin settings on specific contents
 * Set data-attribute to change how individual links will be treated
-* Use action and filters to implement your specific needs
+* Use built-in actions and filters to implement your specific needs
 
 = Easy to use =
 After activating you can set all options for external and internal links on the plugins admin page.
@@ -76,8 +77,9 @@ version of this plugin.
 
 = I want certain posts or pages to be ignored by the plugin. How? =
 
-By using the `wpel_apply_settings` filter you can stop the plugin from processing that page, f.e.:
+Just use the option "Skip pages or posts" under the tab "Exceptions".
 
+For a more custom approach use the action `wpel_apply_settings`:
 `add_action( 'wpel_apply_settings', function () {
     global $post;
     $ignored_post_ids = array( 1, 2, 4 );
@@ -93,8 +95,9 @@ Using this filter you can ignore any request, like certain category, archive etc
 
 = I want specific links to be ignored by the plugin. How? =
 
-By using the `wpel_before_apply_link` filter you can skip specific links from being processed by WPEL plugin, f.e.:
+There's an option for ignoring links containing a certain class (under tab "Exceptions").
 
+For a more flexible check on ignoring links you could use the filter `wpel_before_apply_link`:
 `add_action( 'wpel_before_apply_link', function ( $link ) {
     // ignore links with class "some-cls"
     if ( $link->has_attr_value( 'class', 'some-cls' ) ) {
@@ -124,7 +127,6 @@ Create redirect by using the `wpel_link` action. Add some code to functions.php 
 By adding this JavaScript code to your site:
 
 `jQuery(function ($) {
-
     $('a[data-wpel-link="external"]').click(function (e) {
         // open link in popup window
         window.open($(this).attr('href'), '_blank', 'width=800, height=600');
@@ -133,7 +135,6 @@ By adding this JavaScript code to your site:
         e.preventDefault();
         e.stopImmediatePropagation();
     });
-
 });`
 
 See more information on the [window.open() method](http://www.w3schools.com/jsref/met_win_open.asp).
@@ -143,7 +144,6 @@ See more information on the [window.open() method](http://www.w3schools.com/jsre
 Add this JavaScript code to your site:
 
 `jQuery(function ($) {
-
     $('a[data-wpel-link="external"]').click(function (e) {
         if (!confirm('Are you sure you want to open this link?')) {
             // cancelled
@@ -151,7 +151,6 @@ Add this JavaScript code to your site:
             e.stopImmediatePropagation();
         }
     });
-
 });`
 
 = How to open f.e. PDF files in a new window? =
@@ -256,6 +255,11 @@ See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more info.
 
 
 == Changelog ==
+
+= 2.2.0 =
+ * Added option ignore links by classes
+ * Added option skip pages and posts by id
+ * Fixed bug checking internal links without protocol (starting //)
 
 = 2.1.3 =
  * Commit error

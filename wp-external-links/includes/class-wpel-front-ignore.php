@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.1.3
+ * @version  2.2.0
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -45,10 +45,33 @@ final class WPEL_Front_Ignore extends WPRun_Base_1x0x0
     }
 
     /**
+     * Skip complete pages
+     * @return boolean
+     */
+    protected function filter_wpel_apply_settings()
+    {
+        if ( ! is_single() && ! is_page() ) {
+            return true;
+        }
+
+        $current_post_id = get_queried_object_id();
+        $skip_post_ids = $this->opt( 'skip_post_ids', 'exceptions' );
+        $skip_post_ids_arr = explode( ',', $skip_post_ids );
+
+        foreach ( $skip_post_ids_arr as $post_id ) {
+            if ( intval( $post_id ) === $current_post_id ) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Action for "wpel_before_apply_link"
      * @param WPEL_Link $link
      */
-    protected function filter_wpel_before_apply_link_10000000000( WPEL_Link $link )
+    protected function action_wpel_before_apply_link_10000000000( WPEL_Link $link )
     {
         // ignore mailto links
         if ( $this->opt( 'ignore_mailto_links' ) && $link->is_mailto() ) {
@@ -59,6 +82,25 @@ final class WPEL_Front_Ignore extends WPRun_Base_1x0x0
         if ( $link->has_attr_value( 'class', 'ab-item' ) ) {
             $link->set_ignore();
         }
+
+        // ignore links containing ignored classes
+        if ( $this->has_ignore_class( $link ) ) {
+            $link->set_ignore();
+        }
+    }
+
+    private function has_ignore_class( WPEL_Link $link )
+    {
+        $ignore_classes = $this->opt( 'ignore_classes', 'exceptions' );
+        $ignore_classes_arr = explode( ',', $ignore_classes );
+
+        foreach ( $ignore_classes_arr as $ignore_class ) {
+            if ( $link->has_attr_value( 'class', trim( $ignore_class ) ) ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

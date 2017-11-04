@@ -1,6 +1,7 @@
 <?php
 include_once realpath(__DIR__ . '/../../../libs/wptest/class-wptest-unit-base.php');
 include_once realpath(__DIR__ . '/../../../../wp-external-links/libs/wprun/class-wprun-base.php');
+include_once realpath(__DIR__ . '/../../../../wp-external-links/libs/fwp/component-bases/class-fwp-plugin-base.php');
 include_once realpath(__DIR__ . '/../../../../wp-external-links/includes/class-wpel-plugin.php');
 
 
@@ -74,22 +75,10 @@ class WPEL_PluginTest extends WPTest_Unit_Base
 
     public function testCreate_Called_CheckCreatedComponents()
     {
-        $this->assertInstanceOf('WPEL_Register_Hooks', WPEL_Register_Hooks::get_instance());
         $this->assertInstanceOf('WPEL_Register_Scripts', WPEL_Register_Scripts::get_instance());
         $this->assertInstanceOf('WPEL_Network_Page', WPEL_Network_Page::get_instance());
-        $this->assertInstanceOf('WPEL_Network_Fields', WPEL_Network_Fields::get_instance());
-        $this->assertInstanceOf('WPEL_Network_Admin_Fields', WPEL_Network_Admin_Fields::get_instance());
         $this->assertInstanceOf('WPEL_Settings_Page', WPEL_Settings_Page::get_instance());
-        $this->assertInstanceOf('WPEL_External_Link_Fields', WPEL_External_Link_Fields::get_instance());
-        $this->assertInstanceOf('WPEL_Internal_Link_Fields', WPEL_Internal_Link_Fields::get_instance());
-        $this->assertInstanceOf('WPEL_Excluded_Link_Fields', WPEL_Excluded_Link_Fields::get_instance());
-        $this->assertInstanceOf('WPEL_Admin_Fields', WPEL_Admin_Fields::get_instance());
-        $this->assertInstanceOf('WPEL_Exceptions_Fields', WPEL_Exceptions_Fields::get_instance());
-        $this->assertInstanceOf('FWP_Final_Output_1x0x0', FWP_Final_Output_1x0x0::get_instance());
-        $this->assertInstanceOf('FWP_Widget_Output_1x0x0', FWP_Widget_Output_1x0x0::get_instance());
         $this->assertInstanceOf('WPEL_Front', WPEL_Front::get_instance());
-        $this->assertInstanceOf('WPEL_Front_Ignore', WPEL_Front_Ignore::get_instance());
-        $this->assertInstanceOf('WPEL_Template_Tags', WPEL_Template_Tags::get_instance());
         $this->assertInstanceOf('WPEL_Update', WPEL_Update::get_instance());
     }
 
@@ -116,22 +105,10 @@ class WPEL_PluginTest extends WPTest_Unit_Base
 /**
  * Mock classes
  */
-class WPEL_Register_Hooks extends WPRun_Base_1x0x0 {}
 class WPEL_Register_Scripts extends WPRun_Base_1x0x0 {}
 class WPEL_Network_Page extends WPRun_Base_1x0x0 {}
-class WPEL_Network_Fields extends WPRun_Base_1x0x0 {}
-class WPEL_Network_Admin_Fields extends WPRun_Base_1x0x0 {}
 class WPEL_Settings_Page extends WPRun_Base_1x0x0 {}
-class WPEL_External_Link_Fields extends WPRun_Base_1x0x0 {}
-class WPEL_Internal_Link_Fields extends WPRun_Base_1x0x0 {}
-class WPEL_Excluded_Link_Fields extends WPRun_Base_1x0x0 {}
-class WPEL_Admin_Fields extends WPRun_Base_1x0x0 {}
-class WPEL_Exceptions_Fields extends WPRun_Base_1x0x0 {}
-class FWP_Final_Output_1x0x0 extends WPRun_Base_1x0x0 {}
-class FWP_Widget_Output_1x0x0 extends WPRun_Base_1x0x0 {}
 class WPEL_Front extends WPRun_Base_1x0x0 {}
-class WPEL_Front_Ignore extends WPRun_Base_1x0x0 {}
-class WPEL_Template_Tags extends WPRun_Base_1x0x0 {}
 class WPEL_Update extends WPRun_Base_1x0x0 {}
 
 /*?>*/

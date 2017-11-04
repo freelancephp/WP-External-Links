@@ -4,7 +4,7 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.1.3
+ * @version  2.2.0
  * @author   Victor Villaverde Laan
  * @link     http://www.finewebdev.com
  * @link     https://github.com/freelancephp/WP-External-Links
@@ -343,8 +343,8 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         }
 
         foreach ( $include_urls_arr as $include_url ) {
-			if ( false !== strpos( $url, $include_url ) ) {
-				return true;
+            if ( false !== strpos( $url, $include_url ) ) {
+                    return true;
             }
         }
 
@@ -378,7 +378,7 @@ final class WPEL_Front extends WPRun_Base_1x0x0
 
         foreach ( $exclude_urls_arr as $exclude_url ) {
             if ( false !== strpos( $url, $exclude_url ) ) {
-				return true;
+                return true;
             }
         }
 
@@ -401,7 +401,10 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         }
 
         // is internal
-        if ( false !== strpos( $url, home_url( '' ) )
+        $url_without_protocol = substr( home_url( '', 'http' ), 5 ); // strip "http:"
+
+        if ( false !== strpos( $url, $url_without_protocol )
+                || false !== strpos( $url, home_url( '' ) )
                 || false !== strpos( $url, home_url( '', 'https' ) ) ) {
             return true;
         }
