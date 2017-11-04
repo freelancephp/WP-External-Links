@@ -2,8 +2,8 @@
 Contributors: freelancephp
 Tags: links, new window, new tab, external links, nofollow, follow, seo, noopener, noreferrer, internal links, icon, target, _blank, wpmu
 Requires at least: 4.2.0
-Tested up to: 4.7.5
-Stable tag: 2.1.3
+Tested up to: 4.8.3
+Stable tag: 2.2.0
 
 Manage external and internal links: open in new window or tab, add "nofollow", "noopener", font icons and more. SEO friendly.
 
