@@ -1,12 +1,11 @@
 WP External Links
 =================
 
+> **_From 11th of June 2019 this WordPress plugin has been taken over by other developers. Take a look at the [plugin page on wordpress.org](https://wordpress.org/plugins/wp-external-links/)  to follow future updates._**
+
+---
+
 Configure settings for all internal and external links on your site.
-
-> **NEW: Version 2**
->
-> WPEL plugin was rebuilt completely and has lots of new features, like "noopener", font icons, internal links options and WPMU settings.
-
 
 Features
 --------
